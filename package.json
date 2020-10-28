@@ -1,0 +1,22 @@
+{
+  "name": "secondhand",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zxtariel0512/Second-Hand-Transaction-Webapp-for-NYU-Students.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zxtariel0512/Second-Hand-Transaction-Webapp-for-NYU-Students/issues"
+  },
+  "homepage": "https://github.com/zxtariel0512/Second-Hand-Transaction-Webapp-for-NYU-Students#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -9,4 +9,4 @@
     MONGO_URI=your_mongo_uri
     ```
 
-1. Use `node app.js` to run the server on `localhost:4000`
+1. Use `npm run start` to run the server on `localhost:4000`

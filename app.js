@@ -3,6 +3,11 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+const Listing = require("./models/listing");
+
 const db = process.env.MONGO_URI;
 
 mongoose.connect(db, {
@@ -17,6 +22,17 @@ app.get("/test", (req, res) => {
   res.json({
     message: "hello"
   })
+})
+
+
+app.get("/listings", async (req, res) => {
+  let foundListings = await Listing.find();
+  res.json(foundListings);
+})
+
+app.post("/listings", async (req, res) => {
+  let newListing = await Listing.create(req.body);
+  res.json(newListing)
 })
 
 

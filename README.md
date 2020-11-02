@@ -11,7 +11,7 @@
 
 1. Use `npm run start` to run the server on `localhost:4000`
 
-## Test MongoDB
+## Test MongoDB and Routes
 1. Download MongoDB Compass, and enter the uri
 2. Download postman
 ### Listing

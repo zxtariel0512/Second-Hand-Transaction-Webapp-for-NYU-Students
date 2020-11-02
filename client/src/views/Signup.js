@@ -36,17 +36,19 @@ const useStyles = makeStyles((theme) => ({
         color: 'red'
     }
 }));
-const passwordValidation = `  1. at least one numeric character \n
-  2. at least one lowercase alphabetic letter \n
-	3. at least one uppercase alphabetic letter \n
-	4. at lesat one special character \n
-	5. min length 8 and max length 20`;
+
+const passwordValidation = `  At least one numeric character 
+            At least one lower and upper alphabetic letter \n
+ At lesat one special character\n
+ At least 8 characters`;
 export default function Login(props) {
     const classes = useStyles();
     const history = useHistory();
     const { register, errors, handleSubmit } = useForm({
-        mode: 'onSubmit',
+        mode: 'onBlur',
+        reValidateMode: 'onChange'
     });
+    
     /* useState hook to store server error message */
     const [serverErr, setserverErr] = useState("");
     async function handleOnSubmit(userinput) {
@@ -55,23 +57,32 @@ export default function Login(props) {
 
         // AWS Cognito integration here
         try {
+            
             await Auth.signUp({
-                username: userinput['email'],
+                username: userinput['netid'],
                 password: userinput['password'],
                 attributes: {
-                    family_name: userinput['firstname'],
-                    given_name: userinput['lastname'],
-                    description: userinput['description']
-
+                    name: userinput['name'],  
+                    email: userinput['netid'] + "@nyu.edu",
+                    phone_number: userinput['phone'],  
                 }
             })
-            alert('You have successfully registered an account! A verification email has been sent.');
+            alert('You have successfully registered! A verification email has been sent to your nyu email.');
             history.push('/login');
         } catch (error) {
             // alert(error);
             setserverErr(error.message);
         }
     }
+    console.log(errors)
+    const getErrorMsg = (field) => {
+        if (errors[field]) {
+            if (errors[field].message === "") return undefined;
+            return errors[field].message;
+        }
+        return undefined;
+    }
+    
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -81,70 +92,76 @@ export default function Login(props) {
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign Up
-        </Typography>
+                </Typography>
                 <form className={classes.form} noValidate onSubmit={handleSubmit(handleOnSubmit)}>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="firstname"
-                        label="Frist Name"
-                        name="firstname"
-                        autoComplete="given-name"
+                        id="name"
+                        label="Your Name"
+                        name="name"
+                        autoComplete="name"
                         autoFocus
+                        error={getErrorMsg("name") === undefined ? false : true}
+                        helperText={getErrorMsg("name")}
+                        
                         inputRef={register({
                             required: true,
                             /* firstname validation: 1-20 alphabetic characters
                             */
                             pattern: {
-                                value: /^[A-Za-z]{1,20}$/,
-                                message: 'Invalid first name'
+                                value: /^[A-Za-z ]{1,20}$/,
+                                message: 'Invalid name'
                             }
                         })}
                     />
 
-                    <ErrorMessage errors={errors} name="firstname" as="p" />
+                    {/* <ErrorMessage errors={} name="name" as="p" style={{"color":"red"}} /> */}
+                    
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="lastname"
-                        label="Last Name"
-                        name="lastname"
-                        autoComplete="family-name"
+                        id="phone"
+                        label="Phone number"
+                        name="phone"
+                        autoComplete="phone_number"
                         autoFocus
+                        error={getErrorMsg("phone") === undefined ? false : true}
+                        helperText={getErrorMsg("phone")}
+                        placeholder="Starts with +1.."
                         inputRef={register({
                             required: true,
-                            /* firstname validation: 1-20 alphabetic characters
-                            */
                             pattern: {
-                                value: /^[A-Za-z]{1,20}$/,
-                                message: 'Invalid last name'
+                                value: /^[0-9+]{12}$/,
+                                message: 'Invalid phone number'
                             }
                         })}
                     />
-                    <ErrorMessage errors={errors} name="lastname" as="p" />
+                    <ErrorMessage errors={errors} name="phone" as="p" />
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        id="netid"
+                        label="NYU netid"
+                        name="netid"
                         autoFocus
+                        error={getErrorMsg("netid") === undefined ? false : true}
+                        helperText={getErrorMsg("netid")}
                         inputRef={register({
                             required: true,
                             pattern: {
-                                value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                message: 'Invalid email address'
+                                value: /^[a-z]{2,3}\d{3,4}$/,
+                                message: 'Invalid netid'
                             }
                         })}
                     />
-                    <ErrorMessage errors={errors} name="email" as="p" />
+                    <ErrorMessage errors={errors} name="netid" as="p" />
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -154,6 +171,9 @@ export default function Login(props) {
                         label="Password"
                         type="password"
                         id="password"
+                        error={getErrorMsg("password") === undefined ? false : true}
+                        helperText={getErrorMsg("password")}
+                        
                         inputRef={register({
                             required: true,
                             /* password validation:
@@ -169,25 +189,8 @@ export default function Login(props) {
                             }
                         })}
                     />
-                    {errors.password && errors.password.message.split('\n').map(err => <p style={{ lineHeight: '3px' }}>{err}</p>)}
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password-cofirm"
-                        label="Confirm Password"
-                        type="password"
-                        id="password-confirm"
-                        inputRef={register({
-                            required: true,
-                            // validate: {
-                            //   value: value => value === 'Wuhaodong250382!',
-                            //   message: `Passwords doesn't match`
-                            // }
-                        })}
-                    />
-                    {/* <ErrorMessage errors={errors} name="password-confirm" as="p"></ErrorMessage> */}
+                    
+                        
                     <TextField
                         variant="outlined"
                         margin="normal"

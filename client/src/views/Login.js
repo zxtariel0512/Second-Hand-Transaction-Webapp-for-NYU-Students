@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -55,10 +54,10 @@ export default function Login(props) {
     async function handleOnSubmit(userinput) {
 
         try {
-            const user = await Auth.signIn(userinput['email'], userinput['password']);
+            const user = await Auth.signIn(userinput['netid'], userinput['password']);
             setserverErr("");
-            props.auth.setAuthStatus(true);
-            props.auth.setUser(user);
+            // props.auth.setAuthStatus(true);
+            // props.auth.setUser(user);
             history.push("/");
         } catch (error) {
             console.log(error);
@@ -87,10 +86,10 @@ export default function Login(props) {
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        id="netid"
+                        label="NYU netid "
+                        name="netid"
+                        autoComplete="netid"
                         autoFocus
                         inputRef={register({
                             required: true,

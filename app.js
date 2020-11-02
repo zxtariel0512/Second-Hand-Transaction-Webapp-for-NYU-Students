@@ -7,6 +7,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 const Listing = require("./models/listing");
+const User = require("./models/user.model");
 
 const db = process.env.MONGO_URI;
 
@@ -33,6 +34,18 @@ app.get("/listings", async (req, res) => {
 app.post("/listings", async (req, res) => {
   let newListing = await Listing.create(req.body);
   res.json(newListing)
+})
+
+app.get("/user", async(req, res) => {
+  let foundUsers = await User.find();
+  res.json(foundUsers);
+})
+
+app.post("/user/register", async(req, res) => {
+  let newUser = await User.create(req.body);
+    newUser.save()
+        .then(() => res.json('User registered!'))
+        .catch(err => res.status(400).json('Error: ' + err));
 })
 
 

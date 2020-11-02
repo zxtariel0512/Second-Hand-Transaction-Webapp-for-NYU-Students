@@ -112,7 +112,7 @@ export default function Login(props) {
                     />
                     {/* render validation error from aws  */}
 
-                    <p>{serverErr}</p>
+                    <p style={{"color":"red"}}>{serverErr}</p>
 
                     <Button
                         type="submit"

@@ -141,7 +141,7 @@ export default function Login(props) {
                             }
                         })}
                     />
-                    <ErrorMessage errors={errors} name="phone" as="p" />
+                    {/* <ErrorMessage errors={errors} name="phone" as="p" /> */}
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -161,7 +161,7 @@ export default function Login(props) {
                             }
                         })}
                     />
-                    <ErrorMessage errors={errors} name="netid" as="p" />
+                    {/* <ErrorMessage errors={errors} name="netid" as="p" /> */}
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -219,7 +219,7 @@ export default function Login(props) {
                     />
                     {/* <ErrorMessage errors={errors} name="major" as="p"></ErrorMessage> */}
                     {/* render validation error from aws  */}
-                    <p>{serverErr}</p>
+                    <p style={{"color":"red"}}>{serverErr}</p>
                     <Button
                         type="submit"
                         fullWidth

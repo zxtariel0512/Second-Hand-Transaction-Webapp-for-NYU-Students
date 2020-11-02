@@ -43,10 +43,9 @@ app.get("/user", async(req, res) => {
 
 app.post("/user/register", async(req, res) => {
   let newUser = await User.create(req.body);
-    newUser.save()
-        .then(() => res.json('User registered!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+  res.json(newUser);
 })
+
 
 
 app.listen(4000, () => {

@@ -26,27 +26,11 @@ app.get("/test", (req, res) => {
 })
 
 
-app.get("/listings", async (req, res) => {
-  let foundListings = await Listing.find();
-  res.json(foundListings);
-})
+const userRouter = require('./routes/user');
+const listingRouter = require('./routes/listing');
 
-app.post("/listings", async (req, res) => {
-  let newListing = await Listing.create(req.body);
-  res.json(newListing)
-})
-
-app.get("/user", async(req, res) => {
-  let foundUsers = await User.find();
-  res.json(foundUsers);
-})
-
-app.post("/user/register", async(req, res) => {
-  let newUser = await User.create(req.body);
-  res.json(newUser);
-})
-
-
+app.use('/user', userRouter);
+app.use('/listings', listingRouter);
 
 app.listen(4000, () => {
   console.log("secondhand server started");

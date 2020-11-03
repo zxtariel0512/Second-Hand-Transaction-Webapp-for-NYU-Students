@@ -13,17 +13,12 @@ const db = process.env.MONGO_URI;
 console.log(db)
 mongoose.connect(db, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: true
 })
   .then(() => console.log("connected to database"))
   .catch(err => console.error(err))
 
-
-app.get("/test", (req, res) => {
-  res.json({
-    message: "hello"
-  })
-})
 
 
 const userRouter = require('./routes/user');

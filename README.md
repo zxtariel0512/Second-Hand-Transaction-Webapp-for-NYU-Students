@@ -7,6 +7,7 @@
 
     ```
     MONGO_URI=your_mongo_uri
+    USER_POOL_ID=your_user_pool_id
     ```
 
 1. Use `npm run start` to run the server on `localhost:4000`

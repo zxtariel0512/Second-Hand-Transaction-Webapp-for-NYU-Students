@@ -2,7 +2,6 @@
 import * as React from 'react';
 import Loadable from 'react-loadable';
 import LoadingView from './views/LoadingView';
-
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 
 const Home = Loadable({

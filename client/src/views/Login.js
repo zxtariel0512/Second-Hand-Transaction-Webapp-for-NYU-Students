@@ -15,6 +15,14 @@ import { useHistory } from "react-router";
 
 // styling
 const useStyles = makeStyles((theme) => ({
+    main: {
+        display: 'flex',
+    },
+    image: {
+        width: '40%',
+        minWidth: '500px',
+        height: '100vh'
+    },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -55,6 +63,7 @@ export default function Login(props) {
 
         try {
             const user = await Auth.signIn(userinput['netid'], userinput['password']);
+            console.log(user);
             setserverErr("");
             // props.auth.setAuthStatus(true);
             // props.auth.setUser(user);
@@ -71,6 +80,8 @@ export default function Login(props) {
         history.push('/signup');
     }
     return (
+        <div className={classes.main}>
+            <img className={classes.image} src="./img/bg.jpg" alt="side" />
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
@@ -122,21 +133,22 @@ export default function Login(props) {
                         className={classes.submit}
                     >
                         Sign In
-          </Button>
+                    </Button>
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
                                 Forgot password?
-              </Link>
+                            </Link>
                         </Grid>
                         <Grid item>
-                            <Link onClick={redirectSignUp} variant="body2">
-                                {"Don't have an account? Sign Up"}
+                            <Link href="/signup" variant="body2">
+                                Don't have an account? Sign Up
                             </Link>
                         </Grid>
                     </Grid>
                 </form>
             </div>
         </Container>
+        </div>
     );
 }

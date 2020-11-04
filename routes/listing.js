@@ -2,6 +2,7 @@ const router = require('express').Router();
 let Listing = require('../models/listing');
 
 router.route('/').get(async (req, res) => {
+    console.log(req.user);
     let foundListings = await Listing.find();
     res.json(foundListings);
 })

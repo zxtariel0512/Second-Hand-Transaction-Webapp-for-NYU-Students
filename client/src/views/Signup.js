@@ -10,14 +10,18 @@ import Container from '@material-ui/core/Container';
 import { Auth } from 'aws-amplify';
 import { useHistory } from "react-router";
 import { useForm } from "react-hook-form";
+import onBoardImg from "../assets/img/onBoard.svg"
 
 const useStyles = makeStyles((theme) => ({
     main: {
         display: 'flex',
     },
     image: {
+        paddingLeft:'100px',
+        paddingTop:'100px',
+        paddingBottom:'100px',
         width: '50%',
-        minWidth: '500px',
+        minWidth: '300px',
         height: '100vh'
     },
     paper: {
@@ -47,7 +51,7 @@ const passwordValidation = `  At least one numeric character
             At least one lower and upper alphabetic letter \n
  At lesat one special character\n
  At least 8 characters`;
-export default function Login(props) {
+export default function Signup(props) {
     const classes = useStyles();
     const history = useHistory();
     const { register, errors, handleSubmit } = useForm({
@@ -91,7 +95,7 @@ export default function Login(props) {
     
     return (
         <div className={classes.main}>
-            <img className={classes.image} src="./img/bg.jpg" alt="side"/>
+            <img className={classes.image} src={onBoardImg} alt="side"/>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
@@ -108,10 +112,9 @@ export default function Login(props) {
                             required
                             fullWidth
                             id="name"
-                            label="Your Name"
+                            label="Name"
                             name="name"
                             autoComplete="name"
-                            autoFocus
                             error={getErrorMsg("name") === undefined ? false : true}
                             helperText={getErrorMsg("name")}
                             
@@ -134,10 +137,9 @@ export default function Login(props) {
                             required
                             fullWidth
                             id="phone"
-                            label="Phone number"
+                            label="Phone Number"
                             name="phone"
                             autoComplete="phone_number"
-                            autoFocus
                             error={getErrorMsg("phone") === undefined ? false : true}
                             helperText={getErrorMsg("phone")}
                             placeholder="Starts with +1.."
@@ -156,9 +158,8 @@ export default function Login(props) {
                             required
                             fullWidth
                             id="netid"
-                            label="NYU netid"
+                            label="NYU NetId"
                             name="netid"
-                            autoFocus
                             error={getErrorMsg("netid") === undefined ? false : true}
                             helperText={getErrorMsg("netid")}
                             inputRef={register({
@@ -207,7 +208,6 @@ export default function Login(props) {
                             id="major"
                             label="Major"
                             name="major"
-                            autoFocus
                             inputRef={register({
                                 required:false, 
                             })}
@@ -220,7 +220,6 @@ export default function Login(props) {
                             id="school-year"
                             label="School Year"
                             name="School Year"
-                            autoFocus
                             inputRef={register({
                                 required: false,
                             })}

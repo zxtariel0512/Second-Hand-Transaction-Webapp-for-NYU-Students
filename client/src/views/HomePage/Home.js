@@ -1,7 +1,5 @@
 import React from "react";
-// nodejs library that concatenates classes
 import classNames from "classnames";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
 // @material-ui/icons
@@ -14,8 +12,10 @@ import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
-
 import styles from "assets/jss/material-kit-react/views/landingPage.js";
+import StorefrontIcon from "@material-ui/icons/Storefront";
+
+import BackgroundImg from "assets/img/landing-bg.jpg";
 
 // Sections for this page
 // import ProductSection from "./Sections/ProductSection.js";
@@ -30,31 +30,37 @@ export default function Home(props) {
   const classes = useStyles();
   const { ...rest } = props;
   return (
-    <div>
+    <>
       <Header
         color="transparent"
         routes={dashboardRoutes}
-        brand="NYU Second Hand"
+        brand={
+          <>
+            <span style={{ fontSize: "30px", fontWeight: "500" }}>
+            <StorefrontIcon />&nbsp;NYU Second Hand
+            </span>
+          </>
+        }
         rightLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "white"
+          color: "white",
         }}
         {...rest}
-      />
-      <Parallax filter image="img/landing-bg.jpg">
-        
+      ></Header>
+      <Parallax filter image={BackgroundImg} style={{ height: "100vh" }}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>Your Story Starts With Us.</h1>
-              <h4>
-                Every landing page needs a small description after the big bold
-                title, that{"'"}s why we added this text here. Add here all the
-                information that can make you or your product create the first
-                impression.
-              </h4>
+              &nbsp;
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <h1 className={classes.title}>Sell Your Second Hand Items</h1>
+              <p>
+                By students, for students, we are here to help you to sell your
+                second-hand items.
+              </p>
               <br />
               <Button
                 color="danger"
@@ -62,21 +68,12 @@ export default function Home(props) {
                 href="/signup"
                 rel="noopener noreferrer"
               >
-                <i className="fas fa-play" />
-                See more
+                Start Selling
               </Button>
             </GridItem>
           </GridContainer>
         </div>
       </Parallax>
-      <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.container}>
-          {/* <ProductSection />
-          <TeamSection />
-          <WorkSection /> */}
-        </div>
-      </div>
-      
-    </div>
+    </>
   );
 }

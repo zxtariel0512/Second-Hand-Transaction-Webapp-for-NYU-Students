@@ -20,9 +20,13 @@ module.exports = {
     }
 
     try {
+      // decodes the jwt so that we can get the 'kid' from the header
       const decodedJwt = jwt.decode(token, { complete: true });
 
+      // find the 'kid' within the public keys that aws gives us (located in jsonWebKeys)
       const jwk = jsonWebKeys.find(jwk => jwk.kid === decodedJwt.header.kid);
+
+      // pem will contain the public key needed to verify the jwt
       const pem = jwkToPem(jwk);
 
       const decoded = jwt.verify(token, pem);

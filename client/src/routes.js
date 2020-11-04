@@ -5,7 +5,7 @@ import LoadingView from './views/LoadingView';
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 
 const Home = Loadable({
-    loader: () => import('./views/Home'),
+    loader: () => import('./views/HomePage/Home'),
     loading: ({ isLoading }) => isLoading && <LoadingView/>,
 });
 
@@ -25,7 +25,7 @@ export default class Routes extends React.Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/home" component={Home} />
+                    <Route exact path="/" component={Home} />
                     <Route path="/login" component={Login} />
                     <Route path="/signup" component={Signup} />
                   

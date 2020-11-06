@@ -74,6 +74,8 @@ export default function Signup(props) {
                     name: userinput['name'],
                     email: userinput['netid'] + "@nyu.edu",
                     phone_number: userinput['phone'],
+                    'custom:schoolYear': userinput['school-year'],
+                    'custom:major': userinput['major']
                 }
             }
             await Auth.signUp(user)
@@ -219,7 +221,7 @@ export default function Signup(props) {
                             fullWidth
                             id="school-year"
                             label="School Year"
-                            name="School Year"
+                            name="school-year"
                             inputRef={register({
                                 required: false,
                             })}

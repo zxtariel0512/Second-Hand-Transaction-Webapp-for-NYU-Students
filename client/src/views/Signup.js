@@ -66,6 +66,7 @@ export default function Signup(props) {
         // Form validation
 
         // AWS Cognito integration here
+        
         try {
             const user = {
                 username: userinput['netid'],

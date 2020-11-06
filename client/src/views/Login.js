@@ -73,12 +73,7 @@ export default function Login(props) {
             setserverErr(error.message);
         }
     }
-    /* for some reason s3 bucket doesn't allow redirection with Link component
-       so manually redirect user to register page
-    */
-    const redirectSignUp = () => {
-        history.push('/signup');
-    }
+
     return (
         <div className={classes.main}>
             <img className={classes.image} src="./img/bg.jpg" alt="side" />

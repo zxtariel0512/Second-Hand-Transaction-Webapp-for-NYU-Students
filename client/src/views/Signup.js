@@ -10,7 +10,8 @@ import Container from '@material-ui/core/Container';
 import { Auth } from 'aws-amplify';
 import { useHistory } from "react-router";
 import { useForm } from "react-hook-form";
-import onBoardImg from "../assets/img/onBoard.svg"
+import onBoardImg from "../assets/img/onBoard.svg";
+import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -66,6 +67,7 @@ export default function Signup(props) {
         // Form validation
 
         // AWS Cognito integration here
+        
         try {
             const user = {
                 username: userinput['netid'],
@@ -74,11 +76,25 @@ export default function Signup(props) {
                     name: userinput['name'],
                     email: userinput['netid'] + "@nyu.edu",
                     phone_number: userinput['phone'],
+                    'custom:schoolYear': userinput['school-year'],
+                    'custom:major': userinput['major']
                 }
             }
             await Auth.signUp(user)
             alert('You have successfully registered! A verification email has been sent to your nyu email.');
             history.push('/login');
+            var params = new URLSearchParams();
+            params.append('valid', false);
+            params.append('netid', user.username);
+            params.append('username', user.username);
+            params.append('name', user.attributes.name);
+            params.append('credit', 100);
+            params.append('password', user.password);
+            params.append('phone', user.attributes.phone_number);
+            params.append('schoolYear', Number(userinput['school-year']));
+            params.append('major', userinput['major']);
+            axios.post('http://localhost:4000/user/register', params)
+                .then(res=> console.log(res.data));
         } catch (error) {
             // alert(error);
             setserverErr(error.message);
@@ -219,7 +235,7 @@ export default function Signup(props) {
                             fullWidth
                             id="school-year"
                             label="School Year"
-                            name="School Year"
+                            name="school-year"
                             inputRef={register({
                                 required: false,
                             })}

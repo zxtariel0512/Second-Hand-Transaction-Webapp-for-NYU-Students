@@ -11,8 +11,13 @@ axios.get(`https://cognito-idp.us-east-1.amazonaws.com/${process.env.USER_POOL_I
   })
 
 module.exports = {
-  isAuthenticated: async (req, res, next) => {
-    const token = req.header('Authorization').split(' ')[1];
+  auth: async (req, res, next) => {
+    const authHeader = req.header('Authorization')
+    if (!authHeader || authHeader.split(' ')[0] != 'Bearer' || authHeader.split(' ').length != 2) {
+      return res.status(401).json({ message: 'No token, authorization denied' });
+    }
+
+    const token = authHeader.split(' ')[1];
 
     // Check for token
     if (!token) {

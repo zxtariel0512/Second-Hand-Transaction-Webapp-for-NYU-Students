@@ -6,8 +6,8 @@ router.route('/').get(async(req, res) => {
     res.json(foundUsers);
   })
 
-router.route('/:id').get(async (req, res) => {
-    let foundUser = await User.findById(req.params.id);
+router.route('/:netid').get(async (req, res) => {
+    let foundUser = await User.findOne({netid: req.params.netid});
     res.json(foundUser);
 })
   
@@ -16,13 +16,13 @@ router.route('/register').post(async(req, res) => {
     res.json(newUser);
 })
 
-router.route('/:id').put(async (req, res) => {
-  let updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new:true});
+router.route('/:netid').put(async (req, res) => {
+  let updatedUser = await User.findOneAndUpdate({netid: req.params.netid}, req.body, {new:true});
   res.json(updatedUser);
 })
 
-router.route('/:id').delete(async (req, res) => {
-  let deletedUser = await User.findByIdAndDelete(req.params.id);
+router.route('/:netid').delete(async (req, res) => {
+  let deletedUser = await User.findOneAndDelete({netid: req.params.netid});
   res.json(deletedUser);
 })
 

@@ -5,8 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // core components
 import Header from "components/Header/Header.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
 import Button from "components/CustomButtons/Button.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
@@ -14,7 +14,6 @@ import styles from "assets/jss/material-kit-react/views/landingPage.js";
 import StorefrontIcon from "@material-ui/icons/Storefront";
 
 import BackgroundImg from "assets/img/landing-bg.jpg";
-import Footer from "components/Footer/Footer";
 
 const dashboardRoutes = [];
 
@@ -25,13 +24,14 @@ export default function Home(props) {
   const { ...rest } = props;
   return (
     <>
-      <Header
+      <Header 
         color="transparent"
         routes={dashboardRoutes}
         brand={
           <>
             <span style={{ fontSize: "30px", fontWeight: "500" }}>
-            <StorefrontIcon />&nbsp;NYU Second Hand
+              <StorefrontIcon />
+              &nbsp;NYU Second Hand
             </span>
           </>
         }

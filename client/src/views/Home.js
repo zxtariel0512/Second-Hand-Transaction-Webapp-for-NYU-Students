@@ -1,10 +1,12 @@
 // view that lists items with a search bar above
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import SearchBar from '../components/SearchBar/SearchBar';
 import CustomGridList from '../components/CustomGridList/CustomGridList';
 import { makeStyles } from '@material-ui/core/styles';
 import CustomAppBar from '../components/CustomAppBar/CustomAppBar';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+
 const useStyles = makeStyles({
     container: {
         width: '80%',
@@ -16,12 +18,29 @@ const useStyles = makeStyles({
         textAlign: 'center'
     },
     categories: {
+        height: '100px',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center'
     },
     category: {
-        padding: '20px'
+        marginRight: '20px',
+        height: '40px'
+    },
+    circle: {
+        position: 'fixed',
+        bottom: 50,
+        right: 50,
+        width: 60,
+        height: 60,
+        borderRadius: '50%',
+        border: '1px solid blue',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    addicon: {
+        color: 'blue'
     }
 
     
@@ -29,25 +48,31 @@ const useStyles = makeStyles({
 
 const Home = () => {
     const styles = useStyles();
-    
     return (
         <>
-            <CustomAppBar />
-            <div className={styles.container}>
-                
-                <div className={styles.header}>
-                    <Typography variant="h4">NYU Second Hand</Typography>
+            
+                <CustomAppBar />
+                <div className={styles.container}>
+                    
+                    <div className={styles.header}>
+                        <Typography variant="h4">NYU Second Hand</Typography>
+                    </div>
+                    <SearchBar />
+                    <div className={styles.categories}>
+                    <Button className={styles.category} variant="contained" color="primary">Books</Button>
+                    <Button className={styles.category} variant="contained" color="primary">Electronics</Button>
+                    <Button className={styles.category} variant="contained" color="primary">Clothes</Button>
+                    <Button className={styles.category} variant="contained" color="primary">Automobiles</Button>
+                    <Button className={styles.category} variant="contained" color="primary">More</Button>
+                    </div>
+                    <CustomGridList />
+                    <div className={styles.circle}>
+                        
+                            <AddIcon className={styles.addicon}></AddIcon>
+                        
+                    </div>
                 </div>
-                <SearchBar />
-                <div className={styles.categories}>
-                    <p className={styles.category}>Books</p>
-                    <p className={styles.category}>Electronics</p>
-                    <p className={styles.category}>Clothes</p>
-                    <p className={styles.category}>Automobiles</p>
-                    <p className={styles.category}>More</p>
-                </div>
-                <CustomGridList />
-            </div>
+            
         </>
     );
 };

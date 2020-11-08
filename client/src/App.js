@@ -1,10 +1,14 @@
 import "./App.css";
 import Routes from "./routes";
+import { ListItemProvider } from './context/ListItemProvider';
 function App() {
   return (
     <>
-      <Routes />
+      <ListItemProvider>
+        <Routes />
+      </ListItemProvider>
     </>
+
   );
 }
 

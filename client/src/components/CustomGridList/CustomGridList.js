@@ -1,9 +1,11 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useContext } from 'react';
+import { makeStyles} from '@material-ui/core/styles';
 
 import CustomCard from '../CustomCard/CustomCard';
-import { SvgIcon, Typography } from '@material-ui/core';
+import { ListItem, SvgIcon, Typography } from '@material-ui/core';
 import FunnelIcon from '../../assets/img/icons/funnel.svg';
+import { ListItemContext } from '../../context/ListItemProvider';
+
 const useStyles = makeStyles((theme) => ({
     root: {
        
@@ -35,57 +37,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomGridList() {
     const classes = useStyles();
-    // dummy data to test.
-    const listing = [
-        {
-            title: "Benz",
-            imgurl: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2021-mercedes-benz-cls-class-1591735006.jpg?crop=0.643xw:0.543xh;0.0994xw,0.416xh&resize=1200:*",
-            postedBy: "yulong",
-            category: "Car",
-            price: "50,000"
-        },
-        {
-            title: "Benz",
-            imgurl: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2021-mercedes-benz-cls-class-1591735006.jpg?crop=0.643xw:0.543xh;0.0994xw,0.416xh&resize=1200:*",
-            postedBy: "yulong",
-            category: "Car",
-            price: "50,000"
-        },
-        {
-            title: "Benz",
-            imgurl: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2021-mercedes-benz-cls-class-1591735006.jpg?crop=0.643xw:0.543xh;0.0994xw,0.416xh&resize=1200:*",
-            postedBy: "yulong",
-            category: "Car",
-            price: "50,000"
-        },
-        {
-            title: "Benz",
-            imgurl: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2021-mercedes-benz-cls-class-1591735006.jpg?crop=0.643xw:0.543xh;0.0994xw,0.416xh&resize=1200:*",
-            postedBy: "yulong",
-            category: "Car",
-            price: "50,000"
-        },
-        {
-            title: "Benz",
-            imgurl: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2021-mercedes-benz-cls-class-1591735006.jpg?crop=0.643xw:0.543xh;0.0994xw,0.416xh&resize=1200:*",
-            postedBy: "yulong",
-            category: "Car",
-            price: "50,000"
-        }
-    ]
+    const [listings, setListings] = useContext(ListItemContext);
+    // console.log(listings);
     return (
-        <div className={classes.root}>
-            <div className={classes.gridtitle}>
-                <Typography variant="h4">Explore</Typography>
-                <div className={classes.filter}>
-                    <span>Newest Posts</span>
-                    <img src={FunnelIcon} width={15} height={15} alt="filter icon"/>
+       
+            <div className={classes.root}>
+                <div className={classes.gridtitle}>
+                    <Typography variant="h4">Explore</Typography>
+                    <div className={classes.filter}>
+                        <span>Newest Posts</span>
+                        <img src={FunnelIcon} width={15} height={15} alt="filter icon"/>
+                    </div>
                 </div>
+                <div className={classes.gridContainer}>
+                    
+                    {
+                        listings && listings.map((item) => <div><CustomCard {...item} /></div>)
+                    }
+                    
+                </div>  
+            
             </div>
-            <div className={classes.gridContainer}>
-                {listing && listing.map((item) => <div><CustomCard {...item} /></div>)}
-            </div>  
-           
-        </div>
+       
     );
 }

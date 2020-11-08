@@ -12,9 +12,13 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
+    height: '100%'
   },
   media: {
     height: 140,
+  },
+  cardarea: {
+    maxHeight: 300
   },
   row: {
     display: 'flex',
@@ -22,9 +26,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between'
   },
   fixed: {
-    position: 'absolute',
-    bottom: '0',
-    right: '0',
+    marginRight: 30,
     fontSize: 15
   }
 });
@@ -35,29 +37,28 @@ export default function CustomCard(props) {
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
+      <CardActionArea className={classes.cardarea}>
         <CardMedia
           className={classes.media}
-          image={props.imgurl}
+          image={props.image_url}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {props.title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            by {props.postedBy}
+            by {props.user_id}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions classes={classes.row}>
-        
-          {props.category ? <LocalOfferIcon/> : null }
-          <Typography variant="h5" component="h2">
-            {props.category}
+          {props.category_id ? <LocalOfferIcon/> : null }
+          <Typography variant="h7">
+            {props.category_id}
           </Typography>
           
-          <Typography classes={classes.fixed} variant="h5" component="h2">
-            {props.price}
+          <Typography classes={classes.fixed} variant="h7">
+            ${props.price}
           </Typography>
        
       </CardActions>

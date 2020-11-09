@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import CustomCard from '../CustomCard/CustomCard';
 import { ListItem, SvgIcon, Typography } from '@material-ui/core';
@@ -8,7 +8,7 @@ import { ListItemContext } from '../../context/ListItemProvider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-       
+
     },
     gridContainer: {
         display: 'grid',
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         color: 'rgba(255, 255, 255, 0.54)',
     },
-    gridtitle: { 
+    gridtitle: {
         marginBottom: '20px',
         display: 'flex',
         justifyContent: 'space-between'
@@ -31,33 +31,33 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
     wordpadding: {
-        
+
     }
 }));
 
 export default function CustomGridList() {
     const classes = useStyles();
-    const [listings, setListings] = useContext(ListItemContext);
+    const [filteredListings] = useContext(ListItemContext);
     // console.log(listings);
     return (
-       
-            <div className={classes.root}>
-                <div className={classes.gridtitle}>
-                    <Typography variant="h4">Explore</Typography>
-                    <div className={classes.filter}>
-                        <span>Newest Posts</span>
-                        <img src={FunnelIcon} width={15} height={15} alt="filter icon"/>
-                    </div>
+
+        <div className={classes.root}>
+            <div className={classes.gridtitle}>
+                <Typography variant="h4">Explore</Typography>
+                <div className={classes.filter}>
+                    <span>Newest Posts</span>
+                    <img src={FunnelIcon} width={15} height={15} alt="filter icon" />
                 </div>
-                <div className={classes.gridContainer}>
-                    
-                    {
-                        listings && listings.map((item) => <div><CustomCard {...item} /></div>)
-                    }
-                    
-                </div>  
-            
             </div>
-       
+            <div className={classes.gridContainer}>
+
+                {
+                    filteredListings && filteredListings.map((item) => <div><CustomCard {...item} /></div>)
+                }
+
+            </div>
+
+        </div>
+
     );
 }

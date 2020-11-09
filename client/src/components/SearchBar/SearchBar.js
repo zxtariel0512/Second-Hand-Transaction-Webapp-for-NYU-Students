@@ -16,19 +16,26 @@ const useStyles = makeStyles({
 const SearchBar = () => {
     const classes = useStyles();
     // grab listings value from context
-    const [listings, setListings] = useContext(ListItemContext);
-    console.log(listings);
-    const onSearchClick = (value) => {
+    const [filteredListings, setFilteredListings, listings] = useContext(ListItemContext);
+    
+    const onSearchClick = (value, event) => {
+        event.preventDefault();
+        // console.log("value",value);
+        if (value === "") {
+            setFilteredListings(listings);
+            return;
+        }
         const lowercase = value.toLowerCase();
-        const filtered = listings.filter((itemObj) => itemObj.title.toLowerCase().includes(lowercase) || itemObj.category_id.toLowerCase().includes(lowercase));
-        setListings(filtered);
+        const filtered = filteredListings.filter((itemObj) => itemObj.title.toLowerCase().includes(lowercase) || itemObj.category_id.toLowerCase().includes(lowercase));
+        // console.log("listings", listings);
+        setFilteredListings(filtered);
     }
     return (
         <div className={classes.customSearch}>
         <SearchField 
             classNames={classes.customSearchBar}
             placeholder='Type to search items...'
-            onSearchClick={onSearchClick}
+            onChange={onSearchClick}
         />
         </div>
         

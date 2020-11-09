@@ -7,6 +7,7 @@ export const ListItemContext = createContext();
 
 export const ListItemProvider = (props) => {
     const [listings, setListings] = useState();
+    const [filteredListings, setFilteredListings] = useState();
     //  Fetch listing items async
     useEffect( () => {
         async function fetchListing() {
@@ -15,11 +16,12 @@ export const ListItemProvider = (props) => {
                 method: 'Get',
             });
             setListings(res);
+            setFilteredListings(res);
         }
         fetchListing();
     }, []);
     return (
-        <ListItemContext.Provider value={[listings, setListings]}>
+        <ListItemContext.Provider value={[filteredListings, setFilteredListings, listings]}>
             {props.children}
         </ListItemContext.Provider>
     );

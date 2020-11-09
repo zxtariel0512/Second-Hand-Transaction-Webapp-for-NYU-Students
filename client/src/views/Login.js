@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
 import { Auth } from 'aws-amplify';
 import { useHistory } from "react-router";
-
+import request from '../utils/request';
 // styling
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -63,11 +63,14 @@ export default function Login(props) {
 
         try {
             const user = await Auth.signIn(userinput['netid'], userinput['password']);
-            console.log(user);
+            console.log(user);  
             setserverErr("");
-            // props.auth.setAuthStatus(true);
-            // props.auth.setUser(user);
-            history.push("/");
+            await request({
+                url: `/user/${userinput['netid']}`,
+                method: 'Put',
+            });
+            
+            history.push("/home");
         } catch (error) {
             console.log(error);
             setserverErr(error.message);

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
     icon: {
         position: 'absolute',
-        right: 0
+        right: 10
     }
 }));
 
@@ -48,10 +48,13 @@ export default function MenuAppBar() {
     
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="secondary">
+            <AppBar position="fixed" color="secondary">
                 <Toolbar>
                     {auth && (
+                        <>
+                        
                         <div className={classes.icon}>
+                            
                             <IconButton
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
@@ -61,6 +64,7 @@ export default function MenuAppBar() {
                             >
                             <AccountCircle />
                             </IconButton>
+                            <span>Hi, Martin</span>
                             <Menu
                                 id="menu-appbar"
                                 anchorEl={anchorEl}
@@ -80,6 +84,7 @@ export default function MenuAppBar() {
                                 <MenuItem onClick={() => {handleClose(); setAuth(false); }}>Logout</MenuItem>
                             </Menu>
                         </div>
+                        </>
                     )}
                 </Toolbar>
             </AppBar>

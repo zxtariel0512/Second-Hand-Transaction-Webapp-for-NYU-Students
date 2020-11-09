@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 const useStyles = makeStyles({
     container: {
         width: '80%',
-        margin: 'auto'
+        margin: '150px auto'
     },
     header: {
         marginTop: '50px',

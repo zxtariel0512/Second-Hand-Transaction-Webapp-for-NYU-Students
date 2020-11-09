@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import { Auth } from 'aws-amplify';
 import { useHistory } from "react-router";
 import { useForm } from "react-hook-form";
-import onBoardImg from "../assets/img/onBoard.svg";
+import onBoardImg from "../Assets/img/onBoard.svg";
 import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({

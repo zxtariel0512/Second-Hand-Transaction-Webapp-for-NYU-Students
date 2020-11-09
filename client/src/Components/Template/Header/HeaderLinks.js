@@ -14,10 +14,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { Apps, CloudDownload } from "@material-ui/icons";
 
 // core components
-import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
-import Button from "components/CustomButtons/Button.js";
+import CustomDropdown from "../CustomDropdown/CustomDropdown.js";
+import Button from "../CustomButtons/Button";
 
-import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
+import styles from "../../Assets/jss/material-kit-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 

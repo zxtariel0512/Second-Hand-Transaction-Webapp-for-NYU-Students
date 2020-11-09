@@ -3,12 +3,12 @@ import Loadable from "react-loadable";
 import LoadingView from "../View/LoadingView";
 
 /**
- * @param {String} content  The name of the page, eg. Login / Home 
+ * @param {String} content  The name of the page, eg. Signup / Login
  */
 
 const createLoadable = (content) => {
   return Loadable({
-    loader: () => import(`../View/${content}`),
+    loader: () => import(`../View/${content}/index`),
     loading: ({ isLoading }) => isLoading && <LoadingView />,
   });
 };

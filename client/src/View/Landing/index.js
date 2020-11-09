@@ -1,13 +1,13 @@
 import React from "react";
-import Header from "../Components/Header/Header";
-import GridContainer from "../Components/Grid/GridContainer";
-import GridItem from "../Components/Grid/GridItem";
-import Button from "../Components/CustomButtons/Button";
-import HeaderLinks from "../Components/Header/HeaderLinks.js";
-import Parallax from "../Components/Parallax/Parallax.js";
-import styles from "../Assets/jss/material-kit-react/views/landingPage.js";
+import Header from "../../Components/Template/Header/Header";
+import GridContainer from "../../Components/Template/Grid/GridContainer";
+import GridItem from "../../Components/Template/Grid/GridItem";
+import Button from "../../Components/Template/CustomButtons/Button";
+import HeaderLinks from "../../Components/Template/Header/HeaderLinks.js";
+import Parallax from "../../Components/Template/Parallax/Parallax.js";
+import styles from "../../Assets/jss/material-kit-react/views/landingPage.js";
 import StorefrontIcon from "@material-ui/icons/Storefront";
-import BackgroundImg from "../Assets/img/landing-bg.jpg";
+import BackgroundImg from "../../Assets/img/landing-bg.jpg";
 import { makeStyles } from "@material-ui/core/styles";
 
 const dashboardRoutes = [];

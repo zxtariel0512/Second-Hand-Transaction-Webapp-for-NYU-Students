@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
 import { Auth } from 'aws-amplify';
 import { useHistory } from "react-router";
-import request from '../Utils/request';
+import request from '../../Utils/request';
 // styling
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-// Login page
-export default function Login(props) {
+// Index page
+export default function Index(props) {
     const history = useHistory();
     const classes = useStyles();
     // third-party validation, check validity once input is changed

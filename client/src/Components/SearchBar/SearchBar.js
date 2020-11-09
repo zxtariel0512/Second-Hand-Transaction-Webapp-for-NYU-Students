@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import SearchField from 'react-search-field';
 import { makeStyles } from '@material-ui/core/styles';
-import { ListItemContext } from '../../Context/ListItemProvider';
+// import { ListItemContext } from '../../../Context/ListItemProvider';
+import HomePageContext from "../../View/Home/store/context";
+
 const useStyles = makeStyles({
     customSearch: {
         margin: '55px auto',
@@ -16,7 +18,7 @@ const useStyles = makeStyles({
 const SearchBar = () => {
     const classes = useStyles();
     // grab listings value from context
-    const [filteredListings, setFilteredListings, listings] = useContext(ListItemContext);
+    const {filteredListings, setFilteredListings, listings} = useContext(HomePageContext);
     
     const onSearchClick = (value, event) => {
         event.preventDefault();

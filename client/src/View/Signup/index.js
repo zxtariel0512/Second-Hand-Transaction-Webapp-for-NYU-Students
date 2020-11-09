@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import { Auth } from 'aws-amplify';
 import { useHistory } from "react-router";
 import { useForm } from "react-hook-form";
-import onBoardImg from "../Assets/img/onBoard.svg";
+import onBoardImg from "../../Assets/img/onBoard.svg";
 import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +52,7 @@ const passwordValidation = `  At least one numeric character
             At least one lower and upper alphabetic letter \n
  At lesat one special character\n
  At least 8 characters`;
-export default function Signup(props) {
+export default function Index(props) {
     const classes = useStyles();
     const history = useHistory();
     const { register, errors, handleSubmit } = useForm({
@@ -145,7 +145,7 @@ export default function Signup(props) {
                             })}
                         />
 
-                        {/* <ErrorMessage errors={} name="name" as="p" style={{"color":"red"}} /> */}
+                        {/* <Message errors={} name="name" as="p" style={{"color":"red"}} /> */}
                         
                         <TextField
                             variant="outlined"
@@ -167,7 +167,7 @@ export default function Signup(props) {
                                 }
                             })}
                         />
-                        {/* <ErrorMessage errors={errors} name="phone" as="p" /> */}
+                        {/* <Message errors={errors} name="phone" as="p" /> */}
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -186,7 +186,7 @@ export default function Signup(props) {
                                 }
                             })}
                         />
-                        {/* <ErrorMessage errors={errors} name="netid" as="p" /> */}
+                        {/* <Message errors={errors} name="netid" as="p" /> */}
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -240,7 +240,7 @@ export default function Signup(props) {
                                 required: false,
                             })}
                         />
-                        {/* <ErrorMessage errors={errors} name="major" as="p"></ErrorMessage> */}
+                        {/* <Message errors={errors} name="major" as="p"></Message> */}
                         {/* render validation error from aws  */}
                         <p style={{"color":"red"}}>{serverErr}</p>
                         <Button

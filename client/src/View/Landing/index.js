@@ -9,7 +9,7 @@ import styles from "../../Assets/jss/material-kit-react/views/landingPage.js";
 import StorefrontIcon from "@material-ui/icons/Storefront";
 import BackgroundImg from "../../Assets/img/landing-bg.jpg";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { Link } from 'react-router-dom';
 const dashboardRoutes = [];
 
 const useStyles = makeStyles(styles);
@@ -57,7 +57,11 @@ export default function Home(props) {
                 href="/signup"
                 rel="noopener noreferrer"
               >
-                Start Selling
+                
+                <Link to="/signup" style={{ textDecoration: "none", color: "white" }}>
+                  Start Selling
+                </Link>
+                
               </Button>
             </GridItem>
           </GridContainer>

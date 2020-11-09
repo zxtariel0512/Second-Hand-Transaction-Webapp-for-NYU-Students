@@ -22,7 +22,7 @@ const SearchBar = () => {
     
     const onSearchClick = (value, event) => {
         event.preventDefault();
-        // console.log("value",value);
+        console.log("value",typeof(value));
         if (value === "") {
             setFilteredListings(listings);
             return;

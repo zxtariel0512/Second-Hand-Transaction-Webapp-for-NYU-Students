@@ -29,6 +29,7 @@ const Homepage = () => {
       // show error if request is failed
       res.success ? setListings(res.data) : setError(res.message);
       console.log(res);
+      setFilteredListings(res.data);
     };
     getHomepageListing();
   }, []);

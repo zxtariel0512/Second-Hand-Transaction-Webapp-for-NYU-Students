@@ -1,3 +1,4 @@
+// Custom card that renders each listing item on Home view
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -32,8 +33,6 @@ const useStyles = makeStyles({
 
 export default function CustomCard(props) {
   const classes = useStyles();
-  // console.log(props);
-
   return (
     <Card className={classes.root}>
       <CardActionArea className={classes.cardarea}>

@@ -28,7 +28,7 @@ const SearchBar = () => {
             return;
         }
         const lowercase = value.toLowerCase();
-        const filtered = filteredListings.filter((itemObj) => itemObj.title.toLowerCase().includes(lowercase) || itemObj.category_id.toLowerCase().includes(lowercase));
+        const filtered = filteredListings.filter((itemObj) => itemObj.title.toLowerCase().includes(lowercase) || itemObj.category_id?.toLowerCase().includes(lowercase));
         // console.log("listings", listings);
         setFilteredListings(filtered);
     }

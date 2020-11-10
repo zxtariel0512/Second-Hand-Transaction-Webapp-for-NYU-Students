@@ -1,5 +1,7 @@
 // view that lists items with a search bar above
 import React, { useState, useEffect, useContext } from "react";
+import { Link } from 'react-router-dom';
+
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import CustomGridList from "../../Components/CustomGridList/CustomGridList";
 import { makeStyles } from "@material-ui/core/styles";
@@ -89,9 +91,13 @@ const Homepage = () => {
             </Button>
           </div>
           <CustomGridList />
-          <div className={classes.circle}>
-            <AddIcon className={classes.addicon}></AddIcon>
-          </div>
+          <Link to="/add">
+            <div className={classes.circle}>
+
+              <AddIcon className={classes.addicon}></AddIcon>
+
+            </div>
+          </Link>
         </div>
       </HomePageContext.Provider>
     </>

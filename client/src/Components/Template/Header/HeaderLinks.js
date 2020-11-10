@@ -29,7 +29,6 @@ export default function HeaderLinks(props) {
         <Button
           href="/login"
           color="transparent"
-          target="_blank"
           className={classes.navLink}
         >
           <FaceIcon className={classes.icons} /> Login

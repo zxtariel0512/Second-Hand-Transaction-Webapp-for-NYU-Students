@@ -139,7 +139,7 @@ export default function Index(props) {
                                 /* firstname validation: 1-20 alphabetic characters
                                 */
                                 pattern: {
-                                    value: /^[A-Za-z ]{1,20}$/,
+                                    value: /^[A-Za-z ]+$/,
                                     message: 'Invalid name'
                                 }
                             })}

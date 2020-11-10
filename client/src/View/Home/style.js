@@ -25,15 +25,14 @@ const style = {
         width: 60,
         height: 60,
         borderRadius: '50%',
-        border: '1px solid blue',
+        backgroundColor: '#486FEA',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
     },
     addicon: {
-        color: 'blue'
+        color: 'white'
     }
-
 }
 
 export default style;

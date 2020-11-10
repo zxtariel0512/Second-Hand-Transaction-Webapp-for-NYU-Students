@@ -65,11 +65,15 @@ export default function Index(props) {
             const user = await Auth.signIn(userinput['netid'], userinput['password']);
             console.log(user);  
             setserverErr("");
-            await request({
-                url: `/user/${userinput['netid']}`,
+            const userSession = await Auth.currentSession();
+            const res = await request({
+                headers: {
+                    Authorization: `Bearer ${userSession.getIdToken().jwtToken}`,
+                },
+                url: `/user/login/${userinput['netid']}`,
                 method: 'Put',
             });
-            
+            console.log(res);
             history.push("/home");
         } catch (error) {
             console.log(error);

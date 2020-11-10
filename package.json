@@ -26,7 +26,8 @@
     "jwk-to-pem": "^2.0.4",
     "mongoose": "^5.10.11",
     "prettier": "^2.1.2",
-    "react-hook-form": "^6.10.1"
+    "react-hook-form": "^6.10.1",
+    "socket.io": "^3.0.1"
   },
   "devDependencies": {
     "eslint": "^7.13.0",

@@ -1,8 +1,12 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const socketio = require("socket.io");
 require("dotenv").config();
+
+const app = express();
+const server = http.createServer(app)
+const io = socketio(server)
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -18,15 +22,15 @@ mongoose.connect(db, {
   .then(() => console.log("connected to database"))
   .catch(err => console.error(err))
 
-
-
 const userRouter = require('./routes/user');
 const listingRouter = require('./routes/listing');
-const requestRouter = require('./routes/request')
+const requestRouter = require('./routes/request');
+const ioRoutes = require('./routes/chat')(io)
 
 app.use('/user', userRouter);
 app.use('/listings', listingRouter);
 app.use('/requests',requestRouter)
+ioRoutes
 
 app.listen(4000, () => {
   console.log("secondhand server started");

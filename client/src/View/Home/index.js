@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CustomAppBar from "../../Components/CustomAppBar/CustomAppBar";
 import { Typography, Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import Logo from '../../Assets/img/Logo.svg';
 import style from "./style";
 import HomePageContext from "./store/context";
 import MessageContext from "../../Context/MessageContext";
@@ -49,43 +50,39 @@ const Homepage = () => {
       <HomePageContext.Provider value={context}>
         <CustomAppBar />
         <div className={classes.container}>
+          
           <div className={classes.header}>
-            <Typography variant="h4">NYU Second Hand</Typography>
+            <img src={Logo} width="150px" height="150px" alt="Logo"/>  
           </div>
           <SearchBar />
           <div className={classes.categories}>
             <Button
               className={classes.category}
               variant="contained"
-              color="primary"
             >
               Books
             </Button>
             <Button
               className={classes.category}
               variant="contained"
-              color="primary"
             >
               Electronics
             </Button>
             <Button
               className={classes.category}
               variant="contained"
-              color="primary"
             >
               Clothes
             </Button>
             <Button
               className={classes.category}
               variant="contained"
-              color="primary"
             >
               Automobiles
             </Button>
             <Button
               className={classes.category}
               variant="contained"
-              color="primary"
             >
               More
             </Button>

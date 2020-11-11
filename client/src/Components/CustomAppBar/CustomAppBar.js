@@ -4,11 +4,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import Theme from '../../Theme/theme.js';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
+
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router';
@@ -16,6 +14,9 @@ import { useHistory } from 'react-router';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+    },
+    appbar: {
+        backgroundColor: Theme.colors.blue
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -48,7 +49,7 @@ export default function MenuAppBar() {
     
     return (
         <div className={classes.root}>
-            <AppBar position="fixed" color="secondary">
+            <AppBar position="fixed" className={classes.appbar}>
                 <Toolbar>
                     {auth && (
                         <>

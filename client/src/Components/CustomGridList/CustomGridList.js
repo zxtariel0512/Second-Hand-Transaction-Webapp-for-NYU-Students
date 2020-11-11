@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   gridContainer: {
     display: "grid",
-    gridTemplateColumns: "2fr 2fr 2fr ",
-    gridTemplateRows: "300px 300px 300px 300px",
+    gridTemplateColumns: "300px 300px 300px ",
+    gridTemplateRows: "400px 400px 400px 400px",
     gridGap: "25px",
   },
   icon: {

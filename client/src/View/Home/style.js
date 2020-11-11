@@ -1,3 +1,5 @@
+import Theme from '../../Theme/theme';
+
 const style = {
     container: {
         width: '80%',
@@ -12,11 +14,12 @@ const style = {
         height: '100px',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     category: {
         marginRight: '20px',
-        height: '40px'
+        height: '40px',
+        backgroundColor: Theme.colors.pinky
     },
     circle: {
         position: 'fixed',
@@ -25,7 +28,7 @@ const style = {
         width: 60,
         height: 60,
         borderRadius: '50%',
-        backgroundColor: '#486FEA',
+        backgroundColor: Theme.colors.blue,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

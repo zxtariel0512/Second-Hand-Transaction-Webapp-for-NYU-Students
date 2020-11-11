@@ -1,4 +1,5 @@
-import react, { useState } from "react";
+import React, { useState } from "react";
+import './App.css';
 import Routes from "./routes";
 import Message from "./Components/Message/index";
 import MessageContext from "./Context/MessageContext";

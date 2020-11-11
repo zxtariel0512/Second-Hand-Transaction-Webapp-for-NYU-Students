@@ -1,5 +1,6 @@
 // Custom card that renders each listing item on Home view
 import React from 'react';
+import Theme from '../../../Theme/theme';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -8,27 +9,43 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import Typography from '@material-ui/core/Typography';
-
+import ImagePlaceholder from '../../../Assets/img/img-placeholder.png';
+import { CallReceived } from '@material-ui/icons';
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
-    height: '100%'
+    height: '100%',
+    position: 'relative'
   },
   media: {
-    height: 140,
+    height: '180px',
+    width: '100%',
+    backgroundSize: 'contain',
+    backgroundPosition: 'center'
   },
   cardarea: {
-    maxHeight: 300
+    maxHeight: 1000
   },
   row: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 15,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
   },
   fixed: {
-    marginRight: 30,
-    fontSize: 15
+    position: 'absolute',
+    bottom: 15,
+    right: 25,
+    fontSize: 22,
+    color: Theme.colors.pinky
+  },
+  title: {
+    fontFamily: "Roboto", 
+    fontWeight: 200, 
+    fontSize: 22 
   }
+
 });
 
 export default function CustomCard(props) {
@@ -38,10 +55,10 @@ export default function CustomCard(props) {
       <CardActionArea className={classes.cardarea}>
         <CardMedia
           className={classes.media}
-          image={props.image_url}
+          image={props.image_url ? props.image_url : ImagePlaceholder}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom className={classes.title}>
             {props.title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
@@ -49,13 +66,14 @@ export default function CustomCard(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions classes={classes.row}>
+      <CardActions className={classes.row}>
+          <div>
           {props.category_id ? <LocalOfferIcon/> : null }
           <Typography variant="h7">
             {props.category_id}
           </Typography>
-          
-          <Typography classes={classes.fixed} variant="h7">
+        </div>
+          <Typography className={classes.fixed}>
             ${props.price}
           </Typography>
        

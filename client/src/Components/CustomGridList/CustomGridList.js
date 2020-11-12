@@ -6,7 +6,6 @@ import { Typography } from "@material-ui/core";
 import FunnelIcon from "../../Assets/img/icons/funnel.svg";
 // import { ListItemContext } from '../../../Context/ListItemProvider';
 import HomePageContext from "../../View/Home/store/context";
-import Grow from '@material-ui/core/Grow';
 const useStyles = makeStyles((theme) => ({
   root: {},
   gridContainer: {
@@ -32,37 +31,30 @@ const useStyles = makeStyles((theme) => ({
   wordpadding: {},
 }));
 
-const populateArray = () => {
-
-}
+const populateArray = () => { };
 export default function CustomGridList() {
   const classes = useStyles();
-  const {filteredListings} = useContext(HomePageContext);
+  const { filteredListings } = useContext(HomePageContext);
   // set timeout for each card to execute grow animation
-  const timeout = filteredListings.map( (x,index) => index * 1000);
-
+  const timeout = filteredListings.map((x, index) => index * 1000);
 
   return (
-    
     <div className={classes.root}>
       <div className={classes.gridtitle}>
         <Typography variant="h4">Explore</Typography>
-              <div className={classes.filter}>
+        <div className={classes.filter}>
           <span>Newest Posts</span>
           <img src={FunnelIcon} width={15} height={15} alt="filter icon" />
         </div>
       </div>
       <div className={classes.gridContainer}>
         {filteredListings &&
-          
           filteredListings.map((item, index) => (
             <div>
-              <CustomCard {...item} timeout={timeout[index]}/>
+              <CustomCard {...item} timeout={timeout[index]} />
             </div>
-            
           ))}
       </div>
     </div>
-    
   );
 }

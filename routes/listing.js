@@ -4,28 +4,56 @@ let Listing = require('../models/listing');
 const { auth } = require("../middleware/auth");
 
 router.route('/').get(async (req, res) => {
-    let foundListings = await Listing.find();
-    res.json(foundListings);
+    try {
+        let foundListings = await Listing.find();
+        res.json(foundListings);
+    } catch (error) {
+        res.status(500).json({message: "error: get all listing"})
+    }
+    
 })
 
 router.route('/:id').get(async (req, res) => {
-    let foundListing = await Listing.findById(req.params.id);
-    res.json(foundListing);
+    try {
+        let foundListing = await Listing.findById(req.params.id);
+        res.json(foundListing);   
+    } catch (error) {
+        res.status(500).json({message: "error: get specific listing"})
+    }
+    
 })
 
 router.route('/new').post(auth, async (req, res) => {
-    let newListing = await Listing.create(req.body);
-    res.json(newListing)
+    try {
+        let newListing = await Listing.create(req.body);
+        res.json(newListing)
+    } catch (error) {
+        res.status(500).json({message: "error: create new listing"})
+
+    }
+    
 })
 
 router.route('/:id').put(auth, async (req, res) => {
-    let updatedListing = await Listing.findByIdAndUpdate(req.params.id, req.body, {new:true});
-    res.json(updatedListing);
+    try {
+        let updatedListing = await Listing.findByIdAndUpdate(req.params.id, req.body, {new:true});
+        res.json(updatedListing);
+        
+    } catch (error) {
+        res.status(500).json({message: "error: update listing"})
+    }
+    
 })
 
 router.route('/:id').delete(auth, async (req, res) => {
-    let deletedListing = await Listing.findByIdAndDelete(req.params.id);
-    res.json(deletedListing);
+    try {
+        let deletedListing = await Listing.findByIdAndDelete(req.params.id);
+        res.json(deletedListing);
+        
+    } catch (error) {
+        res.status(500).json({message: "error: delete listing"})
+    }
+    
 })
 
 module.exports = router;

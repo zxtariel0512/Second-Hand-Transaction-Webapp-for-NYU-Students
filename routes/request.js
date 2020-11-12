@@ -4,28 +4,55 @@ let request = require('../models/request.model');
 const { auth } = require("../middleware/auth");
 
 router.route('/').get(async (req, res) => {
-    let foundrequests = await request.find();
-    res.json(foundrequests);
+    try {
+        let foundrequests = await request.find();
+        res.json(foundrequests);
+    } catch (error) {
+        res.status(500).json({message: "error: get all request"})
+    }
+
 })
 
 router.route('/:id').get(async (req, res) => {
-    let foundrequest = await request.findById(req.params.id);
-    res.json(foundrequest);
+    try {
+        let foundrequest = await request.findById(req.params.id);
+        res.json(foundrequest);
+
+    } catch (error) {
+        res.status(500).json({message: "error: get specific request"})
+    }
+
 })
 
 router.route('/new').post(auth, async (req, res) => {
-    let newrequest = await request.create(req.body);
-    res.json(newrequest)
+    try {
+        let newrequest = await request.create(req.body);
+        res.json(newrequest)
+    } catch (error) {
+        res.status(500).json({message: "error: create new request"})
+    }
+    
 })
 
 router.route('/:id').put(auth, async (req, res) => {
-    let updatedrequest = await request.findByIdAndUpdate(req.params.id, req.body, {new:true});
-    res.json(updatedrequest);
+    try {
+        let updatedrequest = await request.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedrequest);
+    } catch (error) {
+        res.status(500).json({message: "error: update request"})
+    }
+    
 })
 
 router.route('/:id').delete(auth, async (req, res) => {
-    let deletedrequest = await request.findByIdAndDelete(req.params.id);
-    res.json(deletedrequest);
+    try {
+        let deletedrequest = await request.findByIdAndDelete(req.params.id);
+        res.json(deletedrequest);
+
+    } catch (error) {
+        res.status(500).json({message: "error: delete request"})
+    }
+    
 })
 
 module.exports = router;

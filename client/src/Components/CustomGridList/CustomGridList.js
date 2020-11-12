@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
   wordpadding: {},
 }));
 
-const populateArray = () => { };
 export default function CustomGridList() {
   const classes = useStyles();
   const { filteredListings } = useContext(HomePageContext);

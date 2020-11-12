@@ -11,6 +11,7 @@ import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import Typography from '@material-ui/core/Typography';
 import ImagePlaceholder from '../../../Assets/img/img-placeholder.png';
 import { CallReceived } from '@material-ui/icons';
+import Grow from '@material-ui/core/Grow';
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
@@ -50,7 +51,14 @@ const useStyles = makeStyles({
 
 export default function CustomCard(props) {
   const classes = useStyles();
+  // const [checked, setChecked] = useState();
+
+ 
   return (
+    <Grow
+      in={true}
+      timeout={props.timeout}
+    >
     <Card className={classes.root}>
       <CardActionArea className={classes.cardarea}>
         <CardMedia
@@ -79,5 +87,6 @@ export default function CustomCard(props) {
        
       </CardActions>
     </Card>
+    </Grow>
   );
 }

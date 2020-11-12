@@ -5,12 +5,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Theme from '../../Theme/theme.js';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import { useHistory } from 'react-router';
-
+import LogoutBtn from '../../Assets/img/icons/logout.svg';
+import ProfileBtn from '../../Assets/img/icons/user.svg';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -19,14 +16,18 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: Theme.colors.blue
     },
     menuButton: {
-        marginRight: theme.spacing(2),
+        position: 'absolute',
+        right: 30,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+        // justifyContent: 'flex-end'
     },
     title: {
         flexGrow: 1,
     },
     icon: {
-        position: 'absolute',
-        right: 10
+        
     }
 }));
 
@@ -34,57 +35,45 @@ export default function MenuAppBar() {
     const classes = useStyles();
     // TODO: call Auth.currenusersession to see if user is logged in in Auth Context
     const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
+    // const [anchorEl, setAnchorEl] = React.useState(null);
+    // const open = Boolean(anchorEl);
     const history = useHistory();
 
 
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    // const handleMenu = (event) => {
+    //     setAnchorEl(event.currentTarget);
+    // };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    
+    // const handleClose = () => {
+    //     setAnchorEl(null);
+    // };
+
     return (
         <div className={classes.root}>
             <AppBar position="fixed" className={classes.appbar}>
                 <Toolbar>
                     {auth && (
                         <>
-                        
-                        <div className={classes.icon}>
                             
-                            <IconButton
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleMenu}
-                                color="inherit"
-                            >
-                            <AccountCircle />
-                            </IconButton>
-                            <span>Hi, Martin</span>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={open}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={() => {history.push('/me')}}>Profile</MenuItem>
-                                <MenuItem onClick={() => {handleClose(); setAuth(false); }}>Logout</MenuItem>
-                            </Menu>
-                        </div>
+
+                                
+
+                                <div className={classes.menuButton}>
+                                    <IconButton
+                                        href="/login"
+                                        onClick={() => { setAuth(false); }}
+                                    >
+                                        <img src={LogoutBtn} width="20" height="20" alt="Logout" />
+                                    </IconButton>
+                                    <IconButton
+                                        href="/me"
+                                    >
+                                        <img src={ProfileBtn} width="20" height="20" alt="Profile" />
+                                    </IconButton>
+                                </div>
+                                {/* <span>Hi, Martin</span> */}
+
+                            
                         </>
                     )}
                 </Toolbar>

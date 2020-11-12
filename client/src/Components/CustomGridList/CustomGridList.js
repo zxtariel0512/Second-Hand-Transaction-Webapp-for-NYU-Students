@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import CustomCard from "../Template/CustomCard/CustomCard";
@@ -6,13 +6,12 @@ import { Typography } from "@material-ui/core";
 import FunnelIcon from "../../Assets/img/icons/funnel.svg";
 // import { ListItemContext } from '../../../Context/ListItemProvider';
 import HomePageContext from "../../View/Home/store/context";
-
 const useStyles = makeStyles((theme) => ({
   root: {},
   gridContainer: {
     display: "grid",
-    gridTemplateColumns: "2fr 2fr 2fr ",
-    gridTemplateRows: "300px 300px 300px 300px",
+    gridTemplateColumns: "350px 350px 350px ",
+    gridTemplateRows: "400px 400px 400px 400px",
     gridGap: "25px",
   },
   icon: {
@@ -34,8 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomGridList() {
   const classes = useStyles();
-  const {filteredListings} = useContext(HomePageContext);
-  // console.log(listings);
+  const { filteredListings } = useContext(HomePageContext);
+  // set timeout for each card to execute grow animation
+  const timeout = filteredListings.map((x, index) => index * 1000);
+
   return (
     <div className={classes.root}>
       <div className={classes.gridtitle}>
@@ -47,9 +48,9 @@ export default function CustomGridList() {
       </div>
       <div className={classes.gridContainer}>
         {filteredListings &&
-          filteredListings.map((item) => (
+          filteredListings.map((item, index) => (
             <div>
-              <CustomCard {...item} />
+              <CustomCard {...item} timeout={timeout[index]} />
             </div>
           ))}
       </div>

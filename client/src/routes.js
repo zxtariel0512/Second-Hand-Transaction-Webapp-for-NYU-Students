@@ -7,6 +7,7 @@ const Landing = Loadable("Landing");
 const Login = Loadable("Login");
 const Signup = Loadable("Signup");
 const Home = Loadable("Home");
+const PostItem = Loadable("PostItem");
 
 export default class Routes extends React.Component {
   render() {
@@ -17,6 +18,7 @@ export default class Routes extends React.Component {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route path="/home" component={Home} />
+          <Route path="/post-item" component={PostItem} />
         </Switch>
       </BrowserRouter>
     );

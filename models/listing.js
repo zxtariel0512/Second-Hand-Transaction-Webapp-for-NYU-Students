@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-var ListingSchema = new mongoose.Schema({
+const ListingSchema = new mongoose.Schema({
     user_id: {
         type: String,
         required: true
@@ -25,5 +25,8 @@ var ListingSchema = new mongoose.Schema({
     shipment: String,
     category_id: String
 })
+
+
+
 
 module.exports = mongoose.model("Listing", ListingSchema)

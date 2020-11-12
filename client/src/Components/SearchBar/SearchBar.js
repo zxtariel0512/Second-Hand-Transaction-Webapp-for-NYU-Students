@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 })
 const SearchBar = () => {
     const classes = useStyles();
-    // grab listings value from context
+    // grab listings value from Context
     const {filteredListings, setFilteredListings, listings} = useContext(HomePageContext);
     
     const onSearchClick = (value, event) => {

@@ -7,17 +7,20 @@ let socket;
 export default function Index(props) {
     const [response, setResponse] = useState("");
     const [sendMessage, setSendMessage] = useState("");
+    const [allMessages, setAllMessages] = useState([]);
 
     useEffect(() => {
         socket = io(ENDPOINT);
         socket.on("welcome", data => {
             console.log(data); //setResponse(data)
         })
+    }, [])
+
+    useEffect(() => {
         socket.on("newMessage", message => {
             setAllMessages([...allMessages, message])
-            console.log(allMessages)
         })
-    }, [])
+    })
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
@@ -38,7 +41,7 @@ export default function Index(props) {
 
             <div>
                 {allMessages.map(message => {
-                    <div>{message}</div>
+                    return <div>{message}</div>
                 })}
             </div>
         </div>

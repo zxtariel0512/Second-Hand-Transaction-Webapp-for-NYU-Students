@@ -14,7 +14,11 @@ var userSchema = new mongoose.Schema({
     venmo: {type: String},
     instagram: {type: String},
     facebook: {type: String},
-    descriptioBn: {type: String, maxlength: 30},
+    description: {type: String, maxlength: 30},
+    chats:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chat"
+    }]
 });
 
 module.exports = mongoose.model('User', userSchema);

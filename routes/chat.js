@@ -1,17 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
-const Chat = require("../models/chat");
+const { auth } = require("../middleware/auth");
 
-// get all chats
-router.route('/').get(async (req, res) => {
+const Chat = require("../models/chat");
+const User = require("../models/user.model");
+
+
+// get user's chat rooms
+router.route('/').get(auth, async (req, res) => {
     try {
-        let foundChats = await Chat.find();
-        res.json(foundChats);
+        let foundUser = await (await User.findOne({ netid: req.user.username }))
+            .execPopulate("chats");
+        res.json(foundUser.chats);
     } catch(err) {
         console.error(err);
         res.status(500).json({
-            message: "Error retrieving all chats"
+            message: `Error retrieving chats of user: ${req.params.netid}`
         });
     }
 })
@@ -29,10 +34,17 @@ router.route('/:id').get(async (req, res) => {
     }
 })
 
+
 // create a new chat room
-router.route('/').post(async (req, res) => {
+router.route('/').post(auth, async (req, res) => {
     try {
+        console.log(req.user.username)
+        let foundUser = await User.findOne({ netid: req.user.username })
         let createdChat = await Chat.create(req.body);
+
+        foundUser.chats.push(createdChat);
+        await foundUser.save();
+
         res.json(createdChat);
     } catch(err) {
         console.error(err);

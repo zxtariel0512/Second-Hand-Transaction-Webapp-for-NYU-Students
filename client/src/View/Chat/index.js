@@ -5,7 +5,7 @@ import axios from "axios";
 import '../../chat.css';
 
 const ENDPOINT = "http://localhost:4000";
-const TOKEN = "eyJraWQiOiJiY3RTVUJrTVloTVRuQ05cLzJiUXVTNEZwYUhOb0EyT0xcLzN5STRYNWFMNU09IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4NzVlZGMyMC0wNjZlLTQwNzEtODFhYS0zYjEyODgyNGY2MDciLCJldmVudF9pZCI6ImU2YWM1MjQ3LWE4NjEtNDRhYi1hMGRmLWViNzgwZWRjMWNiNCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MDUyOTUyOTcsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2FBeTkyMkxaMiIsImV4cCI6MTYwNTI5ODg5NywiaWF0IjoxNjA1Mjk1Mjk3LCJqdGkiOiIyZmJmZmIwNS03NjE2LTRkMWMtOTAxNi1kMWFkMzliMWNhMmUiLCJjbGllbnRfaWQiOiIzNWltcDZpNHFqNTI0aW9qZWcxYWNqbHBkciIsInVzZXJuYW1lIjoibXJmNDQxIn0.UFoWUOCUvN5EJkJllDQSEQ5gtp2ThtDGUfQIewhzvmrajqoopVNGqB5v5-7RAgZN5rguFMilBSHz_tTcH3SuHcn_TEeSsyKfZoOT1dLRdcczAtY_0Vn5Fh2QyUQKQKzkkQPnTpWdEnFr0YjlvKoMjQwHpaDgp2SRUug5gn03Yq-GrjSabjhi6jYB7uH7Xlog080BN0FMCHs41Z-v-nZepb8qp792HFgu7od8UjmKhjrCZ8ngi38GcdiSS_uKRd6BXDUU2tk4gjtlUL98zDy3Wa3rMlqxhe5fNUjS8LG28ySk3PaUyi050DRjio4dRvX_-zPSXrrqSRIGS4_X6HdVew"
+const TOKEN = "eyJraWQiOiJiY3RTVUJrTVloTVRuQ05cLzJiUXVTNEZwYUhOb0EyT0xcLzN5STRYNWFMNU09IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4NzVlZGMyMC0wNjZlLTQwNzEtODFhYS0zYjEyODgyNGY2MDciLCJldmVudF9pZCI6IjZkMWVmODZmLTdiNzAtNGYwZS05OGNjLTg5NzEyMWQ1ODUyNCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MDUyOTkwMzYsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2FBeTkyMkxaMiIsImV4cCI6MTYwNTMwMjYzNiwiaWF0IjoxNjA1Mjk5MDM2LCJqdGkiOiJjMmU4ZmUwMS0xNThlLTRhYTAtOWQ1Yi1iOWE5NDE2YTFmYTMiLCJjbGllbnRfaWQiOiIzNWltcDZpNHFqNTI0aW9qZWcxYWNqbHBkciIsInVzZXJuYW1lIjoibXJmNDQxIn0.c29UeSIFTQ2oznzbWpwAjtql8mWegiLAIThDRcCEU1ttlx4jsTA8-NrHkU8CY63nUnr5NubVwztPt_JuJtTcqPaTHE4X6wBZwdxzi69P4IIdACqc_lBeMQ8vwct9FxqYZgmR6gfwPNKZrB3lnTbKFuupOYNR_EmmVFLResqSwYpF2SXHTq0b5WIjd86nHqWZcYpCwl8Uf8P49uDbScbCpbtfdSo3ncCq-37jaif2tu1WjEk9Bx9KAKl0jq8l93cK3w3_P5IHsTcT1TcYbzKPWfA3_Zbx1YjtAEW--pEluzh8TylCo0Lzj8jL3gJjytuFu6XFKdiI7HwYPOXGANdPRg"
 let socket;
 
 export default function Index(props) {
@@ -26,7 +26,7 @@ export default function Index(props) {
 
         setChats(chats)
 
-        socket.emit("joinChat", chatId)
+        socket.emit("joinChats", chats)
 
         socket.on("welcome", data => {
             console.log(data); //setResponse(data)
@@ -35,7 +35,18 @@ export default function Index(props) {
 
     useEffect(() => {
         socket.on("newMessage", msg => {
-            setAllMessages([...allMessages, msg])
+            if (msg.chatId == chatId) {
+                setAllMessages([...allMessages, msg])
+            } else {
+                let newChats = chats.map(chat => {
+                    if (chat._id == msg.chatId) {
+                        return {...chat, lastMessage: msg.value}
+                    } else {
+                        return {...chat}
+                    }
+                })
+                setChats(newChats)
+            }
         })
     })
 
@@ -55,6 +66,9 @@ export default function Index(props) {
                     return (
                         <div>
                             <a href={"http://localhost:3000/chat/" + chat._id}>{chat.name}</a>
+                            <div>
+                                {chat.lastMessage}
+                            </div>
                         </div>
                     )
                 })}

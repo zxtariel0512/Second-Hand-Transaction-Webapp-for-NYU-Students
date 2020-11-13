@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,7 @@ import Container from "@material-ui/core/Container";
 import { useForm } from "react-hook-form";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router";
+import { AuthContext } from "Context/AuthContext";
 import request from "../../Utils/request";
 // styling
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +57,7 @@ export default function Index(props) {
   });
   /* useState hook to store server error message */
   const [serverErr, setserverErr] = useState("");
-
+  const [authStatus, setAuthStatus] = useContext(AuthContext);
   /* call aws cognito api to authenticate user */
   async function handleOnSubmit(userinput) {
     try {
@@ -71,14 +72,16 @@ export default function Index(props) {
         url: `/user/login/${userinput["netid"]}`,
         method: "Put",
       });
-      console.log(res);
+      setAuthStatus(true);
       history.push("/home");
     } catch (error) {
       console.log(error);
       setserverErr(error.message);
     }
   }
-
+  if (authStatus) {
+    history.push("/home");
+  }
   return (
     <div className={classes.main}>
       <img className={classes.image} src="./img/bg.jpg" alt="side" />

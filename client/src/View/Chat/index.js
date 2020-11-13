@@ -8,10 +8,11 @@ export default function Index(props) {
     const [response, setResponse] = useState("");
     const [sendMessage, setSendMessage] = useState("");
     const [allMessages, setAllMessages] = useState([]);
+    const [roomId, setRoomId] = useState("")
 
     useEffect(() => {
-        socket = io(ENDPOINT);
-        socket.on("welcome", data => {
+        setRoomId(props.location.pathname.split("/")[2])
+        socket = io(ENDPOINT); socket.on("welcome", data => {
             console.log(data); //setResponse(data)
         })
     }, [])

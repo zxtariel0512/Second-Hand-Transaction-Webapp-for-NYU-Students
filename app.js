@@ -40,11 +40,13 @@ mongoose.connect(db, {
 const userRouter = require('./routes/user');
 const listingRouter = require('./routes/listing');
 const requestRouter = require('./routes/request');
-const ioRoutes = require('./routes/chat')(io)
+const chatRouter = require('./routes/chat');
+const ioRoutes = require('./routes/socketChat')(io)
 
 app.use('/user', userRouter);
 app.use('/listings', listingRouter);
-app.use('/requests',requestRouter)
+app.use('/requests',requestRouter);
+app.use('/chat', chatRouter);
 ioRoutes
 
 server.listen(4000, () => {

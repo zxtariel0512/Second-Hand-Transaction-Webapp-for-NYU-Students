@@ -8,25 +8,30 @@ export default function Index(props) {
     const [response, setResponse] = useState("");
     const [sendMessage, setSendMessage] = useState("");
     const [allMessages, setAllMessages] = useState([]);
-    const [roomId, setRoomId] = useState("")
+    const [chatId, setChatId] = useState(props.location.pathname.split("/")[2])
 
     useEffect(() => {
-        setRoomId(props.location.pathname.split("/")[2])
-        socket = io(ENDPOINT); socket.on("welcome", data => {
+        socket = io(ENDPOINT);
+        socket.emit("joinChat", chatId)
+
+        socket.on("welcome", data => {
             console.log(data); //setResponse(data)
         })
     }, [])
 
     useEffect(() => {
-        socket.on("newMessage", message => {
-            setAllMessages([...allMessages, message])
+        socket.on("newMessage", msg => {
+            setAllMessages([...allMessages, msg])
         })
     })
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
         setSendMessage("");
-        socket.emit("sendMessage", sendMessage);
+        socket.emit("sendMessage", {
+            chatId,
+            value: sendMessage
+        });
     }
 
     return (
@@ -41,8 +46,8 @@ export default function Index(props) {
             </form>
 
             <div>
-                {allMessages.map(message => {
-                    return <div>{message}</div>
+                {allMessages.map(msg => {
+                    return <div>{msg.value} - {msg.time}</div>
                 })}
             </div>
         </div>

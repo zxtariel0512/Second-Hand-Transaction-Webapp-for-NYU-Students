@@ -1,10 +1,18 @@
+const moment = require("moment");
+
 module.exports = (io) => {
     io.on("connection", (socket) => {
-        console.log("user connected")
-        socket.emit("welcome", "Welcome to the room")
+        socket.on("joinChat", (chatId) => {
+            socket.join(chatId);
+            socket.emit("welcome", "Welcome to chat " + chatId)
 
-        socket.on("sendMessage", (message) => {
-            io.emit("newMessage", message)
+        })
+
+        socket.on("sendMessage", (msg) => {
+            io.to(msg.chatId).emit("newMessage", {
+                value: msg.value,
+                time: moment().format("h:mm a")
+            })
         })
 
         socket.on("disconnect", () => {

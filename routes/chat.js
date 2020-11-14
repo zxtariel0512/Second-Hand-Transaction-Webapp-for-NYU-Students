@@ -22,30 +22,29 @@ router.route('/').get(auth, async (req, res) => {
 })
 
 // get individual chat room
-router.route('/:id').get(async (req, res) => {
-    try {
-        let foundChat = await Chat.findById(req.params.id);
-        res.json(foundChat);
-    } catch(err) {
-        console.error(err);
-        res.status(500).json({
-            message: `Error retrieving chat of id: ${req.params.id}`
-        });
-    }
-})
+// router.route('/:id').get(async (req, res) => {
+//     try {
+//         let foundChat = await Chat.findById(req.params.id);
+//         res.json(foundChat);
+//     } catch(err) {
+//         console.error(err);
+//         res.status(500).json({
+//             message: `Error retrieving chat of id: ${req.params.id}`
+//         });
+//     }
+// })
 
 
 // create a new chat room
 router.route('/').post(auth, async (req, res) => {
     try {
-        console.log(req.user.username)
         let foundUser = await User.findOne({ netid: req.user.username })
-        let createdChat = await Chat.create(req.body);
+        let newChat = await Chat.create(req.body);
 
         foundUser.chats.push(createdChat);
         await foundUser.save();
 
-        res.json(createdChat);
+        res.json(newChat);
     } catch(err) {
         console.error(err);
         res.status(500).json({

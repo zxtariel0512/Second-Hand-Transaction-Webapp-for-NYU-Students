@@ -1,5 +1,8 @@
 const moment = require("moment");
 
+const Chat = require("../models/chat");
+const Message = require("../models/message");
+
 module.exports = (io) => {
     io.on("connection", (socket) => {
         socket.on("joinChats", (chats) => {
@@ -8,11 +11,21 @@ module.exports = (io) => {
             socket.emit("welcome", "Welcome to the chats")
         })
 
-        socket.on("sendMessage", (msg) => {
+        socket.on("sendMessage", async (msg) => {
+            let foundChat = await Chat.findById(msg.chatId)
+            let newMessage = await Message.create({
+                author: "Matthew Fan",
+                value: msg.value,
+            });
+
+            foundChat.messages.push(newMessage)
+            await foundChat.save()
+
             io.to(msg.chatId).emit("newMessage", {
                 chatId: msg.chatId,
-                value: msg.value,
-                time: moment().format("h:mm a")
+                author: newMessage.author,
+                value: newMessage.value,
+                time: newMessage.time
             })
         })
 

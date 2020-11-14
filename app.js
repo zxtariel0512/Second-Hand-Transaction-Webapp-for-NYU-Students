@@ -41,12 +41,14 @@ const userRouter = require('./routes/user');
 const listingRouter = require('./routes/listing');
 const requestRouter = require('./routes/request');
 const chatRouter = require('./routes/chat');
+const messageRouter = require('./routes/message');
 const ioRoutes = require('./routes/socketChat')(io)
 
 app.use('/user', userRouter);
 app.use('/listings', listingRouter);
 app.use('/requests',requestRouter);
 app.use('/chat', chatRouter);
+app.use('/messages', messageRouter);
 ioRoutes
 
 server.listen(4000, () => {

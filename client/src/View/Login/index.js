@@ -52,9 +52,7 @@ export default function Index(props) {
   const history = useHistory();
   const classes = useStyles();
   // third-party validation, check validity once input is changed
-  const { register, handleSubmit } = useForm({
-    mode: "onBlur",
-  });
+  const { register, handleSubmit } = useForm({ mode: "onBlur" });
   /* useState hook to store server error message */
   const [serverErr, setserverErr] = useState("");
   const [authStatus, setAuthStatus] = useContext(AuthContext);
@@ -109,11 +107,8 @@ export default function Index(props) {
               name="netid"
               autoComplete="netid"
               autoFocus
-              inputRef={register({
-                required: true,
-              })}
+              inputRef={register({ required: true })}
             />
-
             <TextField
               variant="outlined"
               margin="normal"
@@ -124,14 +119,16 @@ export default function Index(props) {
               type="password"
               id="password"
               autoComplete="password"
-              inputRef={register({
-                required: true,
-              })}
-            />
+              inputRef={register({ required: true })}
+            />{" "}
             {/* render validation error from aws  */}
-
-            <p style={{ color: "red" }}>{serverErr}</p>
-
+            <p
+              style={{
+                color: "red",
+              }}
+            >
+              {serverErr}
+            </p>
             <Button
               type="submit"
               fullWidth

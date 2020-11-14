@@ -11,7 +11,13 @@ const User = require("../models/user.model");
 router.route('/').get(auth, async (req, res) => {
     try {
         let foundUser = await (await User.findOne({ netid: req.user.username }))
-            .execPopulate("chats");
+            .populate({
+                path: "chats",
+                populate: {
+                    path: "lastMessage"
+                }
+            }).execPopulate();
+
         res.json(foundUser.chats);
     } catch(err) {
         console.error(err);

@@ -9,7 +9,6 @@ router.route("/:chatId").get(async (req, res) => {
     try {
         let foundChat = await (await Chat.findById(req.params.chatId))
             .execPopulate("messages");
-
         res.json(foundChat.messages);
     } catch(err) {
         console.error(err);

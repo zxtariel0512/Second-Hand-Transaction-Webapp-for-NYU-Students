@@ -5,7 +5,7 @@ import axios from "axios";
 import '../../chat.css';
 
 const ENDPOINT = "http://localhost:4000";
-const TOKEN = "eyJraWQiOiJiY3RTVUJrTVloTVRuQ05cLzJiUXVTNEZwYUhOb0EyT0xcLzN5STRYNWFMNU09IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4NzVlZGMyMC0wNjZlLTQwNzEtODFhYS0zYjEyODgyNGY2MDciLCJldmVudF9pZCI6ImM0Y2M5MjcyLWNhYWUtNGJjZi1iNWM3LTliNjg5NTIzOGQ2NSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MDUzMjY5NDAsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2FBeTkyMkxaMiIsImV4cCI6MTYwNTMzMDU0MCwiaWF0IjoxNjA1MzI2OTQwLCJqdGkiOiJjOTZmMmMyYS0xYzgzLTQwZjktOWU0My1mMzNmNTJlOWIwYWYiLCJjbGllbnRfaWQiOiIzNWltcDZpNHFqNTI0aW9qZWcxYWNqbHBkciIsInVzZXJuYW1lIjoibXJmNDQxIn0.UVY9rH-kIPzGzOaBZ-sIjPUl2E4nH3GpdVPNtEj2sXCxbPNblqL9AOkWjKtnHTw21JKPTNFanNuisbtJadIaXtQI3rf1VXIpsG70U3v4UAefSNWxIMS4fDdjv7RSPGOosGR56nXLFpEMMn8rFqW9yXNBCtjFiQwdJsIxOwb-W2lJTyWWHUsIrfObe8rXcuFB36SYgQ5q3pEPe3F_BMY2EXr7sq6RBUM-elS-pND0CvPxoWdyWrfYD-iDmEUswT4lCQaMqJOhS5Cp8qgRGjAakqNqdfE2H5icZYWpwAcziml8m6fXLfF_mR8O4bNV3ENblESnVYUoeosVuUwSAndbTA"
+const TOKEN = "eyJraWQiOiJiY3RTVUJrTVloTVRuQ05cLzJiUXVTNEZwYUhOb0EyT0xcLzN5STRYNWFMNU09IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4NzVlZGMyMC0wNjZlLTQwNzEtODFhYS0zYjEyODgyNGY2MDciLCJldmVudF9pZCI6IjYyNjA3NjA2LWNkMTAtNDIxMS1hNjBmLTRjOGJjMjU4MmFkOCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MDUzODA5ODMsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2FBeTkyMkxaMiIsImV4cCI6MTYwNTM4NDU4MywiaWF0IjoxNjA1MzgwOTgzLCJqdGkiOiI0MWY5OWNiZC0yYTI2LTQ1ZGEtOTRmYi1lYzE2MmNiN2NhNWUiLCJjbGllbnRfaWQiOiIzNWltcDZpNHFqNTI0aW9qZWcxYWNqbHBkciIsInVzZXJuYW1lIjoibXJmNDQxIn0.cwvdfRZ9pLScSdO5BtVQBTgbUhbgZ88iajbFxuNe8MYWj86afeXKwEjmcuOG4KP7GI1FlUtPdqcB-7Mz-xydvm5Vy-BrofoGRYWYu298J9Itg8dnuvAKJUHd_4OBSGWV_tuljdB2hrN8OR444icVUUgoFYN5mypDE5_6hl0GpMkBHhnovKV_CvFGt0U0vBes8WTXIpt4oQHFIDQOCpEp9nL2Ve4zC7Gp0oyPedFh8mUvuoVEBLebhtxPRPQ-KQQdzO3-HFVS6F4dAGdTB8k8acg84TgQRPtUpb-7VcfFInsENe48jjyxDIHv_trTzneYYwQIt4lhYpnw6jGZG-tA_g"
 let socket;
 
 export default function Index(props) {
@@ -49,7 +49,7 @@ export default function Index(props) {
 
             let newChats = chats.map(chat => {
                 if (chat._id == msg.chatId) {
-                    return {...chat, lastMessage: msg.value}
+                    return {...chat, lastMessage: msg}
                 } else {
                     return {...chat}
                 }
@@ -76,7 +76,7 @@ export default function Index(props) {
                         <div>
                             <a href={"http://localhost:3000/chat/" + chat._id}>{chat.name}</a>
                             <div>
-                                {chat.lastMessage}
+                                {chat.lastMessage.value}
                             </div>
                         </div>
                     )

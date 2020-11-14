@@ -19,6 +19,7 @@ module.exports = (io) => {
             });
 
             foundChat.messages.push(newMessage)
+            foundChat.lastMessage = newMessage
             await foundChat.save()
 
             io.to(msg.chatId).emit("newMessage", {

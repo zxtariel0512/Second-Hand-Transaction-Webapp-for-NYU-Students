@@ -1,6 +1,6 @@
 // view that lists items with a search bar above
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import CustomGridList from "../../Components/CustomGridList/CustomGridList";
@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CustomAppBar from "../../Components/CustomAppBar/CustomAppBar";
 import { Typography, Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import Logo from "../../Assets/img/Logo.svg";
 import style from "./style";
 import HomePageContext from "./store/context";
 import MessageContext from "../../Context/MessageContext";
@@ -50,52 +51,30 @@ const Homepage = () => {
         <CustomAppBar />
         <div className={classes.container}>
           <div className={classes.header}>
-            <Typography variant="h4">NYU Second Hand</Typography>
+            <img src={Logo} width="150px" height="150px" alt="Logo" />
           </div>
           <SearchBar />
           <div className={classes.categories}>
-            <Button
-              className={classes.category}
-              variant="contained"
-              color="primary"
-            >
+            <Button className={classes.category} variant="contained">
               Books
             </Button>
-            <Button
-              className={classes.category}
-              variant="contained"
-              color="primary"
-            >
+            <Button className={classes.category} variant="contained">
               Electronics
             </Button>
-            <Button
-              className={classes.category}
-              variant="contained"
-              color="primary"
-            >
+            <Button className={classes.category} variant="contained">
               Clothes
             </Button>
-            <Button
-              className={classes.category}
-              variant="contained"
-              color="primary"
-            >
+            <Button className={classes.category} variant="contained">
               Automobiles
             </Button>
-            <Button
-              className={classes.category}
-              variant="contained"
-              color="primary"
-            >
+            <Button className={classes.category} variant="contained">
               More
             </Button>
           </div>
           <CustomGridList />
           <Link to="/add">
             <div className={classes.circle}>
-
               <AddIcon className={classes.addicon}></AddIcon>
-
             </div>
           </Link>
         </div>

@@ -12,13 +12,6 @@ module.exports = (io) => {
         })
 
         socket.on("sendMessage", async (msg) => {
-            io.to(msg.chatId).emit("newMessage", {
-                chatId: msg.chatId,
-                //author: newMessage.author,
-                value: msg.value,
-                //time: newMessage.time
-            })
-
             let newMessage = await Message.create({
                 author: "Matthew Fan",
                 value: msg.value,
@@ -29,6 +22,13 @@ module.exports = (io) => {
             foundChat.messages.push(newMessage)
             foundChat.lastMessage = newMessage
             await foundChat.save()
+
+            io.to(msg.chatId).emit("newMessage", {
+                chatId: msg.chatId,
+                author: msg.author,
+                value: msg.value,
+                time: newMessage.time
+            })
         })
 
         socket.on("disconnect", () => {

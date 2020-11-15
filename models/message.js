@@ -5,7 +5,7 @@ var MessageSchema = new mongoose.Schema({
     value: String,
     time: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     }
 })
 

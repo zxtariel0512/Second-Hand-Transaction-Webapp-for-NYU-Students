@@ -138,7 +138,7 @@ export default function Index(props) {
 
                             <div>
                                 {allMessages.map(msg => {
-                                    return <div>{msg.value}</div>
+                                    return <div>{msg.value} - {msg.time}</div>
                                 })}
                             </div>
                         </div>

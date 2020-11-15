@@ -5,19 +5,25 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import BasicInfo from "../BasicInfo";
 import Box from "@material-ui/core/Box";
 import MessageContext from "../../../Context/MessageContext";
+
+// Pages
+import BasicInfo from "../BasicInfo";
+import MoreDetails from "../MoreDetails";
+import Review from "../Reviews/index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    marginBottom: '100px',
   },
   button: {
     marginRight: theme.spacing(1),
     marginLeft: '85px'
   },
   instructions: {
+    width:"100%",
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
@@ -32,9 +38,9 @@ function getStepContent(step) {
     case 0:
       return <BasicInfo />;
     case 1:
-      return "What is an ad group anyways?";
+      return <MoreDetails />;
     case 2:
-      return "This is the bit I really care about!";
+      return <Review />;
     default:
       return "Unknown step";
   }
@@ -116,18 +122,15 @@ export default function HorizontalLinearStepper() {
       <Box display="flex" justifyContent="center">
         {activeStep === steps.length ? (
           <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
-            </Button>
+            <div className={classes.instructions}>
+              Item Post Successfully
+            </div>
           </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>
+            <div className={classes.instructions}>
               {getStepContent(activeStep)}
-            </Typography>
+            </div>  
             <div>
               <Button
                 disabled={activeStep === 0}

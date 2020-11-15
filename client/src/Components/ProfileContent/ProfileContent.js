@@ -8,17 +8,13 @@ const useStyles = makeStyles({
     width: "100%",
     height: 500,
     boxShadow: "0 0 5px #888",
-    marginLeft: "10vh",
+    marginLeft: "4vh",
   },
 });
 
 const ProfileContent = () => {
   const classes = useStyles();
-  return (
-    <Card className={classes.container}>
-      <p> ProfileContent</p>
-    </Card>
-  );
+  return <Card className={classes.container}></Card>;
 };
 
 export default ProfileContent;

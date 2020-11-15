@@ -8,5 +8,5 @@ const BASE_URL = "http://localhost:4000";
 const createAPI = (endpoint) => `${BASE_URL}${endpoint}`;
 
 const GET_LISTING = createAPI("/listings");
-
-export { GET_LISTING };
+const GET_PROFILE = (netid) => createAPI(`/user/${netid}`);
+export { GET_LISTING, GET_PROFILE };

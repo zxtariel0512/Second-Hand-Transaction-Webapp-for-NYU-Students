@@ -14,6 +14,7 @@ import { Auth } from "aws-amplify";
 import { useHistory } from "react-router";
 import { AuthContext } from "Context/AuthContext";
 import request from "../../Utils/request";
+
 // styling
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -59,7 +60,7 @@ export default function Index(props) {
   /* call aws cognito api to authenticate user */
   async function handleOnSubmit(userinput) {
     try {
-      const user = await Auth.signIn(userinput["netid"], userinput["password"]);
+      const user = await Auth.signIn(userinput.netid, userinput.password);
       console.log(user);
       setserverErr("");
       const userSession = await Auth.currentSession();
@@ -67,10 +68,12 @@ export default function Index(props) {
         headers: {
           Authorization: `Bearer ${userSession.getIdToken().jwtToken}`,
         },
-        url: `/user/login/${userinput["netid"]}`,
+        url: `/user/login/${userinput.netid}`,
         method: "Put",
       });
       setAuthStatus(true);
+      // cache netid in local storage to redece redundant api calls
+      localStorage.setItem("netid", userinput.netid);
       history.push("/home");
     } catch (error) {
       console.log(error);

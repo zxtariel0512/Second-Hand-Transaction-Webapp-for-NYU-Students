@@ -3,7 +3,7 @@ import "./App.css";
 import Routes from "./routes";
 import Message from "./Components/Message/index";
 import MessageContext from "./Context/MessageContext";
-import { AuthProvider, AuthContext } from "Context/AuthContext";
+import { AuthProvider } from "Context/AuthContext";
 function App() {
   // Global Error Context
   const [error, setError] = useState(null);

@@ -1,9 +1,14 @@
-import ProfileCard from "Components/ProfileCard/ProfileCard";
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
+
+import ProfileCard from "Components/ProfileCard/ProfileCard";
 import CustomAppBar from "Components/CustomAppBar/CustomAppBar";
 import ProfileContent from "Components/ProfileContent/ProfileContent";
 import Theme from "Theme/theme";
+import MessageContext from "Context/MessageContext";
+import getProfile from "Controller/getProfile";
+import { AuthContext } from "Context/AuthContext";
 
 const useStyles = makeStyles({
   root: {
@@ -22,12 +27,30 @@ const useStyles = makeStyles({
 });
 const Index = () => {
   const classes = useStyles();
+  const [profile, setProfile] = useState();
+  const { setError } = useContext(MessageContext);
+  const [authStatus] = useContext(AuthContext);
+  const history = useHistory();
+
+  useEffect(() => {
+    const getProfileData = async () => {
+      const res = await getProfile("hw1635");
+      // show error if request is failed
+      res.success ? setProfile(res.data) : setError(res.message);
+      console.log(res);
+    };
+    getProfileData();
+  }, []);
+
+  if (!authStatus) {
+    history.push("/signup");
+  }
   return (
     <div className={classes.root}>
       <CustomAppBar />
       <div className={classes.container}>
-        <ProfileCard />
-        <ProfileContent />
+        <ProfileCard profile={profile} />
+        <ProfileContent profile={profile} />
       </div>
     </div>
   );

@@ -47,6 +47,7 @@ export default function MenuAppBar() {
   async function logout() {
     try {
       await Auth.signOut();
+      localStorage.removeItem("netid");
     } catch {
       console.log("err signing out");
     }
@@ -55,7 +56,7 @@ export default function MenuAppBar() {
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appbar}>
         <Toolbar>
-          <a href="/" style={{ textDecoration: "none", color: "black" }}>
+          <a href="/home" style={{ textDecoration: "none", color: "black" }}>
             <div className={classes.brand}>
               <StorefrontIcon />
               <span style={{ fontSize: "20px", fontWeight: "400" }}>

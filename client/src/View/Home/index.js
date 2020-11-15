@@ -7,12 +7,13 @@ import CustomGridList from "../../Components/CustomGridList/CustomGridList";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomAppBar from "../../Components/CustomAppBar/CustomAppBar";
 import { Typography, Button } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import Logo from "../../Assets/img/Logo.svg";
 import style from "./style";
 import HomePageContext from "./store/context";
 import MessageContext from "../../Context/MessageContext";
 import getListing from "../../Controller/Listing/getListing";
+
+import AddIcon from "@material-ui/icons/Add";
+import Logo from "../../Assets/img/Logo.svg";
 
 const useStyles = makeStyles(style);
 

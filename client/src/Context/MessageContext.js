@@ -1,6 +1,5 @@
 import React, { createContext } from "react";
 
-
 /**
  * Context to display global message
  */

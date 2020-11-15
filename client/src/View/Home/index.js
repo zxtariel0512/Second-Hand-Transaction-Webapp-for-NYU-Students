@@ -22,7 +22,7 @@ const Homepage = () => {
   const classes = useStyles();
   const [listings, setListings] = useState([]);
   const [filteredListings, setFilteredListings] = useState([]);
-  const context = useContext(HomePageContext);
+
   /**
    * Get the homepage listing when the page is loaded
    */
@@ -37,6 +37,13 @@ const Homepage = () => {
     };
     getHomepageListing();
   }, []);
+  // set the shared stated (context) here
+  const context = {
+    listings,
+    setListings,
+    filteredListings,
+    setFilteredListings,
+  };
 
   return (
     <HomePageContext.Provider value={context}>

@@ -77,8 +77,9 @@ router.route('/review/:netid').get(auth, async(req, res) =>{
   }
 })
 
-router.route('/review/post/:netid').post(async(req, res) =>{
-  // try{
+router.route('/review/post/:netid').post(auth, async(req, res) =>{
+  // body params: target can use netid
+  try{
     let targetUser = await User.findOne({netid: req.params.netid});
     const dummyReview = new Review();
     dummyReview.target = targetUser._id;
@@ -88,9 +89,9 @@ router.route('/review/post/:netid').post(async(req, res) =>{
     targetUser.reviews.push(newReview);
     await targetUser.save();
     res.json(newReview);
-  // } catch(error){
-  //   res.status(500).json({message: "error: post review"})
-  // }
+  } catch(error){
+    res.status(500).json({message: "error: post review"})
+  }
 
 })
 

@@ -12,9 +12,19 @@ const useStyles = makeStyles({
   },
 });
 
-const ProfileContent = () => {
+const ProfileContent = ({ listing }) => {
   const classes = useStyles();
-  return <Card className={classes.container}></Card>;
+  console.log(listing);
+
+  return (
+    <Card className={classes.container}>
+      <div className={classes.listing}>
+        {listing?.map((listing) => (
+          <p>{listing.title}</p>
+        ))}
+      </div>
+    </Card>
+  );
 };
 
 export default ProfileContent;

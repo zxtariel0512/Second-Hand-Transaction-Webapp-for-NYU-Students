@@ -8,6 +8,7 @@ import ProfileContent from "Components/ProfileContent/ProfileContent";
 import Theme from "Theme/theme";
 import MessageContext from "Context/MessageContext";
 import getProfile from "Controller/getProfile";
+import getUserListing from "Controller/Listing/getUserListing";
 import { AuthContext } from "Context/AuthContext";
 
 const useStyles = makeStyles({
@@ -28,6 +29,7 @@ const useStyles = makeStyles({
 const Index = () => {
   const classes = useStyles();
   const [profile, setProfile] = useState();
+  const [listing, setListing] = useState();
   const { setError } = useContext(MessageContext);
   const [authStatus] = useContext(AuthContext);
   const history = useHistory();
@@ -37,8 +39,14 @@ const Index = () => {
       const res = await getProfile("hw1635");
       // show error if request is failed
       res.success ? setProfile(res.data) : setError(res.message);
-      console.log(res);
     };
+    const getUserListingData = async () => {
+      const res = await getUserListing("hw1635");
+      // show error if request is failed
+      console.log(res.data);
+      res.success ? setListing(res.data) : setError(res.message);
+    };
+    getUserListingData();
     getProfileData();
   }, []);
 
@@ -49,8 +57,10 @@ const Index = () => {
     <div className={classes.root}>
       <CustomAppBar />
       <div className={classes.container}>
+        {/* to display user info */}
         <ProfileCard profile={profile} />
-        <ProfileContent profile={profile} />
+        {/* to display user listings, reviews of the user */}
+        <ProfileContent listing={listing} />
       </div>
     </div>
   );

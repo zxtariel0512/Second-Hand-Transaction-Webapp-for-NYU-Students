@@ -1,12 +1,15 @@
 import axios from "axios";
-import { GET_PROFILE } from "./config/apiConfig";
-
+import { GET_PROFILE, GET_USER_LISTING } from "./config/apiConfig";
 /**
  * GET PROFILE API
  */
 const getProfileModel = (netid) => {
-  console.log(GET_PROFILE(netid));
   return axios.get(GET_PROFILE(netid));
 };
 
-export { getProfileModel };
+// GET USER LISTING API
+const getUserListingModel = (netid) => {
+  return axios.get(GET_USER_LISTING(netid));
+};
+
+export { getProfileModel, getUserListingModel };

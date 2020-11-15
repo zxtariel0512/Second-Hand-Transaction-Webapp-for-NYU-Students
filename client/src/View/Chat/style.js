@@ -20,8 +20,21 @@ const style = {
         width: '300px'
     },
     chatBox: {
-        flex: '1'
+        flex: '1',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '20px',
+
     },
+    chatBoxMessages: {
+        flex: '1',
+        overflowY: 'scroll'
+    },
+    chatBoxInput: {
+        '& form': {
+            display: 'flex'
+        }
+    }
 }
 
 export default style;

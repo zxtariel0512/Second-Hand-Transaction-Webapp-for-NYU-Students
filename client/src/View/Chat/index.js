@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 
@@ -6,20 +6,27 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import style from "./style"
 import CustomAppBar from "../../Components/CustomAppBar/CustomAppBar";
+import Message from "../../Components/Chat/Message";
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles(style)
 
 const ENDPOINT = "http://localhost:4000";
-const TOKEN = "eyJraWQiOiJiY3RTVUJrTVloTVRuQ05cLzJiUXVTNEZwYUhOb0EyT0xcLzN5STRYNWFMNU09IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4NzVlZGMyMC0wNjZlLTQwNzEtODFhYS0zYjEyODgyNGY2MDciLCJldmVudF9pZCI6IjgxYWE1ZTE5LWE1M2UtNDhhZi05MTZlLTgyMTEwZTk5ZTJiMCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MDU0MTYzNDEsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2FBeTkyMkxaMiIsImV4cCI6MTYwNTQxOTk0MSwiaWF0IjoxNjA1NDE2MzQxLCJqdGkiOiJhOWY0N2VhMy0wMDA5LTRmNDktYjU5MS00NTI4OWE5ZTFkODMiLCJjbGllbnRfaWQiOiIzNWltcDZpNHFqNTI0aW9qZWcxYWNqbHBkciIsInVzZXJuYW1lIjoibXJmNDQxIn0.C-Mi0u1tGXd-_8_cBgZkLXQLjB2FPmuk2I7CssonwYNGReRM6YSUiOee0DwR9hlOa8OtqXdzYLeD23W05v1azuStTEXwvR2cDeOecRfhtGj5le1NXMb7FHIbEKcxoWlHi9chwArUM1Oq1EMzjxxkOEUkF5WDe1nxpkJdMgoaXvy1AV4w2gv3Ejx7bs9kzEjp5kljfIOXdqIlaL77TTMznkFg8R4MxXqiMoIZDXdOKwVNz05RzcHf6kWaZj5ZzXv9Hh9z_8YIdoC_ReoEcAHxGNCGQKmsT-ve5XooJap2_7J7yowpHJyKIDLV346d3FmEz8N2zahOw1v0dADQH2OxVQ"
+const TOKEN = "eyJraWQiOiJiY3RTVUJrTVloTVRuQ05cLzJiUXVTNEZwYUhOb0EyT0xcLzN5STRYNWFMNU09IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4NzVlZGMyMC0wNjZlLTQwNzEtODFhYS0zYjEyODgyNGY2MDciLCJldmVudF9pZCI6ImExNGRhY2NmLTViYTMtNGJmNC04OWNkLWE2MzQ1N2YyZTU2YyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MDU0NzEwNTcsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2FBeTkyMkxaMiIsImV4cCI6MTYwNTQ3NDY1NywiaWF0IjoxNjA1NDcxMDU3LCJqdGkiOiIwNjRlZDY2Ni0yZDI3LTQ1ZjgtYTQwNS0yMjc2NjIyYmViOWUiLCJjbGllbnRfaWQiOiIzNWltcDZpNHFqNTI0aW9qZWcxYWNqbHBkciIsInVzZXJuYW1lIjoibXJmNDQxIn0.UYVGdzrGCJ70IAD4xvnhGw6SsmPe3TJX1-M9olxMNlhegeN6Xex2bF9FMFbAYQjo4TLJQ1WeNjpGDsrTuQyC4nMf85DVaMEpAoa-O5cghc18T1tZ843dH9yi_e0lFQ32j2TRq2MmCNx3c5ftLtUYUr9-SNtIGL4mJPeoB1f_TGRFqK2D1CKsxRTmRW4Jh6f1gKxDQ9rbbQbeVR64rDUCNu-DWIDeA5BzL4XoUFUu4e2OuRXEvxymGDatloggjLlz38H7KRdjXcVvUzZkKguOPaDqSbSzPUgnvnn2hUTmsfZO-rUI54UXjgst0mNKrlS34LvR3RLrrAOSlWnP9I3giA"
 let socket;
 
 
 export default function Index(props) {
     const classes = useStyles();
+
+    const messagesEndRef = useRef(null)
+
     const [response, setResponse] = useState("");
     const [sendMessage, setSendMessage] = useState("");
     const [allMessages, setAllMessages] = useState([]);
@@ -50,6 +57,8 @@ export default function Index(props) {
         socket.on("welcome", data => {
             console.log(data); //setResponse(data)
         })
+
+        scrollToBottom(false)
     }, [])
 
     useEffect(() => {
@@ -60,8 +69,9 @@ export default function Index(props) {
         })
     }, [chatId, allMessages])
 
+
     const newMessage = (msg) => {
-        console.log(chatId)
+        console.log(msg.value)
         if (msg.chatId == chatId) {
             setAllMessages([...allMessages, msg])
         }
@@ -90,6 +100,12 @@ export default function Index(props) {
         setAllMessages(messages);
     }
 
+    const scrollToBottom = (smoothScroll) => {
+        messagesEndRef.current.scrollIntoView({ behavior: smoothScroll ? "smooth" : "auto"});
+    }
+
+    useEffect(() => scrollToBottom(false), [allMessages]);
+
     const handleSubmit = (evt) => {
         evt.preventDefault();
         setSendMessage("");
@@ -104,44 +120,52 @@ export default function Index(props) {
             <CustomAppBar />
             <div className={classes.main}>
                 <div className={classes.container}>
+
                     <Paper className={classes.chat} elevation={2}>
                         <div className={classes.chatList}>
+                            <List disablePadding={true}>
                             {chats.map(chat => {
                                 return (
-                                    <List>
-                                        <ListItem
-                                            button
-                                            component={Link}
-                                            onClick={async () => await changeChat(chat._id)}
-                                            to={"/chat/" + chat._id}
-                                            selected={chat._id === chatId}
-                                        >
-                                        {/* <ListItem button component={Link} to="/home"> */}
-                                            <ListItemText
-                                                primary={chat.name}
-                                                secondary={chat.lastMessage.value}
-                                            />
-                                        </ListItem>
-                                    </List>
+                                    <ListItem
+                                        button
+                                        component={Link}
+                                        onClick={async () => await changeChat(chat._id)}
+                                        to={"/chat/" + chat._id}
+                                        selected={chat._id === chatId}
+                                    >
+                                    {/* <ListItem button component={Link} to="/home"> */}
+                                        <ListItemText
+                                            primary={chat.name}
+                                            secondary={chat.lastMessage.value}
+                                        />
+                                    </ListItem>
                                 )
                             })}
+                            </List>
                         </div>
-                        <div className={classes.chatBox}>
-                            <form onSubmit={handleSubmit}>
-                                <input
-                                    type="text"
-                                    value={sendMessage}
-                                    onChange={e => setSendMessage(e.target.value)}
-                                />
-                                <input type="submit" value="Submit"/>
-                            </form>
 
-                            <div>
+                        <div className={classes.chatBox}>
+                            <div className={classes.chatBoxMessages}>
                                 {allMessages.map(msg => {
-                                    return <div>{msg.value} - {msg.time}</div>
+                                    return <Message msg={msg} />
                                 })}
+                                <div ref={messagesEndRef} />
+                            </div>
+                            <div className={classes.chatBoxInput}>
+                                <form onSubmit={handleSubmit}>
+                                    <Input
+                                        placeholder="Message..."
+                                        value={sendMessage}
+                                        onChange={e => setSendMessage(e.target.value)}
+                                        fullWidth
+                                    />
+                                    <IconButton aria-label="send" type="submit">
+                                        <SendIcon />
+                                    </IconButton>
+                                </form>
                             </div>
                         </div>
+
                     </Paper>
                 </div>
             </div>

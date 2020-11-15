@@ -5,14 +5,13 @@ let Review = require('../models/review.model');
 const { auth } = require("../middleware/auth");
 
 router.route('/').get(async(req, res) => {
-  try {
-    let foundUsers = await User.find();
-    await foundUser.populate('reviews').execPopulate();
-    foundUser.populated('reviews');
+  // try {
+    let foundUsers = await User.find().
+    populate('reviews');
     res.json(foundUsers);
-  } catch (error) {
-    res.status(500).json({message: "error: get all user failed"})
-  }
+  // } catch (error) {
+  //   res.status(500).json({message: "error: get all user failed"})
+  // }
   })
 
 router.route('/:netid').get(async (req, res) => {

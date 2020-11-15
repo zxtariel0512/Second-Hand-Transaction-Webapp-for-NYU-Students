@@ -8,26 +8,27 @@ module.exports = (io) => {
         socket.on("joinChats", (chats) => {
             const chatIds = chats.map(chat => chat._id)
             socket.join(chatIds);
-            socket.emit("welcome", "Welcome to the chats")
+            socket.emit("welcome", chatIds)
         })
 
         socket.on("sendMessage", async (msg) => {
-            let foundChat = await Chat.findById(msg.chatId)
+            io.to(msg.chatId).emit("newMessage", {
+                chatId: msg.chatId,
+                //author: newMessage.author,
+                value: msg.value,
+                //time: newMessage.time
+            })
+
             let newMessage = await Message.create({
                 author: "Matthew Fan",
                 value: msg.value,
             });
 
+            let foundChat = await Chat.findById(msg.chatId)
+
             foundChat.messages.push(newMessage)
             foundChat.lastMessage = newMessage
             await foundChat.save()
-
-            io.to(msg.chatId).emit("newMessage", {
-                chatId: msg.chatId,
-                author: newMessage.author,
-                value: newMessage.value,
-                time: newMessage.time
-            })
         })
 
         socket.on("disconnect", () => {

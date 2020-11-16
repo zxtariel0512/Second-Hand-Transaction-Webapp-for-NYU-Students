@@ -13,7 +13,7 @@ module.exports = (io) => {
 
         socket.on("sendMessage", async (msg) => {
             let newMessage = await Message.create({
-                author: "Matthew Fan",
+                author: msg.author,
                 value: msg.value,
             });
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import { Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 
 import IconButton from "@material-ui/core/IconButton";
 import SampleAvatar from "Assets/img/faces/christian.jpg";
@@ -24,8 +24,12 @@ const useStyles = makeStyles({
   contactList: {
     width: "70%",
     margin: "auto",
+    paddingTop: "10vh",
+    paddingBottom: "10vh",
   },
   contact: {
+    marginTop: "-10px",
+
     display: "flex",
     alignItems: "center",
   },
@@ -51,12 +55,15 @@ const ProfileCard = ({ profile }) => {
       <IconButton>
         <img className={classes.avatar} src={SampleAvatar} alt="avatar"></img>
       </IconButton>
+      <Typography variant="h5">{profile?.name}</Typography>
       <div className={classes.contactList}>
-        <Typography variant="h4">{profile?.name}</Typography>
         <Contact img={Diamond} info={profile?.credit} />
         <Contact img={Phone} info={profile?.phone} />
         <Contact img={Email} info={`${profile?.username}@nyu.edu`} />
       </div>
+      <Button variant="outlined" color="primary">
+        Edit
+      </Button>
       {/* <Menu> */}
     </Card>
   );

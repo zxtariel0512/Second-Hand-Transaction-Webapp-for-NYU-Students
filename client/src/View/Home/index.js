@@ -6,7 +6,7 @@ import SearchBar from "../../Components/SearchBar/SearchBar";
 import CustomGridList from "../../Components/CustomGridList/CustomGridList";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomAppBar from "../../Components/CustomAppBar/CustomAppBar";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, Paper } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import style from "./style";
 import HomePageContext from "./store/context";
@@ -15,7 +15,7 @@ import getListing from "../../Controller/Listing/getListing";
 
 import Logo from "../../Assets/img/Logo.svg";
 
-const useStyles = makeStyles(style);
+const useStyles = makeStyles((theme) => style(theme));
 
 const Homepage = () => {
   const { setError } = useContext(MessageContext);
@@ -45,6 +45,24 @@ const Homepage = () => {
     setFilteredListings,
   };
 
+  const [selectedBtn, setSelectedBtn] = useState();
+
+  const handleClick = (e) => {
+    const value = e.target.textContent;
+    console.log("selected btn", value);
+    if (value === "All") {
+      setFilteredListings(listings);
+      return;
+    }
+    const lowercase = value.toLowerCase();
+    const filtered = listings.filter(
+      (itemObj) =>
+        itemObj.title.toLowerCase().includes(lowercase) ||
+        itemObj.category_id?.toLowerCase().includes(lowercase)
+    );
+    // console.log("listings", listings);
+    setFilteredListings(filtered);
+  };
   return (
     <HomePageContext.Provider value={context}>
       <CustomAppBar />
@@ -53,28 +71,49 @@ const Homepage = () => {
           <img src={Logo} width="150px" height="150px" alt="Logo" />
         </div>
         <SearchBar />
+
         <div className={classes.categories}>
-          <Button className={classes.category} variant="contained">
-            Books
+          <Button
+            className={classes.category}
+            variant="outlined"
+            onClick={(e) => handleClick(e)}
+          >
+            All
           </Button>
-          <Button className={classes.category} variant="contained">
+          <Button
+            className={classes.category}
+            variant="outlined"
+            onClick={(e) => handleClick(e)}
+          >
+            Book
+          </Button>
+          <Button
+            className={classes.category}
+            variant="outlined"
+            onClick={(e) => handleClick(e)}
+          >
             Electronics
           </Button>
-          <Button className={classes.category} variant="contained">
+          <Button
+            className={classes.category}
+            variant="outlined"
+            onClick={(e) => handleClick(e)}
+          >
             Clothes
           </Button>
-          <Button className={classes.category} variant="contained">
-            Automobiles
-          </Button>
-          <Button className={classes.category} variant="contained">
-            More
+          <Button
+            className={classes.category}
+            variant="outlined"
+            onClick={(e) => handleClick(e)}
+          >
+            Cars
           </Button>
         </div>
         <CustomGridList />
-        <Link to="/add">
-          <div className={classes.circle}>
+        <Link to="/post-item">
+          <Paper className={classes.circle}>
             <AddIcon className={classes.addicon}></AddIcon>
-          </div>
+          </Paper>
         </Link>
       </div>
     </HomePageContext.Provider>

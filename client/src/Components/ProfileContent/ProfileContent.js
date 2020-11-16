@@ -2,6 +2,7 @@ import React from "react";
 import Theme from "Theme/theme";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
   container: {
@@ -9,6 +10,9 @@ const useStyles = makeStyles({
     height: 500,
     boxShadow: "0 0 5px #888",
     marginLeft: "4vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
@@ -18,11 +22,12 @@ const ProfileContent = ({ listing }) => {
 
   return (
     <Card className={classes.container}>
-      <div className={classes.listing}>
+      {/* <div className={classes.listing}>
         {listing?.map((listing) => (
-          <p>{listing.title}</p>
+          <Typography>{listing.title}</Typography>
         ))}
-      </div>
+      </div> */}
+      Incomplete...
     </Card>
   );
 };

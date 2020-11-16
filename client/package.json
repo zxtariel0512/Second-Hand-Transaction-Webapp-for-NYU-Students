@@ -14,6 +14,8 @@
     "classnames": "^2.2.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-dropzone": "^11.2.4",
+    "react-easy-crop": "^3.3.0",
     "react-hook-form": "^6.11.0",
     "react-loadable": "^5.5.0",
     "react-router": "^5.2.0",
@@ -28,7 +30,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix src/",
+    "format": "prettier --write src/"
   },
   "eslintConfig": {
     "extends": [
@@ -49,6 +54,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-prettier": "^6.15.0"
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4"
   }
 }

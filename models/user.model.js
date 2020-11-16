@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
-var userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     netid: {type: String, require: true, unique: true, trim: true},
     username: {type: String, require: true, unique: true, trim: true},
-    name: {type: String, required: true, unique: true},
-    password: {type: String, required: true, unique: true},
+    name: {type: String, required: true},
+    password: {type: String, required: true},
     credit: {type: Number, required: true},
     valid: {type: Boolean, required: true},
+    reviews: [{type: mongoose.Schema.Types.ObjectID, ref: 'Review'}],
     schoolYear: {type: Number},
     major: {type: String},
     phone: {type: String},

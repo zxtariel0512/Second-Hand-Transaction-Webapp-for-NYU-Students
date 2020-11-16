@@ -48,7 +48,7 @@ const Homepage = () => {
   const [selectedBtn, setSelectedBtn] = useState();
 
   const handleClick = (e) => {
-    const value = e.target.innerHTML;
+    const value = e.target.textContent;
     console.log("selected btn", value);
     if (value === "All") {
       setFilteredListings(listings);

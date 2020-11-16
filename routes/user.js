@@ -84,7 +84,7 @@ router.route('/review/:id').delete(auth, async(req, res) =>{
     let targetUser = await User.findById(deletedReview.target);
     const index = targetUser.reviews.indexOf(deletedReview);
     targetUser.reviews.splice(index,1)
-    
+    await targetUser.save();
     res.json(deletedReview);
   } catch(error){
     res.status(500).json({message: "error: delete review"})

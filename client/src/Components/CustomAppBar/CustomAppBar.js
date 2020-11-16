@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appbar: {
-    backgroundColor: Theme.colors.blue,
+    backgroundColor: theme.palette.primary.light,
   },
   menuButton: {
     position: "absolute",

@@ -34,7 +34,8 @@ router.route('/register').post(async(req, res) => {
   }
 })
 
-router.route('/:netid').put(auth, async (req, res) => {
+
+router.route('/:netid').put(auth,async (req, res) => {
   try {
     let updatedUser = await User.findOneAndUpdate({netid: req.params.netid}, req.body, {new:true});
     res.json(updatedUser);
@@ -43,8 +44,8 @@ router.route('/:netid').put(auth, async (req, res) => {
     res.status(500).json({message: "error: update user"})
   }
 })
-
-router.route('/:netid').delete(auth, async (req, res) => {
+ 
+router.route('/:netid').delete(auth,async (req, res) => {
   try {
     let deletedUser = await User.findOneAndDelete({netid: req.params.netid});
     res.json(deletedUser);
@@ -54,7 +55,7 @@ router.route('/:netid').delete(auth, async (req, res) => {
   }
 })
 
-router.route('/login/:netid').put(auth, async(req, res) =>{
+router.route('/login/:netid').put(auth,async(req, res) =>{
   try {
     let dumUser = await User.findOne({netid: req.params.netid});
     dumUser.valid = true;
@@ -77,6 +78,28 @@ router.route('/review/:netid').get(auth, async(req, res) =>{
   }
 })
 
+router.route('/review/:id').delete(auth, async(req, res) =>{
+  try{
+    let deletedReview = await Review.findByIdAndDelete(req.params.id);
+    let targetUser = await User.findById(deletedReview.target);
+    const index = targetUser.reviews.indexOf(deletedReview);
+    targetUser.reviews.splice(index,1)
+    
+    res.json(deletedReview);
+  } catch(error){
+    res.status(500).json({message: "error: delete review"})
+  }
+})
+
+router.route('/review/:id').put(auth, async(req, res) =>{
+  try{
+    let updatedReview = await Review.findByIdAndUpdate(req.params.id,req.body, {new:true});
+    res.json(updatedReview);
+  } catch(error){
+    res.status(500).json({message: "error: update review"})
+  }
+})
+
 router.route('/review/post/:netid').post(auth, async(req, res) =>{
   // body params: target can use netid
   try{
@@ -94,8 +117,5 @@ router.route('/review/post/:netid').post(auth, async(req, res) =>{
   }
 
 })
-
-
-
 
 module.exports = router;

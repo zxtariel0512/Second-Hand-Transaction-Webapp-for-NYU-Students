@@ -8,9 +8,11 @@ const User = require("../models/user.model");
 
 
 // get user's chat rooms
-router.route('/').get(auth, async (req, res) => {
+//router.route('/').get(auth, async (req, res) => {
+router.route('/').get(async (req, res) => {
     try {
-        let foundUser = await (await User.findOne({ netid: req.user.username }))
+        //let foundUser = await (await User.findOne({ netid: req.user.username }))
+        let foundUser = await (await User.findOne({ netid: "mrf441" }))
             .populate({
                 path: "chats",
                 populate: {

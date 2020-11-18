@@ -6,8 +6,9 @@ const Theme = {
     lightbrown: "#C2B9B0",
     brown: "#7E685A",
     green: "#AFD275",
-    blue: "#486FEA",
+    blue: "#6495ED",
     lightgrey: "#eaeaea",
+    background: "#f0ffff",
   },
   fonts: {},
 };

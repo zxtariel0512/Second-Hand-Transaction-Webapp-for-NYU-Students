@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,7 @@ import { useHistory } from "react-router";
 import { useForm } from "react-hook-form";
 import onBoardImg from "../../Assets/img/onBoard.svg";
 import axios from "axios";
+import { AuthContext } from "Context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -59,7 +60,7 @@ export default function Index(props) {
     mode: "onBlur",
     reValidateMode: "onChange",
   });
-
+  const [authStatus] = useContext(AuthContext);
   /* useState hook to store server error message */
   const [serverErr, setserverErr] = useState("");
   async function handleOnSubmit(userinput) {
@@ -84,7 +85,7 @@ export default function Index(props) {
       alert(
         "You have successfully registered! A verification email has been sent to your nyu email."
       );
-      history.push("/login");
+      // need to refactor this by encapsulation
       var params = new URLSearchParams();
       params.append("valid", false);
       params.append("netid", user.username);
@@ -98,6 +99,7 @@ export default function Index(props) {
       axios
         .post("http://localhost:4000/user/register", params)
         .then((res) => console.log(res.data));
+      history.push("/login");
     } catch (error) {
       // alert(error);
       setserverErr(error.message);
@@ -111,7 +113,9 @@ export default function Index(props) {
     }
     return undefined;
   };
-
+  if (authStatus) {
+    history.push("/home");
+  }
   return (
     <div className={classes.main}>
       <img className={classes.image} src={onBoardImg} alt="side" />

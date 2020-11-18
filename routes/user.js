@@ -113,11 +113,14 @@ router.route('/review/post/:netid').post(auth, async(req, res) =>{
   // body params: target can use netid
   try{
     let targetUser = await User.findOne({netid: req.params.netid});
-    const dummyReview = new Review();
-    dummyReview.target = targetUser._id;
-    dummyReview.rating = req.body.rating;
-    dummyReview.description = req.body.description;
-    let newReview = await Review.create(dummyReview);
+    
+    const review = {
+      target: targetUser._id,
+      rating: req.body.rating,
+      description: req.body.description
+    }
+
+    let newReview = await Review.create(review);
     targetUser.reviews.push(newReview);
     await targetUser.save();
     res.json(newReview);

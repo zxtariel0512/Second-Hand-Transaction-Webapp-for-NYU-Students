@@ -12,7 +12,7 @@ import Graduation from "Assets/img/icons/graduate.svg";
 
 const useStyles = makeStyles({
   container: {
-    width: 300,
+    width: "270px",
     height: 500,
     boxShadow: "0 0 5px #888",
     textAlign: "center",

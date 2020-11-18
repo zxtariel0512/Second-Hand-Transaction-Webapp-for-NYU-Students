@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     backgroundColor: Theme.colors.background,
   },
   container: {
-    width: "80%",
+    width: "90%",
     margin: "30vh auto",
     paddingTop: "18vh",
     display: "flex",

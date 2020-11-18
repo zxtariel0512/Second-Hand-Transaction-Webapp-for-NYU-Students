@@ -23,13 +23,18 @@ const style = {
     flex: "1",
     display: "flex",
     flexDirection: "column",
+  },
+  chatBoxHeader: {
     padding: "20px",
+    borderBottom: "1px solid black",
   },
   chatBoxMessages: {
+    padding: "20px 20px 0 20px",
     flex: "1",
     overflowY: "scroll",
   },
   chatBoxInput: {
+    padding: "0 20px 20px 20px",
     "& form": {
       display: "flex",
     },

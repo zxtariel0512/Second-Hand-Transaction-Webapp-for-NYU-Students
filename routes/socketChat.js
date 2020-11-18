@@ -11,6 +11,10 @@ module.exports = (io) => {
             socket.emit("welcome", chatIds)
         })
 
+        socket.on("joinNewChat", (id) => {
+            socket.join(id);
+        })
+
         socket.on("sendMessage", async (msg) => {
             let newMessage = await Message.create({
                 author: msg.author,
@@ -18,6 +22,8 @@ module.exports = (io) => {
             });
 
             let foundChat = await Chat.findById(msg.chatId)
+
+            console.log(foundChat)
 
             foundChat.messages.push(newMessage)
             foundChat.lastMessage = newMessage

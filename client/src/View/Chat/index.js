@@ -27,10 +27,10 @@ export default function Index(props) {
 
   const messagesEndRef = useRef(null);
 
-  const [response, setResponse] = useState("");
   const [sendMessage, setSendMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [chatId, setChatId] = useState(props.location.pathname.split("/")[2]);
+  const [currChat, setCurrChat] = useState("");
   const [chats, setChats] = useState([]);
 
   useEffect(async () => {
@@ -47,17 +47,22 @@ export default function Index(props) {
     setChats(foundChats);
 
     if (chatId == "new") {
-      console.log(props.location.listingInfo);
+      const { listingInfo } = props.location;
+      console.log(listingInfo);
+      setCurrChat({
+        name: listingInfo.title,
+      });
     } else {
-      let messages = await axios
-        .get(ENDPOINT + "/messages/" + chatId, {
+      let chat = await axios
+        .get(ENDPOINT + "/chat/" + chatId, {
           headers: {
             Authorization: "Bearer " + TOKEN,
           },
         })
         .then((res) => res.data);
 
-      setAllMessages(messages);
+      setCurrChat(chat);
+      setAllMessages(chat.messages);
     }
 
     socket.emit("joinChats", foundChats);
@@ -98,15 +103,16 @@ export default function Index(props) {
     //console.log(newChatId)
     setChatId(newChatId);
 
-    let messages = await axios
-      .get(ENDPOINT + "/messages/" + newChatId, {
+    let chat = await axios
+      .get(ENDPOINT + "/chat/" + newChatId, {
         headers: {
           Authorization: "Bearer " + TOKEN,
         },
       })
       .then((res) => res.data);
 
-    setAllMessages(messages);
+    setCurrChat(chat);
+    setAllMessages(chat.messages);
   };
 
   const scrollToBottom = (smoothScroll) => {
@@ -117,14 +123,44 @@ export default function Index(props) {
 
   useEffect(() => scrollToBottom(false), [allMessages]);
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
     setSendMessage("");
-    socket.emit("sendMessage", {
-      chatId,
-      author: "Matthew Fan",
-      value: sendMessage,
-    });
+
+    if (chatId == "new") {
+      const newChat = await axios
+        .post(
+          ENDPOINT + "/chat",
+          {
+            name: props.location.listingInfo.title,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + TOKEN,
+            },
+          }
+        )
+        .then((res) => res.data);
+
+      socket.emit("joinNewChat", newChat._id);
+
+      setChatId(newChat._id);
+      socket.emit("sendMessage", {
+        chatId: newChat._id,
+        author: "Matthew Fan",
+        value: sendMessage,
+      });
+
+      setChats([...chats, newChat]);
+
+      props.history.push("/chat/" + newChat._id);
+    } else {
+      socket.emit("sendMessage", {
+        chatId,
+        author: "Matthew Fan",
+        value: sendMessage,
+      });
+    }
   };
 
   return (
@@ -156,6 +192,7 @@ export default function Index(props) {
             </div>
 
             <div className={classes.chatBox}>
+              <div className={classes.chatBoxHeader}>{currChat.name}</div>
               <div className={classes.chatBoxMessages}>
                 {allMessages.map((msg) => {
                   return <Message msg={msg} />;

@@ -1,6 +1,4 @@
-import Theme from "../../Theme/theme";
-
-const style = {
+const style = (theme) => ({
   container: {
     width: "80%",
     margin: "150px auto",
@@ -19,7 +17,7 @@ const style = {
   category: {
     marginRight: "20px",
     height: "40px",
-    backgroundColor: Theme.colors.pinky,
+    backgroundColor: theme.palette.primary.light,
   },
   circle: {
     position: "fixed",
@@ -28,14 +26,14 @@ const style = {
     width: 60,
     height: 60,
     borderRadius: "50%",
-    backgroundColor: Theme.colors.blue,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: theme.palette.primary.light,
   },
   addicon: {
     color: "white",
   },
-};
+});
 
 export default style;

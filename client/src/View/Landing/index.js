@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../../Components/Template/Header/Header";
 import GridContainer from "../../Components/Template/Grid/GridContainer";
 import GridItem from "../../Components/Template/Grid/GridItem";
@@ -10,12 +10,13 @@ import StorefrontIcon from "@material-ui/icons/Storefront";
 import BackgroundImg from "../../Assets/img/landing-bg.jpg";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+import { AuthContext } from "Context/AuthContext";
 const dashboardRoutes = [];
-
 const useStyles = makeStyles(styles);
 
 export default function Home(props) {
   const classes = useStyles();
+  const [authStatus] = useContext(AuthContext);
   const { ...rest } = props;
   return (
     <>
@@ -30,7 +31,7 @@ export default function Home(props) {
             </span>
           </>
         }
-        rightLinks={<HeaderLinks />}
+        rightLinks={authStatus ? null : <HeaderLinks />}
         fixed
         changeColorOnScroll={{
           height: 400,

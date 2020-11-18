@@ -56,7 +56,7 @@ router.route('/:id').delete(auth, async (req, res) => {
     
 })
 
-router.route('/netid/:netid').get(auth, async(req, res) => {
+router.route('/netid/:netid').get(async(req, res) => {
     let findListing = await Listing.find({user_id: req.params.netid});
     res.json(findListing);
 })

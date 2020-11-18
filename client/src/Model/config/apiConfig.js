@@ -8,5 +8,6 @@ const BASE_URL = "http://localhost:4000";
 const createAPI = (endpoint) => `${BASE_URL}${endpoint}`;
 
 const GET_LISTING = createAPI("/listings");
-
-export { GET_LISTING };
+const GET_PROFILE = (netid) => createAPI(`/user/${netid}`);
+const GET_USER_LISTING = (netid) => createAPI(`/listings/netid/${netid}`);
+export { GET_LISTING, GET_PROFILE, GET_USER_LISTING };

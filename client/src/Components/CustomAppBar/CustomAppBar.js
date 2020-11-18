@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Theme from "../../Theme/theme.js";
 import { useHistory } from "react-router";
 import LogoutBtn from "../../Assets/img/icons/logout.svg";
+import LoginBtn from "Assets/img/icons/login.svg";
 import ProfileBtn from "../../Assets/img/icons/user.svg";
+import StorefrontIcon from "@material-ui/icons/Storefront";
+import { AuthContext } from "Context/AuthContext";
+import { Auth } from "aws-amplify";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   appbar: {
-    backgroundColor: Theme.colors.blue,
+    backgroundColor: theme.palette.primary.light,
   },
   menuButton: {
     position: "absolute",
@@ -26,36 +29,50 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  icon: {},
+  brand: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    maxHeight: "40px",
+    marginLeft: 20,
+  },
 }));
 
 export default function MenuAppBar() {
   const classes = useStyles();
-  // TODO: call Auth.currenusersession to see if user is logged in in Auth Context
-  const [auth, setAuth] = React.useState(true);
-  // const [anchorEl, setAnchorEl] = React.useState(null);
-  // const open = Boolean(anchorEl);
   const history = useHistory();
-
-  // const handleMenu = (event) => {
-  //     setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleClose = () => {
-  //     setAnchorEl(null);
-  // };
-
+  const [authStatus, setAuthStatus, checkStatus] = useContext(AuthContext);
+  console.log(authStatus);
+  async function logout() {
+    try {
+      await Auth.signOut();
+      localStorage.removeItem("netid");
+    } catch {
+      console.log("err signing out");
+    }
+  }
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appbar}>
         <Toolbar>
-          {auth && (
+          <a href="/home" style={{ textDecoration: "none", color: "black" }}>
+            <div className={classes.brand}>
+              <StorefrontIcon />
+              <span style={{ fontSize: "20px", fontWeight: "400" }}>
+                &nbsp;NYU Second Hand
+              </span>
+            </div>
+          </a>
+
+          {authStatus ? (
             <>
               <div className={classes.menuButton}>
                 <IconButton
-                  href="/login"
                   onClick={() => {
-                    setAuth(false);
+                    setAuthStatus(false);
+                    logout();
+                    history.push("/");
                   }}
                 >
                   <img src={LogoutBtn} width="20" height="20" alt="Logout" />
@@ -66,6 +83,12 @@ export default function MenuAppBar() {
               </div>
               {/* <span>Hi, Martin</span> */}
             </>
+          ) : (
+            <div className={classes.menuButton}>
+              <IconButton href="/login">
+                <img src={LoginBtn} width="20" height="20" alt="Login" />
+              </IconButton>
+            </div>
           )}
         </Toolbar>
       </AppBar>

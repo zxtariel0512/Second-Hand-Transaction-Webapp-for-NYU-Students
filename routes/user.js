@@ -66,7 +66,7 @@ router.route('/login/:netid').put(auth, async(req, res) =>{
   }
 })
 
-router.route('/review/:netid').get(auth, async(req, res) =>{
+router.route('/review/:netid').get(async(req, res) =>{
   try{
     let targetUser = await User.findOne({netid: req.params.netid});
     await targetUser.populate('reviews').execPopulate();
@@ -97,8 +97,5 @@ router.route('/review/post/:netid').post( async(req, res) =>{
   }
 
 })
-
-
-
 
 module.exports = router;

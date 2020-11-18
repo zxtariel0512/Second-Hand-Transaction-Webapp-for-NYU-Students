@@ -8,13 +8,15 @@ import SampleAvatar from "Assets/img/faces/christian.jpg";
 import Phone from "Assets/img/icons/phone.svg";
 import Diamond from "Assets/img/icons/diamond.svg";
 import Email from "Assets/img/icons/email.svg";
+import Graduation from "Assets/img/icons/graduate.svg";
 
 const useStyles = makeStyles({
   container: {
-    width: 350,
+    width: 300,
     height: 500,
     boxShadow: "0 0 5px #888",
     textAlign: "center",
+    position: "relative",
   },
   avatar: {
     width: 100,
@@ -29,12 +31,15 @@ const useStyles = makeStyles({
   },
   contact: {
     marginTop: "-10px",
-
     display: "flex",
     alignItems: "center",
   },
   icon: {
     paddingRight: "3vh",
+  },
+
+  alignLeft: {
+    textAlign: "left",
   },
 });
 
@@ -43,7 +48,7 @@ const Contact = ({ img, info }) => {
   return (
     <div className={classes.contact}>
       <img className={classes.icon} src={img} width="20" height="20" />
-      <p>{info}</p>
+      <p className={classes.alignLeft}>{info}</p>
     </div>
   );
 };
@@ -60,10 +65,18 @@ const ProfileCard = ({ profile }) => {
         <Contact img={Diamond} info={profile?.credit} />
         <Contact img={Phone} info={profile?.phone} />
         <Contact img={Email} info={`${profile?.username}@nyu.edu`} />
+        {profile?.schoolYear ? (
+          <Contact
+            img={Graduation}
+            info={`${profile.major} Major, Graduate in ${profile?.schoolYear}`}
+          />
+        ) : null}
+
+        <Button variant="outlined" color="primary" className={classes.editBtn}>
+          Edit
+        </Button>
       </div>
-      <Button variant="outlined" color="primary">
-        Edit
-      </Button>
+
       {/* <Menu> */}
     </Card>
   );

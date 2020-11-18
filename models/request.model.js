@@ -7,15 +7,18 @@ const RequestSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        default: "available"
     },
     title: {
         type: String,
         required: true
     },
     description: String,
-    image_url: String,
-    budget_price: String,
+    cover_image_url: String,
+    detail_image_urls:[String],
+    original_budget_price: String,
+    current_budgeet_price:String,
     created_date: {
         type: Date,
         default: Date.now

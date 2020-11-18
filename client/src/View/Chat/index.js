@@ -46,15 +46,19 @@ export default function Index(props) {
 
     setChats(foundChats);
 
-    let messages = await axios
-      .get(ENDPOINT + "/messages/" + chatId, {
-        headers: {
-          Authorization: "Bearer " + TOKEN,
-        },
-      })
-      .then((res) => res.data);
+    if (chatId == "new") {
+      console.log(props.location.listingInfo);
+    } else {
+      let messages = await axios
+        .get(ENDPOINT + "/messages/" + chatId, {
+          headers: {
+            Authorization: "Bearer " + TOKEN,
+          },
+        })
+        .then((res) => res.data);
 
-    setAllMessages(messages);
+      setAllMessages(messages);
+    }
 
     socket.emit("joinChats", foundChats);
 

@@ -1,7 +1,8 @@
 // Custom card that renders each listing item on Home view
 import React from "react";
-import Theme from "../../../Theme/theme";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { CallReceived } from "@material-ui/icons";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -9,9 +10,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import Typography from "@material-ui/core/Typography";
-import ImagePlaceholder from "../../../Assets/img/img-placeholder.png";
-import { CallReceived } from "@material-ui/icons";
 import Grow from "@material-ui/core/Grow";
+
+import ImagePlaceholder from "../../../Assets/img/img-placeholder.png";
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
@@ -42,7 +44,6 @@ const useStyles = makeStyles({
     bottom: 24,
     right: 25,
     fontSize: 22,
-    color: Theme.colors.pinky,
   },
   title: {
     fontFamily: "Roboto",
@@ -63,27 +64,32 @@ export default function CustomCard(props) {
   return (
     <Grow in={true} timeout={props.timeout}>
       <Card className={classes.root}>
-        <CardActionArea className={classes.cardarea}>
-          <CardMedia
-            className={classes.media}
-            image={props.image_url ? props.image_url : ImagePlaceholder}
-          />
-          <CardContent>
-            <Typography gutterBottom className={classes.title}>
-              {props.title}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              by {props.user_id}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          <div className={classes.row}>
-            {props.category_id ? <LocalOfferIcon /> : null}
-            <p className={classes.categoryText}>{props.category_id}</p>
-          </div>
-          <Typography className={classes.fixed}>${props.price}</Typography>
-        </CardActions>
+        <Link
+          to={{ pathname: `/item/${props._id}`, state: props }}
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <CardActionArea className={classes.cardarea}>
+            <CardMedia
+              className={classes.media}
+              image={props.image_url ? props.image_url : ImagePlaceholder}
+            />
+            <CardContent>
+              <Typography gutterBottom className={classes.title}>
+                {props.title}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                by {props.user_id}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+            <div className={classes.row}>
+              {props.category_id ? <LocalOfferIcon /> : null}
+              <p className={classes.categoryText}>{props.category_id}</p>
+            </div>
+            <Typography className={classes.fixed}>${props.price}</Typography>
+          </CardActions>
+        </Link>
       </Card>
     </Grow>
   );

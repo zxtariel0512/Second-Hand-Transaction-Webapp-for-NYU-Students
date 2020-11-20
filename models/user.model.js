@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     venmo: {type: String},
     instagram: {type: String},
     facebook: {type: String},
-    descriptioBn: {type: String, maxlength: 30},
+    description: {type: String, maxlength: 30},
 });
 
 module.exports = mongoose.model('User', userSchema);

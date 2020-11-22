@@ -1,14 +1,29 @@
 import { Paper, Typography } from "@material-ui/core";
 import React from "react";
-import ReviewSection from "View/PostItem/Reviews";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles({
+  body: {
+    width: "280px",
+  },
+  container: {
+    width: "90%",
+    padding: 10,
+    margin: "auto",
+    borderBottom: "1px solid #ccc",
+  },
+});
 const ProfileReviews = ({ reviews }) => {
+  const classes = useStyles();
   return (
-    <Paper>
+    <Paper className={classes.body}>
       {reviews?.map((review, index) => (
-        <Typography>
-          {index + 1}. Rating: {review.rating}. Review: {review.description}
-        </Typography>
+        <div className={classes.container}>
+          <Typography>
+            Rating: {review.rating}. <br />
+            Review: {review.description}
+          </Typography>
+        </div>
       ))}
     </Paper>
   );

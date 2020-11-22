@@ -31,6 +31,7 @@ const StyledTableRow = withStyles((theme) => ({
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
+    marginTop: 60,
   },
 });
 
@@ -38,7 +39,7 @@ export default function ListingTable({ listing }) {
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>

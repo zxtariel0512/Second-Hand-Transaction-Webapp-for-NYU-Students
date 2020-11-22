@@ -6,48 +6,56 @@ import { Typography } from "@material-ui/core";
 import ListingTable from "../ListingTable/ListingTable";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import ProfileReviews from "Components/ProfileReviews/ProfileReviews";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
-    width: "100%",
+    width: "700px",
     height: 500,
-    marginLeft: "4vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
   },
-
   title: {
     fontWeight: 300,
     position: "absolute",
-    top: 90,
+    top: 10,
+    left: 10,
   },
   toggle: {
     position: "absolute",
-    top: 90,
-    right: 130,
+    top: 10,
+    right: 0,
   },
-});
+  toggleBtns: {
+    backgroundColor: theme.palette.common.black,
+  },
+  whiteText: {
+    color: theme.palette.common.white,
+  },
+  listing: {
+    position: "relative",
+    backgroundColor: "#f0ffff",
+  },
+}));
 
 const ToggleButtons = ({ toggleListing, setToggleListing }) => {
+  const classes = useStyles();
+
   const handleToggleListing = (event, val) => {
     setToggleListing(val);
   };
 
   return (
     <ToggleButtonGroup
+      className={classes.toggleBtns}
       value={toggleListing}
       exclusive
       onChange={handleToggleListing}
       aria-label="text alignment"
+      size="small"
     >
       <ToggleButton value="Listing" aria-label="listing">
-        <Typography>Listings</Typography>
+        <Typography className={classes.whiteText}>Listings</Typography>
       </ToggleButton>
       <ToggleButton value="Requests" aria-label="request">
-        <Typography>Requests</Typography>
+        <Typography className={classes.whiteText}>Requests</Typography>
       </ToggleButton>
     </ToggleButtonGroup>
   );
@@ -59,20 +67,19 @@ const ProfileContent = ({ listing }) => {
   const [toggleListing, setToggleListing] = useState("Listings");
   console.log(toggleListing);
   return (
-    <div className="container">
-      <Typography variant="h5" className={classes.title}>
-        Your {toggleListing}
-      </Typography>
-      <div className={classes.toggle}>
-        <ToggleButtons
-          toggleListing={toggleListing}
-          setToggleListing={setToggleListing}
-        />
-      </div>
+    <div className={classes.container}>
       <div className={classes.listing}>
+        <Typography variant="h5" className={classes.title}>
+          Your {toggleListing}
+        </Typography>
+        <div className={classes.toggle}>
+          <ToggleButtons
+            toggleListing={toggleListing}
+            setToggleListing={setToggleListing}
+          />
+        </div>
         <ListingTable listing={listing} />
       </div>
-      <ProfileReviews />
     </div>
   );
 };

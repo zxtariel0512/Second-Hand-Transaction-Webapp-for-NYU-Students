@@ -12,6 +12,7 @@ import MessageContext from "../../../Context/MessageContext";
 import BasicInfo from "../BasicInfo";
 import MoreDetails from "../MoreDetails";
 import Review from "../Reviews/index";
+import UploadPostItem from "../Upload/";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -104,11 +105,6 @@ export default function HorizontalLinearStepper() {
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          {/* if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            );
-          } */}
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }
@@ -122,9 +118,7 @@ export default function HorizontalLinearStepper() {
       <Box display="flex" justifyContent="center">
         {activeStep === steps.length ? (
           <div>
-            <div className={classes.instructions}>
-              Item Post Successfully
-            </div>
+            <UploadPostItem />
           </div>
         ) : (
           <div>
@@ -140,24 +134,13 @@ export default function HorizontalLinearStepper() {
               >
                 Back
               </Button>
-              {/* {isStepOptional(activeStep) && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSkip}
-                  className={classes.button}
-                >
-                  Skip
-                </Button>
-              )} */}
-
               <Button
                 variant="outlined"
                 color="primary"
                 onClick={handleNext}
                 className={classes.button}
               >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                {activeStep === steps.length - 1 ? "Submit" : "Next"}
               </Button>
             </div>
           </div>

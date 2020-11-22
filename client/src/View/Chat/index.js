@@ -31,7 +31,7 @@ export default function Index(props) {
 
   const [sendMessage, setSendMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
-  const [chatId, setChatId] = useState(props.location.pathname.split("/")[2]);
+  const [chatId, setChatId] = useState("");
   const [currChat, setCurrChat] = useState("");
   const [chats, setChats] = useState([]);
 
@@ -41,20 +41,19 @@ export default function Index(props) {
     const getAllChats = async () => {
       const res = await getChats();
       // show error if request is failed
+      // if (chatId == "direct") {
+      //   console.log(res.data);
+      //   setChatId(res.data[0]._id);
+      //   props.history.push(`/chat/${res.data[0]._id}`);
+      //   return;
+      // }
       res.success ? setChats(res.data) : setError(res.message);
       socket.emit("joinChats", res.data);
     };
-    getAllChats();
 
-    if (chatId == "new") {
-      const { listingInfo } = props.location;
-      console.log(listingInfo);
-      setCurrChat({
-        name: listingInfo.title,
-      });
-    } else {
-      getThisChat(chatId);
-    }
+    await getAllChats();
+
+    setChatId(props.location.pathname.split("/")[2]);
 
     socket.on("welcome", (data) => {
       console.log(data); //setResponse(data)
@@ -62,6 +61,26 @@ export default function Index(props) {
 
     scrollToBottom(false);
   }, []);
+
+  useEffect(async () => {
+    if (chatId == "direct") {
+      setChatId(chats[0]._id);
+      props.history.push(`/chat/${chats[0]._id}`);
+      return;
+    } else if (chatId == "new") {
+      const { listingInfo } = props.location;
+      console.log(listingInfo);
+      if (!listingInfo) {
+        props.history.push("/home");
+        return;
+      }
+      setCurrChat({
+        name: listingInfo.title,
+      });
+    } else if (chatId != "") {
+      await getThisChat(chatId);
+    }
+  }, [chatId]);
 
   useEffect(() => {
     socket.off("newMessage");
@@ -106,7 +125,6 @@ export default function Index(props) {
 
   const changeChat = async (newChatId) => {
     setChatId(newChatId);
-    getThisChat(newChatId);
   };
 
   const scrollToBottom = (smoothScroll) => {
@@ -177,9 +195,10 @@ export default function Index(props) {
             <div className={classes.chatBox}>
               <div className={classes.chatBoxHeader}>{currChat.name}</div>
               <div className={classes.chatBoxMessages}>
-                {allMessages.map((msg) => {
-                  return <Message msg={msg} />;
-                })}
+                {allMessages &&
+                  allMessages.map((msg) => {
+                    return <Message msg={msg} />;
+                  })}
                 <div ref={messagesEndRef} />
               </div>
               <div className={classes.chatBoxInput}>

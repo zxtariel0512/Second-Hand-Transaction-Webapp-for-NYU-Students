@@ -17,14 +17,14 @@ import UploadPostItem from "../Upload/";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginBottom: '100px',
+    marginBottom: "100px",
   },
   button: {
     marginRight: theme.spacing(1),
-    marginLeft: '85px'
+    marginLeft: "85px",
   },
   instructions: {
-    width:"100%",
+    width: "100%",
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
@@ -53,7 +53,7 @@ export default function HorizontalLinearStepper() {
   const [skipped, setSkipped] = React.useState(new Set());
   const steps = getSteps();
 
-  const { setMessage } = useContext(MessageContext)
+  const { setMessage } = useContext(MessageContext);
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -72,7 +72,7 @@ export default function HorizontalLinearStepper() {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
-    setMessage('Saved Successfully!')
+    setMessage("Saved Successfully!");
   };
 
   const handleBack = () => {
@@ -124,7 +124,7 @@ export default function HorizontalLinearStepper() {
           <div>
             <div className={classes.instructions}>
               {getStepContent(activeStep)}
-            </div>  
+            </div>
             <div>
               <Button
                 disabled={activeStep === 0}

@@ -1,7 +1,7 @@
 const ImgContainerStyle = {
   container: {
     marginTop: "20px",
-    width:'100%',
+    width: "100%",
   },
 };
 

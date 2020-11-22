@@ -37,14 +37,16 @@ export default function ImgCropper(props) {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [loading, setLoading] = useState(false);
 
-
   // Dynamically use localstorage
   const localStorageVar = () => {
-    return props.type === 'cover' ? 'savedCoverPhoto' : 'savedSkillPhoto';
-  }
+    return props.type === "cover" ? "savedCoverPhoto" : "savedSkillPhoto";
+  };
 
   // Local Storage to save the cropped image
-  const [savedCroppedImg, setSavedCroppedImg] = useLocalStorage(localStorageVar(), []);
+  const [savedCroppedImg, setSavedCroppedImg] = useLocalStorage(
+    localStorageVar(),
+    []
+  );
 
   const {
     openPreviewModal,

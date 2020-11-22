@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grow } from "@material-ui/core"
+import { Grow } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ImgCropAndDropContext from "./Store/ImgDropAndCropContext";
 import { ImgThumbNailStyle } from "./style";
@@ -45,7 +45,7 @@ export default function ImgThumbNail({ id, src }) {
         className={classes.img}
         src={src.cropped}
         onClick={onEdit}
-        style={{cursor: 'pointer'}}
+        style={{ cursor: "pointer" }}
       />
       <span onClick={onDelete}>
         <DeleteIcon color="secondary" className={classes.closeBtn} />

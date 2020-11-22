@@ -26,11 +26,11 @@ export default function MoreDetails() {
     ];
     if (savedPrice) setPrice(savedPrice);
     if (savedDeliveryMethod) {
-        setDeliveryMethod(savedDeliveryMethod)
-    }else{
-        // Default Value
-        setLocalStorage("deliveryMethod", "shipping")
-    };
+      setDeliveryMethod(savedDeliveryMethod);
+    } else {
+      // Default Value
+      setLocalStorage("deliveryMethod", "shipping");
+    }
   }, []);
 
   const onSetPrice = (e) => {
@@ -49,7 +49,7 @@ export default function MoreDetails() {
         <FormControl variant="outlined">
           <InputLabel htmlFor="price-input">Price</InputLabel>
           <OutlinedInput
-            style={{width: '200px'}}
+            style={{ width: "200px" }}
             id="price-input"
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             labelWidth={60}
@@ -57,7 +57,7 @@ export default function MoreDetails() {
               style: {
                 fontSize: "1.5rem",
                 fontWeight: "600",
-                color: '#15A08B'
+                color: "#15A08B",
               },
             }}
             value={price}

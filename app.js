@@ -22,11 +22,13 @@ mongoose.connect(db, {
 
 const userRouter = require('./routes/user');
 const listingRouter = require('./routes/listing');
-const requestRouter = require('./routes/request')
+const requestRouter = require('./routes/request');
+const categoryRouter = require('./routes/category')
 
 app.use('/user', userRouter);
 app.use('/listings', listingRouter);
-app.use('/requests',requestRouter)
+app.use('/requests',requestRouter);
+app.use('/category', categoryRouter)
 
 app.listen(4000, () => {
   console.log("secondhand server started");

@@ -39,12 +39,12 @@ export default function CategorySelector(props) {
         )}
       />
       {previous && (
-        <Box mt="10px"> 
-        <small style={{ color: "#90a4ae" }}>
-          <strong>Previous Selection: </strong>
-          {currentValue}
-        </small>
-        </Box> 
+        <Box mt="10px">
+          <small style={{ color: "#90a4ae" }}>
+            <strong>Previous Selection: </strong>
+            {currentValue}
+          </small>
+        </Box>
       )}
     </>
   );

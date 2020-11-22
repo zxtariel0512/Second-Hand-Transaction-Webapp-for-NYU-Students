@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BasicInfo() {
-  
   const classes = useStyles();
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");

@@ -32,7 +32,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix src/",
+    "format": "prettier --write src/"
   },
   "eslintConfig": {
     "extends": [
@@ -53,7 +56,8 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-prettier": "^6.15.0"
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4"
   },
   "proxy": "http://localhost:3000"
 }

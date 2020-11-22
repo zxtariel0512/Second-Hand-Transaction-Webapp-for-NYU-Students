@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React from "react";
-import FaceIcon from '@material-ui/icons/Face';
+import FaceIcon from "@material-ui/icons/Face";
 // react components for routing our app without refresh
 import { Link } from "react-router-dom";
 
@@ -26,12 +26,7 @@ export default function HeaderLinks(props) {
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
-        <Button
-          href="/login"
-          color="transparent"
-          target="_blank"
-          className={classes.navLink}
-        >
+        <Button href="/login" color="transparent" className={classes.navLink}>
           <FaceIcon className={classes.icons} /> Login
         </Button>
       </ListItem>

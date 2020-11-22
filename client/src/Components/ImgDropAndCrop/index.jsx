@@ -21,9 +21,7 @@ export default function ImgDropAndCrop(props) {
   const [counter, setCounter] = useState(0);
   const [inputDisable, setInputDisable] = useState(false);
 
-  const { croppedImages, setCroppedImages } = useContext(
-    PostItemContext
-  );
+  const { croppedImages, setCroppedImages } = useContext(PostItemContext);
 
   // Dynamically use localstorage
   const localStorageVar = () => {

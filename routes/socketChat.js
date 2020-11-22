@@ -35,7 +35,7 @@ module.exports = (io) => {
             newChat.lastMessage = newMessage;
             await newChat.save();
 
-            socket.join(newChat._id);
+            socket.join(newChat._id.toString());
 
             socket.emit("newChat", {
                 message: newMessage,
@@ -57,6 +57,8 @@ module.exports = (io) => {
             foundChat.messages.push(newMessage)
             foundChat.lastMessage = newMessage
             await foundChat.save()
+
+            console.log(socket.rooms);
 
             io.to(msg.chatId).emit("newMessage", {
                 chatId: msg.chatId,

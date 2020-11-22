@@ -7,6 +7,7 @@ import Theme from "../../Theme/theme.js";
 import { useHistory } from "react-router";
 import LogoutBtn from "../../Assets/img/icons/logout.svg";
 import LoginBtn from "Assets/img/icons/login.svg";
+import SendBtn from "Assets/img/icons/send.svg";
 import ProfileBtn from "../../Assets/img/icons/user.svg";
 import StorefrontIcon from "@material-ui/icons/Storefront";
 import { AuthContext } from "Context/AuthContext";
@@ -75,6 +76,9 @@ export default function MenuAppBar() {
                   }}
                 >
                   <img src={LogoutBtn} width="20" height="20" alt="Logout" />
+                </IconButton>
+                <IconButton href="/chat/direct">
+                  <img src={SendBtn} width="20" height="20" alt="Chats" />
                 </IconButton>
                 <IconButton href="/me">
                   <img src={ProfileBtn} width="20" height="20" alt="Profile" />

@@ -19,6 +19,7 @@ const style = {
   chatList: {
     width: "300px",
     overflowY: "scroll",
+    borderRight: ".5px solid #e0e0e0",
   },
   chatBox: {
     flex: "1",
@@ -26,8 +27,11 @@ const style = {
     flexDirection: "column",
   },
   chatBoxHeader: {
-    padding: "20px",
-    borderBottom: "1px solid black",
+    display: "flex",
+    alignItems: "center",
+    padding: "0 20px",
+    height: "60px",
+    borderBottom: ".5px solid #e0e0e0",
   },
   chatBoxMessages: {
     padding: "20px 20px 0 20px",
@@ -35,10 +39,11 @@ const style = {
     overflowY: "scroll",
   },
   chatBoxInput: {
-    padding: "0 20px 20px 20px",
+    padding: "10px 20px 20px 20px",
     "& form": {
       display: "flex",
     },
+    borderTop: ".5px solid #e0e0e0",
   },
 };
 

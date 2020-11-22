@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Listing = require('../models/listing');
+let Category = require('../models/category.model');
 
 const { auth } = require("../middleware/auth");
 
@@ -28,7 +29,17 @@ router.route('/:id').get(async (req, res) => {
 // Create a new listing
 router.route('/new').post(auth, async (req, res) => {
     try {
-        let newListing = await Listing.create(req.body);
+        let currCategory = await Category.findOne({name: req.body.category});
+        const L = {
+            user_id: req.body.user_id,
+            status: req.body.status,
+            title: req.body.title,
+            category: currCategory._id,
+            description: req.body.description, cover_image_url: req.body.cover_image_url, detail_image_urls: req.body.detail_image_urls, original_price: req.body.original_price, current_price: req.body.current_price, created_date: req.body.created_date, expire_date: req.body.expire_date, payment: req.body.payment, shipment: req.body.shipment
+        }
+        let newListing = await Listing.create(L);
+        currCategory.listings.push(newListing);
+        await currCategory.save();
         res.json(newListing)
     } catch (error) {
         res.status(500).json({message: "error: create new listing"})
@@ -52,8 +63,12 @@ router.route('/:id').put(auth, async (req, res) => {
 // Delete individual listing
 router.route('/:id').delete(auth, async (req, res) => {
     try {
-        let deletedListing = await Listing.findByIdAndDelete(req.params.id);
-        res.json(deletedListing);
+        let deleteListing = await Listing.findByIdAndDelete(req.params.id);
+        let currCategory = await Category.findById(deleteListing.category);
+        const index = currCategory.listings.indexOf(deleteListing);
+        currCategory.listings.splice(index, 1);
+        await currCategory.save();
+        res.json(deleteListing);
 
     } catch (error) {
         res.status(500).json({message: "error: delete listing"})

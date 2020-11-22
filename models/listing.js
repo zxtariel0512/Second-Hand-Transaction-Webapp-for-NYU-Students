@@ -14,6 +14,11 @@ const ListingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    category:{
+        type: mongoose.Schema.Types.ObjectID,
+        ref:'Category',
+        require: true
+    },
     description: String,
     cover_image_url: String,
     detail_image_urls:[String],
@@ -25,8 +30,7 @@ const ListingSchema = new mongoose.Schema({
     },
     expire_date: Date,
     payment: String,
-    shipment: String,
-    category_id: String
+    shipment: String
 })
 
 

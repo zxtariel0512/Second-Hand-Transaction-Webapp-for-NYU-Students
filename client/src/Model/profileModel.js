@@ -8,8 +8,13 @@ const getProfileModel = (netid) => {
 };
 
 // GET USER LISTING API
-const getUserListingModel = (netid) => {
-  return axios.get(GET_USER_LISTING(netid));
+const getUserListingModel = (netid, token) => {
+  let config = {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  };
+  return axios.get(GET_USER_LISTING(netid), config);
 };
 
 export { getProfileModel, getUserListingModel };

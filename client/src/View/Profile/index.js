@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import ProfileCard from "Components/ProfileCard/ProfileCard";
 import CustomAppBar from "Components/CustomAppBar/CustomAppBar";
 import ProfileContent from "Components/ProfileContent/ProfileContent";
+
 import Theme from "Theme/theme";
 import MessageContext from "Context/MessageContext";
 import getProfile from "Controller/getProfile";
@@ -13,14 +14,14 @@ import { AuthContext } from "Context/AuthContext";
 
 const useStyles = makeStyles({
   root: {
-    marginTop: "-20vh",
-    height: "120vh",
+    marginTop: "-30vh",
+    height: "130vh",
     backgroundColor: Theme.colors.background,
   },
   container: {
-    width: "80%",
+    width: "90%",
     margin: "30vh auto",
-    paddingTop: "8vh",
+    paddingTop: "18vh",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -31,17 +32,19 @@ const Index = () => {
   const [profile, setProfile] = useState();
   const [listing, setListing] = useState();
   const { setError } = useContext(MessageContext);
-  const [authStatus] = useContext(AuthContext);
+  const [authStatus, setAuthStatus, checkStatus, token] = useContext(
+    AuthContext
+  );
   const history = useHistory();
-
+  console.log(token);
   useEffect(() => {
     const getProfileData = async () => {
-      const res = await getProfile("hw1635");
+      const res = await getProfile(localStorage.getItem("netid"));
       // show error if request is failed
       res.success ? setProfile(res.data) : setError(res.message);
     };
     const getUserListingData = async () => {
-      const res = await getUserListing("hw1635");
+      const res = await getUserListing(localStorage.getItem("netid"), token);
       // show error if request is failed
       console.log(res.data);
       res.success ? setListing(res.data) : setError(res.message);
@@ -60,7 +63,8 @@ const Index = () => {
         {/* to display user info */}
         <ProfileCard profile={profile} />
         {/* to display user listings, reviews of the user */}
-        <ProfileContent listing={listing} />
+        <ProfileContent listing={listing} reviews={profile.reviews} />
+        {/* Other users reveiws on me */}
       </div>
     </div>
   );

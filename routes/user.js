@@ -4,6 +4,7 @@ let Review = require('../models/review.model');
 
 const { auth } = require("../middleware/auth");
 
+// Get a list of all users
 router.route('/').get(async(req, res) => {
   // try {
     let foundUsers = await User.find().
@@ -14,6 +15,7 @@ router.route('/').get(async(req, res) => {
   // }
   })
 
+// Get an individual user by netid
 router.route('/:netid').get(async (req, res) => {
   try {
     let foundUser = await User.findOne({netid: req.params.netid});
@@ -25,6 +27,7 @@ router.route('/:netid').get(async (req, res) => {
   }
 })
 
+// Create a new user
 router.route('/register').post(async(req, res) => {
   try {
     let newUser = await User.create(req.body);
@@ -34,7 +37,7 @@ router.route('/register').post(async(req, res) => {
   }
 })
 
-
+// Update an individual user by netid
 router.route('/:netid').put(auth,async (req, res) => {
   try {
     let updatedUser = await User.findOneAndUpdate({netid: req.params.netid}, req.body, {new:true});
@@ -45,6 +48,7 @@ router.route('/:netid').put(auth,async (req, res) => {
   }
 })
 
+// Delete an individual user by netid
 router.route('/:netid').delete(auth,async (req, res) => {
   try {
     let deletedUser = await User.findOneAndDelete({netid: req.params.netid});
@@ -55,6 +59,7 @@ router.route('/:netid').delete(auth,async (req, res) => {
   }
 })
 
+// Login individual user by netid
 router.route('/login/:netid').put(auth,async(req, res) =>{
   try {
     let dumUser = await User.findOne({netid: req.params.netid});
@@ -67,6 +72,7 @@ router.route('/login/:netid').put(auth,async(req, res) =>{
   }
 })
 
+// Get all the reviews of a user by netid
 router.route('/review/:netid').get(auth, async(req, res) =>{
   try{
     let targetUser = await User.findOne({netid: req.params.netid});
@@ -78,6 +84,7 @@ router.route('/review/:netid').get(auth, async(req, res) =>{
   }
 })
 
+// Delete an individual review from db and from user's review list
 router.route('/review/:id').delete(auth, async(req, res) =>{
   try{
     let deletedReview = await Review.findByIdAndDelete(req.params.id);
@@ -91,6 +98,7 @@ router.route('/review/:id').delete(auth, async(req, res) =>{
   }
 })
 
+// Update an individual review
 router.route('/review/:id').put(auth, async(req, res) =>{
   try{
     let updatedReview = await Review.findByIdAndUpdate(req.params.id,req.body, {new:true});
@@ -100,12 +108,14 @@ router.route('/review/:id').put(auth, async(req, res) =>{
   }
 })
 
+//  Create a new review and add to the target users review list
 router.route('/review/post/:netid').post(auth, async(req, res) =>{
   // body params: target can use netid
   try{
     let targetUser = await User.findOne({netid: req.params.netid});
 
     const review = {
+      reviewer:req.body.reviewer,
       target: targetUser._id,
       rating: req.body.rating,
       description: req.body.description

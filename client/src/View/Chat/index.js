@@ -46,24 +46,24 @@ export default function Index(props) {
 
     setChats(foundChats);
 
-    // if (chatId == "new") {
-    //   const { listingInfo } = props.location;
-    //   console.log(listingInfo);
-    //   setCurrChat({
-    //     name: listingInfo.title,
-    //   });
-    // } else {
-    let chat = await axios
-      .get(ENDPOINT + "/chat/" + chatId, {
-        headers: {
-          Authorization: "Bearer " + TOKEN,
-        },
-      })
-      .then((res) => res.data);
+    if (chatId == "new") {
+      const { listingInfo } = props.location;
+      console.log(listingInfo);
+      setCurrChat({
+        name: listingInfo.title,
+      });
+    } else {
+      let chat = await axios
+        .get(ENDPOINT + "/chat/" + chatId, {
+          headers: {
+            Authorization: "Bearer " + TOKEN,
+          },
+        })
+        .then((res) => res.data);
 
-    setCurrChat(chat);
-    setAllMessages(chat.messages);
-    //}
+      setCurrChat(chat);
+      setAllMessages(chat.messages);
+    }
 
     socket.emit("joinChats", foundChats);
 
@@ -76,11 +76,23 @@ export default function Index(props) {
 
   useEffect(() => {
     socket.off("newMessage");
+    socket.off("newChat");
 
     socket.on("newMessage", (msg) => {
       newMessage(msg);
     });
-  }, [chatId, allMessages]);
+
+    socket.on("newChat", (data) => {
+      console.log(data);
+      setChatId(data.chat._id);
+      setCurrChat(data.chat);
+      setAllMessages(data.chat.messages);
+      console.log(chats);
+      setChats([...chats, data.chat]);
+
+      props.history.push("/chat/" + data.chat._id);
+    });
+  }, [chatId, allMessages, chats]);
 
   const newMessage = (msg) => {
     console.log(msg.value);
@@ -123,6 +135,20 @@ export default function Index(props) {
 
   useEffect(() => scrollToBottom(false), [allMessages]);
 
+  const createNewChat = (newMessageValue) => {
+    const { listingInfo } = props.location;
+    socket.emit("createChat", {
+      message: {
+        author: "mrf441",
+        value: newMessageValue,
+      },
+      chat: {
+        name: listingInfo.title,
+        participants: ["mrf441", listingInfo.user_id],
+      },
+    });
+  };
+
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     setSendMessage("");
@@ -155,11 +181,17 @@ export default function Index(props) {
 
     //   props.history.push("/chat/" + newChat._id);
     // } else {
-    socket.emit("sendMessage", {
-      chatId,
-      author: "Matthew Fan",
-      value: sendMessage,
-    });
+    if (chatId == "new") {
+      console.log("create new chat");
+      createNewChat(sendMessage);
+    } else {
+      console.log("send a new messaage");
+      socket.emit("sendMessage", {
+        chatId,
+        author: "Matthew Fan",
+        value: sendMessage,
+      });
+    }
     //}
   };
 

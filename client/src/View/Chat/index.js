@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import io from "socket.io-client";
-import axios from "axios";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,15 +13,18 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Input from "@material-ui/core/Input";
 import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
+import MessageContext from "../../Context/MessageContext";
+
+import getChats from "../../Controller/Chat/getChats";
+import getOneChat from "../../Controller/Chat/getOneChat";
 
 const useStyles = makeStyles(style);
 
 const ENDPOINT = "http://localhost:4000";
-const TOKEN =
-  "eyJraWQiOiJiY3RTVUJrTVloTVRuQ05cLzJiUXVTNEZwYUhOb0EyT0xcLzN5STRYNWFMNU09IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI4NzVlZGMyMC0wNjZlLTQwNzEtODFhYS0zYjEyODgyNGY2MDciLCJldmVudF9pZCI6ImY3Nzk5MTMyLTc5NTctNGJhMy1iN2M0LWU3Y2YyMzkwZjJhYSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2MDU1MDU0OTQsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2FBeTkyMkxaMiIsImV4cCI6MTYwNTUwOTA5NCwiaWF0IjoxNjA1NTA1NDk0LCJqdGkiOiI3MjZmMDE0Mi04ZjdlLTQyYTEtYTIyYS02NGQ4YWJhMGVjZjIiLCJjbGllbnRfaWQiOiIzNWltcDZpNHFqNTI0aW9qZWcxYWNqbHBkciIsInVzZXJuYW1lIjoibXJmNDQxIn0.uYy3Azgj2A_OoFaAFxQEC1xstSl368S9puvp5tmKUOflwuX-f8DiuOjlI8HfRiNPknnEWCiPm7QGEigLzR6KGTe8Q1nksa0eHbML3Ls9V05NeLYPJkJ5iqtZxfT46MJiBScWh2RIxiA8CNIFkTh-2ZbAU4wWUkE-uI7SxSdfl15HSGeKJY3f91Fq9KlzC0M2GWTIZ46hk0uwKdt2eRz5ITLf3uiST_Z9RktD7LbT-kz_Acxup12v6TVVUhnTm_hZb71b-IEvbFDBDgUl6_6KbHaLzBAb-qI4lCvqtyCx8w9W7pHmT_ILUxc-3Nanbd6ZSIQwod1-HIWWew40VYXd4Q";
 let socket;
 
 export default function Index(props) {
+  const { setError } = useContext(MessageContext);
   const classes = useStyles();
 
   const messagesEndRef = useRef(null);
@@ -36,15 +38,13 @@ export default function Index(props) {
   useEffect(async () => {
     socket = io(ENDPOINT);
 
-    let foundChats = await axios
-      .get(ENDPOINT + "/chat", {
-        headers: {
-          Authorization: "Bearer " + TOKEN,
-        },
-      })
-      .then((res) => res.data);
-
-    setChats(foundChats);
+    const getAllChats = async () => {
+      const res = await getChats();
+      // show error if request is failed
+      res.success ? setChats(res.data) : setError(res.message);
+      socket.emit("joinChats", res.data);
+    };
+    getAllChats();
 
     if (chatId == "new") {
       const { listingInfo } = props.location;
@@ -53,19 +53,8 @@ export default function Index(props) {
         name: listingInfo.title,
       });
     } else {
-      let chat = await axios
-        .get(ENDPOINT + "/chat/" + chatId, {
-          headers: {
-            Authorization: "Bearer " + TOKEN,
-          },
-        })
-        .then((res) => res.data);
-
-      setCurrChat(chat);
-      setAllMessages(chat.messages);
+      getThisChat(chatId);
     }
-
-    socket.emit("joinChats", foundChats);
 
     socket.on("welcome", (data) => {
       console.log(data); //setResponse(data)
@@ -83,19 +72,23 @@ export default function Index(props) {
     });
 
     socket.on("newChat", (data) => {
-      console.log(data);
       setChatId(data.chat._id);
       setCurrChat(data.chat);
       setAllMessages(data.chat.messages);
-      console.log(chats);
       setChats([...chats, data.chat]);
 
       props.history.push("/chat/" + data.chat._id);
     });
   }, [chatId, allMessages, chats]);
 
+  const getThisChat = async (id) => {
+    const res = await getOneChat(id);
+    // show error if request is failed
+    res.success ? setCurrChat(res.data) : setError(res.message);
+    setAllMessages(res.data.messages);
+  };
+
   const newMessage = (msg) => {
-    console.log(msg.value);
     if (msg.chatId == chatId) {
       setAllMessages([...allMessages, msg]);
     }
@@ -112,19 +105,8 @@ export default function Index(props) {
   };
 
   const changeChat = async (newChatId) => {
-    //console.log(newChatId)
     setChatId(newChatId);
-
-    let chat = await axios
-      .get(ENDPOINT + "/chat/" + newChatId, {
-        headers: {
-          Authorization: "Bearer " + TOKEN,
-        },
-      })
-      .then((res) => res.data);
-
-    setCurrChat(chat);
-    setAllMessages(chat.messages);
+    getThisChat(newChatId);
   };
 
   const scrollToBottom = (smoothScroll) => {
@@ -153,46 +135,15 @@ export default function Index(props) {
     evt.preventDefault();
     setSendMessage("");
 
-    // if (chatId == "new") {
-    //   const newChat = await axios
-    //     .post(
-    //       ENDPOINT + "/chat",
-    //       {
-    //         name: props.location.listingInfo.title,
-    //       },
-    //       {
-    //         headers: {
-    //           Authorization: "Bearer " + TOKEN,
-    //         },
-    //       }
-    //     )
-    //     .then((res) => res.data);
-
-    //   socket.emit("joinNewChat", newChat._id);
-
-    //   setChatId(newChat._id);
-    //   socket.emit("sendMessage", {
-    //     chatId: newChat._id,
-    //     author: "Matthew Fan",
-    //     value: sendMessage,
-    //   });
-
-    //   setChats([...chats, newChat]);
-
-    //   props.history.push("/chat/" + newChat._id);
-    // } else {
     if (chatId == "new") {
-      console.log("create new chat");
       createNewChat(sendMessage);
     } else {
-      console.log("send a new messaage");
       socket.emit("sendMessage", {
         chatId,
         author: "Matthew Fan",
         value: sendMessage,
       });
     }
-    //}
   };
 
   return (

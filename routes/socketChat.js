@@ -17,7 +17,6 @@ module.exports = (io) => {
         })
 
         socket.on("createChat", async (details) => {
-            console.log(details);
             let newChat = await Chat.create(details.chat);
 
             details.chat.participants.forEach(async (participant) => {
@@ -44,7 +43,6 @@ module.exports = (io) => {
         })
 
         socket.on("sendMessage", async (msg) => {
-            console.log(msg.chatId)
             let newMessage = await Message.create({
                 author: msg.author,
                 value: msg.value,
@@ -52,13 +50,9 @@ module.exports = (io) => {
 
             let foundChat = await Chat.findById(msg.chatId)
 
-            console.log(foundChat)
-
             foundChat.messages.push(newMessage)
             foundChat.lastMessage = newMessage
             await foundChat.save()
-
-            console.log(socket.rooms);
 
             io.to(msg.chatId).emit("newMessage", {
                 chatId: msg.chatId,

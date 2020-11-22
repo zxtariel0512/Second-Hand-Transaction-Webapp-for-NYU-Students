@@ -43,7 +43,6 @@ export default function MenuAppBar() {
   const classes = useStyles();
   const history = useHistory();
   const [authStatus, setAuthStatus, checkStatus] = useContext(AuthContext);
-  console.log(authStatus);
   async function logout() {
     try {
       await Auth.signOut();

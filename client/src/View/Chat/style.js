@@ -18,6 +18,7 @@ const style = {
   },
   chatList: {
     width: "300px",
+    overflowY: "scroll",
   },
   chatBox: {
     flex: "1",

@@ -4,16 +4,38 @@ let Category = require('../models/category.model');
 
 const { auth } = require("../middleware/auth");
 
-// Get a list of all of the listings
+// get all listings or perform a fuzzy search
 router.route('/').get(async (req, res) => {
-    try {
-        let foundListings = await Listing.find();
-        res.json(foundListings);
-    } catch (error) {
-        res.status(500).json({message: "error: get all listing"})
+    //if query, fuzzy search
+    if (req.query.search) {
+       const regex = new RegExp(escapeRegex(req.query.search), 'gi'); 
+       Listing.find({$or: [{title: regex}, {description: regex}]}, function(err, foundListings){
+           if(err) {
+            res.status(500).json({message: "error: fuzzy search listings"})
+           } else {
+               if (foundListings.length>0){
+                res.json(foundListings);
+               }else{
+                res.json({noneFound:"No results for your query, please try again."})
+               } 
+           }
+       }); 
+    //if no query, find all listings
+    } else{
+        try {
+            let foundListings = await Listing.find();
+            res.json(foundListings);
+        } catch (error) {
+            res.status(500).json({message: "error: get all listings"})
+        }
     }
-
+    
 })
+
+//regular expression replacer
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 // Get an individual listing
 router.route('/:id').get(async (req, res) => {

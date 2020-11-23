@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import { Button, Typography } from "@material-ui/core";
+import { Button, Typography, TextField } from "@material-ui/core";
+import { useForm } from "react-hook-form";
+import updateUser from "Controller/User/updateUser";
+import { Auth } from "aws-amplify";
+import { useHistory } from "react-router";
 
 import IconButton from "@material-ui/core/IconButton";
 import SampleAvatar from "Assets/img/faces/christian.jpg";
@@ -10,7 +14,7 @@ import Diamond from "Assets/img/icons/diamond.svg";
 import Email from "Assets/img/icons/email.svg";
 import Graduation from "Assets/img/icons/graduate.svg";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: "270px",
     height: 500,
@@ -41,10 +45,14 @@ const useStyles = makeStyles({
   alignLeft: {
     textAlign: "left",
   },
-});
+  input: {
+    padding: theme.spacing(0.6),
+  },
+}));
 
 const Contact = ({ img, info }) => {
   const classes = useStyles();
+
   return (
     <div className={classes.contact}>
       <img className={classes.icon} src={img} width="20" height="20" />
@@ -52,9 +60,23 @@ const Contact = ({ img, info }) => {
     </div>
   );
 };
+
 const ProfileCard = ({ profile }) => {
   const classes = useStyles();
+  const history = useHistory();
+  const [edit, toggleEdit] = useState(false);
+  const { register, handleSubmit } = useForm({ mode: "onBlur" });
 
+  const submitForm = async (input) => {
+    try {
+      const user = await Auth.currentSession();
+      const token = user.getIdToken().jwtToken;
+      updateUser(profile.netid, input, token);
+      history.go(0);
+    } catch {
+      console.log("error");
+    }
+  };
   return (
     <Card className={classes.container}>
       <IconButton>
@@ -62,22 +84,83 @@ const ProfileCard = ({ profile }) => {
       </IconButton>
       <Typography variant="h5">{profile?.name}</Typography>
       <div className={classes.contactList}>
-        <Contact img={Diamond} info={profile?.credit} />
-        <Contact img={Phone} info={profile?.phone} />
-        <Contact img={Email} info={`${profile?.username}@nyu.edu`} />
-        {profile?.schoolYear ? (
-          <Contact
-            img={Graduation}
-            info={`${profile.major} Major, Graduate in ${profile?.schoolYear}`}
-          />
-        ) : null}
-
-        <Button variant="outlined" color="primary" className={classes.editBtn}>
-          Edit
-        </Button>
+        {edit ? (
+          <form
+            className={classes.form}
+            onSubmit={handleSubmit(submitForm)}
+            noValidate
+          >
+            <TextField
+              id="outlined-basic"
+              variant="standard"
+              label="Phone number"
+              name="phone"
+              className={classes.input}
+              placeholder={profile?.phone}
+              inputRef={register({
+                required: false,
+              })}
+            />
+            <TextField
+              id="outlined-basic"
+              variant="standard"
+              label="School year"
+              name="schoolYear"
+              placeholder={profile?.schoolYear}
+              className={classes.input}
+              inputRef={register({
+                required: false,
+              })}
+            />
+            <TextField
+              id="outlined-basic"
+              variant="standard"
+              label="Major"
+              name="major"
+              placeholder={profile?.major}
+              className={classes.input}
+              inputRef={register({
+                required: false,
+              })}
+            />
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => {
+                toggleEdit(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button variant="outlined" color="primary" type="submit">
+              Done
+            </Button>
+          </form>
+        ) : (
+          <>
+            <Contact img={Diamond} info={profile?.credit} />
+            <Contact img={Phone} info={profile?.phone} />
+            <Contact img={Email} info={`${profile?.username}@nyu.edu`} />
+            {profile?.schoolYear ? (
+              <Contact
+                img={Graduation}
+                info={`${profile.major} Major, Graduate in ${profile?.schoolYear}`}
+              />
+            ) : null}
+            <Button
+              variant="outlined"
+              color="primary"
+              type="submit"
+              className={classes.editBtn}
+              onClick={() => {
+                toggleEdit(!edit);
+              }}
+            >
+              Edit
+            </Button>
+          </>
+        )}
       </div>
-
-      {/* <Menu> */}
     </Card>
   );
 };

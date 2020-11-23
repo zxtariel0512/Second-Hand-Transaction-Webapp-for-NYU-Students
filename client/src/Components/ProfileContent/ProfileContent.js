@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import Theme from "Theme/theme";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import { Typography } from "@material-ui/core";
+import {
+  Typography,
+  BottomNavigation,
+  BottomNavigationAction,
+} from "@material-ui/core";
 import ListingTable from "../ListingTable/ListingTable";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+
+import ProfileReviews from "Components/ProfileReviews/ProfileReviews";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -35,50 +39,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ToggleButtons = ({ toggleListing, setToggleListing }) => {
-  const classes = useStyles();
-
-  const handleToggleListing = (event, val) => {
-    setToggleListing(val);
-  };
-
-  return (
-    <ToggleButtonGroup
-      className={classes.toggleBtns}
-      value={toggleListing}
-      exclusive
-      onChange={handleToggleListing}
-      aria-label="text alignment"
-      size="small"
-    >
-      <ToggleButton value="Listing" aria-label="listing">
-        <Typography className={classes.whiteText}>Listings</Typography>
-      </ToggleButton>
-      <ToggleButton value="Requests" aria-label="request">
-        <Typography className={classes.whiteText}>Requests</Typography>
-      </ToggleButton>
-    </ToggleButtonGroup>
-  );
-};
-const ProfileContent = ({ listing }) => {
+const ProfileContent = ({ reviews, listing, request }) => {
   const classes = useStyles();
 
   // state to control whether to render listing or requests
-  const [toggleListing, setToggleListing] = useState("Listings");
-  console.log(toggleListing);
+  // const [toggleListing, setToggleListing] = useState("Listings");
+  const [value, setValue] = React.useState(0);
+  console.log(value);
+  const Content = () => {
+    console.log(reviews);
+    switch (value) {
+      case 0:
+        return <ListingTable listing={listing} />;
+      case 2:
+        return <ProfileReviews reviews={reviews} />;
+      case 1:
+        return <ListingTable listing={listing} />;
+      default:
+        return null;
+    }
+  };
   return (
     <div className={classes.container}>
       <div className={classes.listing}>
-        <Typography variant="h5" className={classes.title}>
-          Your {toggleListing}
-        </Typography>
-        <div className={classes.toggle}>
-          <ToggleButtons
-            toggleListing={toggleListing}
-            setToggleListing={setToggleListing}
-          />
-        </div>
-        <ListingTable listing={listing} />
+        <BottomNavigation
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          showLabels
+          className={classes.root}
+        >
+          <BottomNavigationAction label="Listings" />
+          <BottomNavigationAction label="Requests" />
+          <BottomNavigationAction label="Reviews" />
+        </BottomNavigation>
+        <Content />
       </div>
     </div>
   );

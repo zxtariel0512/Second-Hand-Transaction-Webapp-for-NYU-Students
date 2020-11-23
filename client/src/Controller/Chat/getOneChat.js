@@ -1,10 +1,9 @@
-import { getUserListingModel } from "../../Model/profileModel";
+import { getOneChatModel } from "../../Model/Chat/chatModel";
 import ErrorMessage from "../../Context/MessageContext";
 
-const getUserListing = async (netid, token) => {
+const getOneChat = async (id) => {
   try {
-    const res = await getUserListingModel(netid, token);
-    console.log(res);
+    const res = await getOneChatModel(id);
     // Do all the data manipulation here
     return { success: true, data: res.data };
   } catch (e) {
@@ -13,4 +12,4 @@ const getUserListing = async (netid, token) => {
   }
 };
 
-export default getUserListing;
+export default getOneChat;

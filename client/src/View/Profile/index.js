@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import ProfileCard from "Components/ProfileCard/ProfileCard";
 import CustomAppBar from "Components/CustomAppBar/CustomAppBar";
 import ProfileContent from "Components/ProfileContent/ProfileContent";
-import ProfileReviews from "Components/ProfileReviews/ProfileReviews";
+
 import Theme from "Theme/theme";
 import MessageContext from "Context/MessageContext";
 import getProfile from "Controller/getProfile";
@@ -32,9 +32,11 @@ const Index = () => {
   const [profile, setProfile] = useState();
   const [listing, setListing] = useState();
   const { setError } = useContext(MessageContext);
-  const [authStatus] = useContext(AuthContext);
+  const [authStatus, setAuthStatus, checkStatus, token] = useContext(
+    AuthContext
+  );
   const history = useHistory();
-
+  console.log(token);
   useEffect(() => {
     const getProfileData = async () => {
       const res = await getProfile(localStorage.getItem("netid"));
@@ -42,7 +44,7 @@ const Index = () => {
       res.success ? setProfile(res.data) : setError(res.message);
     };
     const getUserListingData = async () => {
-      const res = await getUserListing(localStorage.getItem("netid"));
+      const res = await getUserListing(localStorage.getItem("netid"), token);
       // show error if request is failed
       console.log(res.data);
       res.success ? setListing(res.data) : setError(res.message);
@@ -61,9 +63,8 @@ const Index = () => {
         {/* to display user info */}
         <ProfileCard profile={profile} />
         {/* to display user listings, reviews of the user */}
-        <ProfileContent listing={listing} />
+        <ProfileContent listing={listing} reviews={profile.reviews} />
         {/* Other users reveiws on me */}
-        <ProfileReviews reviews={profile?.reviews} />
       </div>
     </div>
   );

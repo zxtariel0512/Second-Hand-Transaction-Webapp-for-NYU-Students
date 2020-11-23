@@ -2,13 +2,16 @@
 import * as React from "react";
 import Loadable from "./Utils/loadable";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import SingleItem from "View/SingleItem";
 
 const Landing = Loadable("Landing");
 const Login = Loadable("Login");
 const Signup = Loadable("Signup");
 const Home = Loadable("Home");
+const Chat = Loadable("Chat");
 const Profile = Loadable("Profile");
 const PostItem = Loadable("PostItem");
+const Listing = Loadable("Listing");
 
 export default class Routes extends React.Component {
   render() {
@@ -19,8 +22,10 @@ export default class Routes extends React.Component {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route path="/home" component={Home} />
+          <Route path="/chat" component={Chat} />
           <Route path="/me" component={Profile} />
           <Route path="/post-item" component={PostItem} />
+          <Route path="/item/:postId" component={SingleItem} />
         </Switch>
       </BrowserRouter>
     );

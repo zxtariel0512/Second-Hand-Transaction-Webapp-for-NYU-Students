@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import S3FileUpload from "react-s3";
 import { urlToFile } from "../../../Utils/image/toBlob";
-import uploadImages from "../../PostItem/Upload/";
 import { config } from "./config";
 import { getLocalStorage } from "../../../Utils/localstorage";
 import { CircularProgress, Box } from "@material-ui/core";
+import postNewListing from "../../../Controller/Listing/postNewListing";
+import clearCache from "../clearCache";
 
 /**
  * Covert Photos to File Objects
@@ -38,11 +39,11 @@ async function uploadFile(file) {
 
 /**
  * Upload multiple files and return the urls
- * @param {[String]} files 
+ * @param {[String]} files
  */
-async function uploadFiles(files){
+async function uploadFiles(files) {
   const url = [];
-  for(let i=0; i<files.length; i++){
+  for (let i = 0; i < files.length; i++) {
     const res = await uploadFile(files[i]);
     url.push(res);
   }
@@ -62,11 +63,16 @@ export default function UploadPostItem() {
       setStatus("Uploading Images");
       const coverPhotoURL = await uploadFile(imgFiles.coverPhoto);
       const itemPhotoURL = await uploadFiles(imgFiles.itemPhoto);
-      setStatus("Posting Your Items")
-      console.log(coverPhotoURL);
-      console.log(itemPhotoURL);
-      // TODO: Integrate API
-      // setStatus("Finished " + JSON.stringify(res));
+      setStatus("Posting Your Items");
+      const res = await postNewListing(coverPhotoURL, itemPhotoURL);
+      // Clear Cache
+      setStatus("Clearing Cache");
+      clearCache();
+      setStatus(`Upload Completed, Redirect in 3 seconds`);
+      setTimeout(() => {
+        // window.location.href = `/item/${res.data._id}`;
+        window.location.href = "/home";
+      }, 3000);
     };
     upload();
   }, []);

@@ -16,7 +16,7 @@ import Graduation from "Assets/img/icons/graduate.svg";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    width: "270px",
+    width: "300px",
     height: 500,
     boxShadow: "0 0 5px #888",
     textAlign: "center",
@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
   input: {
     padding: theme.spacing(0.6),
   },
+  buttons: {
+    margin: 10,
+  },
 }));
 
 const Contact = ({ img, info }) => {
@@ -68,10 +71,17 @@ const ProfileCard = ({ profile }) => {
   const { register, handleSubmit } = useForm({ mode: "onBlur" });
 
   const submitForm = async (input) => {
+    let filtered = {};
+    for (const attribute in input) {
+      if (input[attribute] !== "") {
+        filtered[attribute] = input[attribute];
+      }
+    }
     try {
       const user = await Auth.currentSession();
       const token = user.getIdToken().jwtToken;
-      updateUser(profile.netid, input, token);
+      updateUser(profile.netid, filtered, token);
+      // refresh page to get updated data
       history.go(0);
     } catch {
       console.log("error");
@@ -123,7 +133,9 @@ const ProfileCard = ({ profile }) => {
                 required: false,
               })}
             />
+
             <Button
+              className={classes.buttons}
               variant="outlined"
               color="primary"
               onClick={() => {
@@ -132,7 +144,12 @@ const ProfileCard = ({ profile }) => {
             >
               Cancel
             </Button>
-            <Button variant="outlined" color="primary" type="submit">
+            <Button
+              className={classes.buttons}
+              variant="outlined"
+              color="primary"
+              type="submit"
+            >
               Done
             </Button>
           </form>

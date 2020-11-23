@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  TextField,
-  InputAdornment,
-  OutlinedInput,
-  InputLabel,
   FormControl,
   Radio,
   RadioGroup,
@@ -12,6 +8,7 @@ import {
   FormControlLabel,
   Container,
 } from "@material-ui/core";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import ImgDropAndCrop from "../../../Components/ImgDropAndCrop/";
 import { getLocalStorage, setLocalStorage } from "../../../Utils/localstorage";
 
@@ -46,24 +43,25 @@ export default function MoreDetails() {
   return (
     <Container>
       <Box name="price" py="20px" display="flex" justifyContent="left">
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="price-input">Price</InputLabel>
-          <OutlinedInput
-            style={{ width: "200px" }}
-            id="price-input"
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-            labelWidth={60}
-            inputProps={{
-              style: {
-                fontSize: "1.5rem",
-                fontWeight: "600",
-                color: "#15A08B",
-              },
-            }}
-            value={price}
-            onChange={(e) => onSetPrice(e)}
-          />
-        </FormControl>
+        <CurrencyTextField
+          label="Amount"
+          variant="outlined"
+          value={price}
+          currencySymbol="$"
+          outputFormat="string"
+          decimalCharacter="."
+          digitGroupSeparator=","
+          onChange={(event) => onSetPrice(event)}
+          textAlign="center"
+          inputProps={{
+            style: {
+              fontSize: "1.5rem",
+              fontWeight: "600",
+              color: "#15A08B",
+            },
+          }}
+          placeholder="Item Price"
+        />
       </Box>
       <Box
         py="20px"

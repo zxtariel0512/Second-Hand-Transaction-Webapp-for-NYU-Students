@@ -19,12 +19,12 @@ const useStyles = makeStyles({
     backgroundColor: Theme.colors.background,
   },
   container: {
-    width: "90%",
+    width: "80%",
     margin: "30vh auto",
     paddingTop: "18vh",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
 });
 const Index = () => {
@@ -36,12 +36,12 @@ const Index = () => {
     AuthContext
   );
   const history = useHistory();
-  console.log(token);
   useEffect(() => {
     const getProfileData = async () => {
       const res = await getProfile(localStorage.getItem("netid"));
       // show error if request is failed
       res.success ? setProfile(res.data) : setError(res.message);
+      console.log(profile);
     };
     const getUserListingData = async () => {
       const res = await getUserListing(localStorage.getItem("netid"), token);
@@ -63,8 +63,7 @@ const Index = () => {
         {/* to display user info */}
         <ProfileCard profile={profile} />
         {/* to display user listings, reviews of the user */}
-        <ProfileContent listing={listing} reviews={profile.reviews} />
-        {/* Other users reveiws on me */}
+        <ProfileContent listing={listing} reviews={profile?.reviews} />
       </div>
     </div>
   );

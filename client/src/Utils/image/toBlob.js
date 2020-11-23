@@ -17,9 +17,9 @@ async function urlToBlob(url) {
 }
 
 /**
- * Convert and Compress the
- * @param {*} url
- * @param {*} { compressed: false } default
+ * Convert and Compress the image file
+ * @param {String} url
+ * @param {String} { compressed: false } default
  */
 
 async function urlToFile(url, { compressed }) {

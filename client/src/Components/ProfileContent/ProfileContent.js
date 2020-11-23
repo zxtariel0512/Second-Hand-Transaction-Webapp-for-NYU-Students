@@ -11,10 +11,18 @@ import ListingTable from "../ListingTable/ListingTable";
 
 import ProfileReviews from "Components/ProfileReviews/ProfileReviews";
 
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import HelpIcon from "@material-ui/icons/Help";
+import RateReviewIcon from "@material-ui/icons/RateReview";
+
 const useStyles = makeStyles((theme) => ({
   container: {
     width: "700px",
     height: 500,
+    marginLeft: 10,
+  },
+  root: {
+    backgroundColor: Theme.colors.background,
   },
   title: {
     fontWeight: 300,
@@ -28,7 +36,11 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
   },
   toggleBtns: {
-    backgroundColor: theme.palette.common.black,
+    borderRadius: "20px",
+    border: "1px solid #ccc",
+    marginRight: theme.spacing(3),
+    fontSize: "25px",
+    color: theme.palette.common.black,
   },
   whiteText: {
     color: theme.palette.common.white,
@@ -45,9 +57,8 @@ const ProfileContent = ({ reviews, listing, request }) => {
   // state to control whether to render listing or requests
   // const [toggleListing, setToggleListing] = useState("Listings");
   const [value, setValue] = React.useState(0);
-  console.log(value);
+
   const Content = () => {
-    console.log(reviews);
     switch (value) {
       case 0:
         return <ListingTable listing={listing} />;
@@ -70,9 +81,21 @@ const ProfileContent = ({ reviews, listing, request }) => {
           showLabels
           className={classes.root}
         >
-          <BottomNavigationAction label="Listings" />
-          <BottomNavigationAction label="Requests" />
-          <BottomNavigationAction label="Reviews" />
+          <BottomNavigationAction
+            className={classes.toggleBtns}
+            label="Listings"
+            icon={<AssignmentIcon />}
+          />
+          <BottomNavigationAction
+            className={classes.toggleBtns}
+            label="Requests"
+            icon={<HelpIcon />}
+          />
+          <BottomNavigationAction
+            className={classes.toggleBtns}
+            label="Reviews"
+            icon={<RateReviewIcon />}
+          />
         </BottomNavigation>
         <Content />
       </div>

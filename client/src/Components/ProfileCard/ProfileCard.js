@@ -16,7 +16,7 @@ import Graduation from "Assets/img/icons/graduate.svg";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    width: "270px",
+    width: "300px",
     height: 500,
     boxShadow: "0 0 5px #888",
     textAlign: "center",

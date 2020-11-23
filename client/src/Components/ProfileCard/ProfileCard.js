@@ -68,10 +68,17 @@ const ProfileCard = ({ profile }) => {
   const { register, handleSubmit } = useForm({ mode: "onBlur" });
 
   const submitForm = async (input) => {
+    let filtered = {};
+    for (const attribute in input) {
+      if (input[attribute] !== "") {
+        filtered[attribute] = input[attribute];
+      }
+    }
     try {
       const user = await Auth.currentSession();
       const token = user.getIdToken().jwtToken;
-      updateUser(profile.netid, input, token);
+      updateUser(profile.netid, filtered, token);
+      // refresh page to get updated data
       history.go(0);
     } catch {
       console.log("error");

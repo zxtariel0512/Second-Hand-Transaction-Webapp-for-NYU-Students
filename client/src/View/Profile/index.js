@@ -36,7 +36,6 @@ const Index = () => {
     AuthContext
   );
   const history = useHistory();
-  console.log(token);
   useEffect(() => {
     const getProfileData = async () => {
       const res = await getProfile(localStorage.getItem("netid"));
@@ -52,7 +51,7 @@ const Index = () => {
     getUserListingData();
     getProfileData();
   }, []);
-
+  console.log(profile);
   if (!authStatus) {
     history.push("/signup");
   }
@@ -64,7 +63,6 @@ const Index = () => {
         <ProfileCard profile={profile} />
         {/* to display user listings, reviews of the user */}
         <ProfileContent listing={listing} reviews={profile.reviews} />
-        {/* Other users reveiws on me */}
       </div>
     </div>
   );

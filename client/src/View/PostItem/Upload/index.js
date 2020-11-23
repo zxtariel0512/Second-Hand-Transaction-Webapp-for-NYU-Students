@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import S3FileUpload from "react-s3";
 import { urlToFile } from "../../../Utils/image/toBlob";
-import uploadImages from "../../PostItem/Upload/";
 import { config } from "./config";
 import { getLocalStorage } from "../../../Utils/localstorage";
 import { CircularProgress, Box } from "@material-ui/core";
@@ -38,11 +37,11 @@ async function uploadFile(file) {
 
 /**
  * Upload multiple files and return the urls
- * @param {[String]} files 
+ * @param {[String]} files
  */
-async function uploadFiles(files){
+async function uploadFiles(files) {
   const url = [];
-  for(let i=0; i<files.length; i++){
+  for (let i = 0; i < files.length; i++) {
     const res = await uploadFile(files[i]);
     url.push(res);
   }
@@ -62,9 +61,7 @@ export default function UploadPostItem() {
       setStatus("Uploading Images");
       const coverPhotoURL = await uploadFile(imgFiles.coverPhoto);
       const itemPhotoURL = await uploadFiles(imgFiles.itemPhoto);
-      setStatus("Posting Your Items")
-      console.log(coverPhotoURL);
-      console.log(itemPhotoURL);
+      setStatus("Posting Your Items");
       // TODO: Integrate API
       // setStatus("Finished " + JSON.stringify(res));
     };

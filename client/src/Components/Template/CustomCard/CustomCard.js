@@ -64,7 +64,20 @@ const useStyles = makeStyles({
 export default function CustomCard(props) {
   const classes = useStyles();
   // const [checked, setChecked] = useState();
-
+  // TEMP CODE
+  let imgurl, price;
+  if (props.image_url) {
+    imgurl = props.image_url;
+  } else if (props.cover_image_url) {
+    imgurl = props.cover_image_url;
+  } else {
+    imgurl = ImagePlaceholder;
+  }
+  if (props.price) {
+    price = props.price;
+  } else {
+    price = props.original_price;
+  }
   return (
     <Grow in={true} timeout={props.timeout}>
       <Card className={classes.root}>
@@ -73,10 +86,7 @@ export default function CustomCard(props) {
           style={{ textDecoration: "none", color: "black" }}
         >
           <CardActionArea className={classes.cardarea}>
-            <CardMedia
-              className={classes.media}
-              image={props.image_url ? props.image_url : ImagePlaceholder}
-            />
+            <CardMedia className={classes.media} image={imgurl} />
             <CardContent>
               <Typography gutterBottom className={classes.title}>
                 {props.title}
@@ -91,7 +101,7 @@ export default function CustomCard(props) {
               {props.category_id ? <LocalOfferIcon /> : null}
               <p className={classes.categoryText}>{props.category_id}</p>
             </div>
-            <Typography className={classes.fixed}>${props.price}</Typography>
+            <Typography className={classes.fixed}>${price}</Typography>
           </CardActions>
         </Link>
       </Card>

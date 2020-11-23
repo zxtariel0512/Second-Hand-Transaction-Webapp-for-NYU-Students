@@ -70,7 +70,8 @@ export default function UploadPostItem() {
       clearCache();
       setStatus(`Upload Completed, Redirect in 3 seconds`);
       setTimeout(() => {
-        window.location.href = `/item/${res.data._id}`;
+        // window.location.href = `/item/${res.data._id}`;
+        window.location.href = "/home";
       }, 3000);
     };
     upload();

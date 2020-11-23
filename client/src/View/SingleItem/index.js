@@ -5,6 +5,7 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
 
 import Avatar from "Assets/img/faces/avatar-example.jpg";
+import ImagePlaceholder from "Assets/img/img-placeholder.png";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -74,18 +75,28 @@ const SingleItem = () => {
   const location = useLocation();
   const item = location.state;
   const classes = useStyle();
-
+  // tmep code
+  let imgurl;
+  let price;
+  if (item.image_url) {
+    imgurl = item.image_url;
+  } else if (item.cover_image_url) {
+    imgurl = item.cover_image_url;
+  } else {
+    imgurl = ImagePlaceholder;
+  }
+  if (item.price) {
+    price = item.price;
+  } else {
+    price = item.original_price;
+  }
   return (
     <div className={classes.container}>
       <CustomAppBar />
       <div className={classes.row}>
         <div className={classes.imageContainer}>
           <div className={classes.portrait}>
-            <img
-              className={classes.coverImg}
-              src={item.image_url}
-              alt="cover"
-            ></img>
+            <img className={classes.coverImg} src={imgurl} alt="cover"></img>
           </div>
           {/* render other pics here */}
         </div>
@@ -95,7 +106,7 @@ const SingleItem = () => {
           </PoppinsFont>
           <div className={classes.avatarRow}>
             <PoppinsFont variant="h4" className={classes.pricetag}>
-              ${item?.price}
+              ${price}
             </PoppinsFont>
             <div className={classes.sellerInfo}>
               <PoppinsFont variant="p" className={classes.postedby}>

@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
   input: {
     padding: theme.spacing(0.6),
   },
+  buttons: {
+    margin: 10,
+  },
 }));
 
 const Contact = ({ img, info }) => {
@@ -130,7 +133,9 @@ const ProfileCard = ({ profile }) => {
                 required: false,
               })}
             />
+
             <Button
+              className={classes.buttons}
               variant="outlined"
               color="primary"
               onClick={() => {
@@ -139,7 +144,12 @@ const ProfileCard = ({ profile }) => {
             >
               Cancel
             </Button>
-            <Button variant="outlined" color="primary" type="submit">
+            <Button
+              className={classes.buttons}
+              variant="outlined"
+              color="primary"
+              type="submit"
+            >
               Done
             </Button>
           </form>

@@ -4,6 +4,8 @@ import { urlToFile } from "../../../Utils/image/toBlob";
 import { config } from "./config";
 import { getLocalStorage } from "../../../Utils/localstorage";
 import { CircularProgress, Box } from "@material-ui/core";
+import postNewListing from "../../../Controller/Listing/postNewListing";
+import clearCache from "../clearCache";
 
 /**
  * Covert Photos to File Objects
@@ -62,8 +64,14 @@ export default function UploadPostItem() {
       const coverPhotoURL = await uploadFile(imgFiles.coverPhoto);
       const itemPhotoURL = await uploadFiles(imgFiles.itemPhoto);
       setStatus("Posting Your Items");
-      // TODO: Integrate API
-      // setStatus("Finished " + JSON.stringify(res));
+      const res = await postNewListing(coverPhotoURL, itemPhotoURL);
+      // Clear Cache
+      setStatus("Clearing Cache");
+      clearCache();
+      setStatus(`Upload Completed, Redirect in 3 seconds`);
+      setTimeout(() => {
+        window.location.href = `/item/${res.data._id}`;
+      }, 3000);
     };
     upload();
   }, []);

@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import MessageContext from "../../../Context/MessageContext";
+import PostItemContext from "../store/context";
 
 // Pages
 import BasicInfo from "../BasicInfo";
@@ -54,6 +55,7 @@ export default function HorizontalLinearStepper() {
   const steps = getSteps();
 
   const { setMessage } = useContext(MessageContext);
+  const { validation, setValidation } = useContext(PostItemContext);
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -134,14 +136,26 @@ export default function HorizontalLinearStepper() {
               >
                 Back
               </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? "Submit" : "Next"}
-              </Button>
+              {activeStep === steps.length - 1 ? (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                  disabled={!validation}
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                >
+                  Next
+                </Button>
+              )}
             </div>
           </div>
         )}

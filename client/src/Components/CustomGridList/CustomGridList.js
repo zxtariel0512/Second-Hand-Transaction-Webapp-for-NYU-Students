@@ -35,7 +35,7 @@ export default function CustomGridList() {
   const classes = useStyles();
   const { filteredListings } = useContext(HomePageContext);
   // set timeout for each card to execute grow animation
-  const timeout = filteredListings.map((x, index) => index * 1000);
+  const timeout = filteredListings.map((x, index) => index * 300);
 
   return (
     <div className={classes.root}>

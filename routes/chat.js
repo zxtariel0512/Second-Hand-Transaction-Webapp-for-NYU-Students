@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const moment = require("moment");
 
 const { auth } = require("../middleware/auth");
 
@@ -20,7 +21,13 @@ router.route('/').get(async (req, res) => {
                 }
             }).execPopulate();
 
-        res.json(foundUser.chats);
+        const sortedChats = foundUser.chats.sort((a, b) => {
+            const aDate = new Date(a.lastMessage.time)
+            const bDate = new Date(b.lastMessage.time)
+            return bDate.getTime() - aDate.getTime()
+        })
+
+        res.json(sortedChats);
     } catch(err) {
         console.error(err);
         res.status(500).json({

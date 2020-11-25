@@ -1,9 +1,15 @@
 // routes for frontend
 import * as React from "react";
 import Loadable from "./Utils/loadable";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
 import SingleItem from "View/SingleItem";
-import CheckAuth from "./Utils/checkAuth";
+import { Auth } from "aws-amplify";
 
 const Landing = Loadable("Landing");
 const Login = Loadable("Login");
@@ -18,12 +24,26 @@ const Listing = Loadable("Listing");
  * PrivateRoute only allows user who signed in to access to route
  */
 const PrivateRoute = ({ component: Component, ...rest }) => {
+  const [token, setToken] = React.useState();
+  const history = useHistory();
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const user = await Auth.currentSession();
+        const token = user.getIdToken().jwtToken;
+        setToken(token);
+      } catch {
+        console.log("error");
+      }
+    };
+    checkAuth();
+  }, []);
+  // Bug: if you place Redirect component after the semicolon, it won't work and it always redirects whether
+  // there's a token or not...
   return (
     <Route
       {...rest}
-      render={(props) =>
-        CheckAuth() ? <Component {...props} /> : <Redirect to="/login" />
-      }
+      render={(props) => (token ? <Component {...props} /> : "403 Forbidden")}
     />
   );
 };

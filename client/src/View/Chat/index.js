@@ -14,6 +14,8 @@ import Input from "@material-ui/core/Input";
 import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
 import MessageContext from "../../Context/MessageContext";
+import Typography from "@material-ui/core/Typography";
+import moment from "moment";
 
 import getChats from "../../Controller/Chat/getChats";
 import getOneChat from "../../Controller/Chat/getOneChat";
@@ -40,13 +42,6 @@ export default function Index(props) {
 
     const getAllChats = async () => {
       const res = await getChats();
-      // show error if request is failed
-      // if (chatId == "direct") {
-      //   console.log(res.data);
-      //   setChatId(res.data[0]._id);
-      //   props.history.push(`/chat/${res.data[0]._id}`);
-      //   return;
-      // }
       res.success ? setChats(res.data) : setError(res.message);
       socket.emit("joinChats", res.data);
     };
@@ -164,6 +159,18 @@ export default function Index(props) {
     }
   };
 
+  const getTime = (time) => {
+    const startOfToday = moment().startOf("day");
+    const startOfWeek = moment().subtract(7, "days").startOf("day");
+    if (moment(time).isAfter(startOfToday)) {
+      return moment(time).format("h:mm a");
+    } else if (moment(time).isAfter(startOfWeek)) {
+      return moment(time).format("ddd");
+    } else {
+      return moment(time).format("MMM D");
+    }
+  };
+
   return (
     <>
       <CustomAppBar />
@@ -184,7 +191,18 @@ export default function Index(props) {
                       {/* <ListItem button component={Link} to="/home"> */}
                       <ListItemText
                         primary={chat.name}
-                        secondary={chat.lastMessage.value}
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              color="textPrimary"
+                            >
+                              {getTime(chat.lastMessage.time) + " - "}
+                            </Typography>
+                            {chat.lastMessage.value}
+                          </React.Fragment>
+                        }
                       />
                     </ListItem>
                   );

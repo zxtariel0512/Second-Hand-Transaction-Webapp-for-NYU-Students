@@ -64,7 +64,7 @@ router.route("/new").post(auth, async (req, res) => {
       category: currCategory._id,
       description: req.body.description,
       cover_image_url: req.body.cover_image_url,
-      detail_image_urls: req.body.detail_image_urls,
+      detail_image_urls: JSON.parse(req.body.detail_image_urls),
       original_price: req.body.original_price,
       current_price: req.body.current_price,
       created_date: req.body.created_date,
@@ -72,7 +72,7 @@ router.route("/new").post(auth, async (req, res) => {
       payment: req.body.payment,
       shipment: req.body.shipment,
     };
-    console.log(L);
+   
     let newListing = await Listing.create(L);
     currCategory.listings.push(newListing);
     await currCategory.save();

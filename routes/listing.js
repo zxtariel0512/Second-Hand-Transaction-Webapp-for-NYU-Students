@@ -61,6 +61,7 @@ router.route("/new").post(auth, async (req, res) => {
       user_id: req.body.user_id,
       status: req.body.status,
       title: req.body.title,
+      listingtype: req.body.listingtype,
       category: currCategory._id,
       description: req.body.description,
       cover_image_url: req.body.cover_image_url,

@@ -1,24 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import CustomAppBar from "Components/CustomAppBar/CustomAppBar";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
-
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Avatar from "Assets/img/faces/avatar-example.jpg";
 import ImagePlaceholder from "Assets/img/img-placeholder.png";
+import getProfile from "Controller/getProfile";
+import CustomCarousel from "Components/Carousel";
 
 const useStyle = makeStyles((theme) => ({
   container: {
     marginTop: "15vh",
     margin: "auto",
-    maxWidth: "70vw",
-    width: "80%",
+    maxWidth: "90vw",
+    width: "90%",
   },
   row: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
   },
   avatarRow: {
     display: "flex",
@@ -26,7 +27,9 @@ const useStyle = makeStyles((theme) => ({
     justifyContent: "space-between",
     height: 80,
   },
-  imageContainer: {},
+  imageContainer: {
+    width: "50%",
+  },
   portrait: {
     width: 400,
     height: 550,
@@ -77,11 +80,14 @@ const SingleItem = () => {
   const classes = useStyle();
   // tmep code
   let imgurl;
+  let imgurlArr = [];
   let price;
   if (item.image_url) {
     imgurl = item.image_url;
   } else if (item.cover_image_url) {
     imgurl = item.cover_image_url;
+    imgurlArr.push(item.cover_image_url);
+    imgurlArr = imgurlArr.concat(item.detail_image_urls);
   } else {
     imgurl = ImagePlaceholder;
   }
@@ -90,16 +96,29 @@ const SingleItem = () => {
   } else {
     price = item.original_price;
   }
+  const [avatarUrl, setAvatarUrl] = useState();
+  // fetch user avatar
+  useEffect(() => {
+    const getAvatarUrl = async () => {
+      const res = await getProfile(item?.user_id);
+      // show error if request is failed
+      console.log(res.data);
+      res.success && setAvatarUrl(res.data.avatarUrl);
+    };
+    getAvatarUrl();
+  }, [avatarUrl]);
   return (
     <div className={classes.container}>
       <CustomAppBar />
       <div className={classes.row}>
         <div className={classes.imageContainer}>
-          <div className={classes.portrait}>
+          <CustomCarousel images={imgurlArr} />
+          {/* <div className={classes.portrait}>
             <img className={classes.coverImg} src={imgurl} alt="cover"></img>
-          </div>
+          </div> */}
           {/* render other pics here */}
         </div>
+
         <div className={classes.itemInfoContainer}>
           <PoppinsFont variant="h4" style={{ fontWeight: 800 }}>
             {item?.title}
@@ -113,7 +132,7 @@ const SingleItem = () => {
                 by {item?.user_id}
               </PoppinsFont>
               <img
-                src={Avatar}
+                src={avatarUrl}
                 className={classes.avatar}
                 width={60}
                 height={60}

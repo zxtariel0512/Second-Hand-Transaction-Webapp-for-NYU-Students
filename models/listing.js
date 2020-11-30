@@ -14,6 +14,10 @@ const ListingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    listingtype:{
+        type:String,
+        required:true
+    },
     category:{
         type: mongoose.Schema.Types.ObjectID,
         ref:'Category',

@@ -9,6 +9,10 @@ const style = {
     height: "100%",
     boxSizing: "border-box",
   },
+  overflow: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+  },
   chat: {
     height: "100%",
     width: "100%",

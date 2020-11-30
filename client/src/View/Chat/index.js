@@ -115,6 +115,9 @@ export default function Index(props) {
       }
     });
 
+    const chatIndex = newChats.findIndex((chat) => chat._id == msg.chatId);
+    newChats.splice(0, 0, newChats.splice(chatIndex, 1)[0]);
+
     setChats(newChats);
   };
 
@@ -153,7 +156,7 @@ export default function Index(props) {
     } else {
       socket.emit("sendMessage", {
         chatId,
-        author: "Matthew Fan",
+        author: "mrf441",
         value: sendMessage,
       });
     }
@@ -188,7 +191,6 @@ export default function Index(props) {
                       to={"/chat/" + chat._id}
                       selected={chat._id === chatId}
                     >
-                      {/* <ListItem button component={Link} to="/home"> */}
                       <ListItemText
                         primary={chat.name}
                         secondary={
@@ -203,6 +205,7 @@ export default function Index(props) {
                             {chat.lastMessage.value}
                           </React.Fragment>
                         }
+                        className={classes.overflow}
                       />
                     </ListItem>
                   );

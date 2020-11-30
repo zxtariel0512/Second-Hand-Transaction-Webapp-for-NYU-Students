@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import io from "socket.io-client";
+import moment from "moment";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,7 +16,7 @@ import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
 import MessageContext from "../../Context/MessageContext";
 import Typography from "@material-ui/core/Typography";
-import moment from "moment";
+import { AuthContext } from "Context/AuthContext";
 
 import getChats from "../../Controller/Chat/getChats";
 import getOneChat from "../../Controller/Chat/getOneChat";
@@ -36,12 +37,15 @@ export default function Index(props) {
   const [chatId, setChatId] = useState("");
   const [currChat, setCurrChat] = useState("");
   const [chats, setChats] = useState([]);
+  const [authStatus, setAuthStatus, checkStatus, token, username] = useContext(
+    AuthContext
+  );
 
   useEffect(async () => {
     socket = io(ENDPOINT);
 
     const getAllChats = async () => {
-      const res = await getChats();
+      const res = await getChats(token);
       res.success ? setChats(res.data) : setError(res.message);
       socket.emit("joinChats", res.data);
     };
@@ -89,14 +93,14 @@ export default function Index(props) {
       setChatId(data.chat._id);
       setCurrChat(data.chat);
       setAllMessages(data.chat.messages);
-      setChats([...chats, data.chat]);
+      setChats([data.chat, ...chats]);
 
       props.history.push("/chat/" + data.chat._id);
     });
   }, [chatId, allMessages, chats]);
 
   const getThisChat = async (id) => {
-    const res = await getOneChat(id);
+    const res = await getOneChat(id, token);
     // show error if request is failed
     res.success ? setCurrChat(res.data) : setError(res.message);
     setAllMessages(res.data.messages);
@@ -115,6 +119,7 @@ export default function Index(props) {
       }
     });
 
+    // this pushes the chat with the new message to the top of the list
     const chatIndex = newChats.findIndex((chat) => chat._id == msg.chatId);
     newChats.splice(0, 0, newChats.splice(chatIndex, 1)[0]);
 
@@ -137,12 +142,12 @@ export default function Index(props) {
     const { listingInfo } = props.location;
     socket.emit("createChat", {
       message: {
-        author: "mrf441",
+        author: username,
         value: newMessageValue,
       },
       chat: {
         name: listingInfo.title,
-        participants: ["mrf441", listingInfo.user_id],
+        participants: [username, listingInfo.user_id],
       },
     });
   };
@@ -156,7 +161,7 @@ export default function Index(props) {
     } else {
       socket.emit("sendMessage", {
         chatId,
-        author: "mrf441",
+        author: username,
         value: sendMessage,
       });
     }

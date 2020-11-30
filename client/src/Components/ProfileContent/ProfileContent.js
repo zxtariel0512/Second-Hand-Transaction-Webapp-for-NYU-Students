@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     backgroundColor: "#f0ffff",
   },
+  content: {
+    height: 400,
+  },
 }));
 
 const ProfileContent = ({ reviews, listing, request }) => {

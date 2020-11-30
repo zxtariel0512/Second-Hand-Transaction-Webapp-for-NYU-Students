@@ -33,13 +33,17 @@ const useStyles = makeStyles({
     minWidth: 700,
     marginTop: 60,
   },
+  container: {
+    height: 400,
+    overflow: "scroll",
+  },
 });
 
 export default function ListingTable({ listing }) {
   const classes = useStyles();
 
   return (
-    <TableContainer>
+    <TableContainer className={classes.container}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>

@@ -63,8 +63,8 @@ export default function Index(props) {
 
   useEffect(async () => {
     if (chatId == "direct") {
-      setChatId(chats[0]._id);
-      props.history.push(`/chat/${chats[0]._id}`);
+      //setChatId(chats[0]._id);
+      //props.history.push(`/chat/${chats[0]._id}`);
       return;
     } else if (chatId == "new") {
       const { listingInfo } = props.location;
@@ -131,9 +131,11 @@ export default function Index(props) {
   };
 
   const scrollToBottom = (smoothScroll) => {
-    messagesEndRef.current.scrollIntoView({
-      behavior: smoothScroll ? "smooth" : "auto",
-    });
+    if (chatId && chatId != "direct") {
+      messagesEndRef.current.scrollIntoView({
+        behavior: smoothScroll ? "smooth" : "auto",
+      });
+    }
   };
 
   useEffect(() => scrollToBottom(false), [allMessages]);
@@ -219,27 +221,44 @@ export default function Index(props) {
             </div>
 
             <div className={classes.chatBox}>
-              <div className={classes.chatBoxHeader}>{currChat.name}</div>
-              <div className={classes.chatBoxMessages}>
-                {allMessages &&
-                  allMessages.map((msg) => {
-                    return <Message msg={msg} />;
-                  })}
-                <div ref={messagesEndRef} />
-              </div>
-              <div className={classes.chatBoxInput}>
-                <form onSubmit={handleSubmit}>
-                  <Input
-                    placeholder="Message..."
-                    value={sendMessage}
-                    onChange={(e) => setSendMessage(e.target.value)}
-                    fullWidth
-                  />
-                  <IconButton aria-label="send" type="submit">
-                    <SendIcon />
-                  </IconButton>
-                </form>
-              </div>
+              {chatId && chatId != "direct" ? (
+                <>
+                  <div className={classes.chatBoxHeader}>{currChat.name}</div>
+                  <div className={classes.chatBoxMessages}>
+                    {allMessages &&
+                      allMessages.map((msg) => {
+                        return <Message msg={msg} />;
+                      })}
+                    <div ref={messagesEndRef} />
+                  </div>
+                  <div className={classes.chatBoxInput}>
+                    <form onSubmit={handleSubmit}>
+                      <Input
+                        placeholder="Message..."
+                        value={sendMessage}
+                        onChange={(e) => setSendMessage(e.target.value)}
+                        fullWidth
+                      />
+                      <IconButton aria-label="send" type="submit">
+                        <SendIcon />
+                      </IconButton>
+                    </form>
+                  </div>
+                </>
+              ) : (
+                <div className={classes.chatBoxDirect}>
+                  <h2>Your Chats</h2>
+                  <p>Send messages and ask questions about the product.</p>
+                  {chats && chats.length > 0 ? (
+                    <p>View a chat by clicking it in the list to the left.</p>
+                  ) : (
+                    <p>
+                      You don't have any chats. Create one through the listing
+                      page.
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           </Paper>
         </div>

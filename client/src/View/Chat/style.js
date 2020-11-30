@@ -49,6 +49,14 @@ const style = {
     },
     borderTop: ".5px solid #e0e0e0",
   },
+  chatBoxDirect: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    padding: "20px",
+  },
 };
 
 export default style;

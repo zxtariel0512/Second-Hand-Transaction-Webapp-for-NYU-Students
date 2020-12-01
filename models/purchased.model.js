@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const PurchasedSchema = new mongoose.Schema({
+
+    buyernetid:{
+        type:String,
+        require:true
+    },
     
     itemId:{
         type: mongoose.Schema.Types.ObjectID,
@@ -9,7 +14,7 @@ const PurchasedSchema = new mongoose.Schema({
     },
     stripeCheckoutId:{
         type: String,
-        required: true
+        require: true
     },
     created_date: {
         type: Date,

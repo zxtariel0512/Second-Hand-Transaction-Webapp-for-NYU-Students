@@ -221,7 +221,7 @@ export default function Index(props) {
             </div>
 
             <div className={classes.chatBox}>
-              {chatId && chatId != "direct" ? (
+              {chatId != "direct" ? (
                 <>
                   <div className={classes.chatBoxHeader}>{currChat.name}</div>
                   <div className={classes.chatBoxMessages}>
@@ -249,14 +249,7 @@ export default function Index(props) {
                 <div className={classes.chatBoxDirect}>
                   <h2>Your Chats</h2>
                   <p>Send messages and ask questions about the product.</p>
-                  {chats && chats.length > 0 ? (
-                    <p>View a chat by clicking it in the list to the left.</p>
-                  ) : (
-                    <p>
-                      You don't have any chats. Create one through the listing
-                      page.
-                    </p>
-                  )}
+                  <p>Create a new chat through the listing page.</p>
                 </div>
               )}
             </div>

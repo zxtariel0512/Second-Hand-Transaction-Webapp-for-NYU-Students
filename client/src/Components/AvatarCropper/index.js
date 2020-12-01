@@ -107,6 +107,7 @@ class AvatarCropper extends PureComponent {
    */
   async uploadFile(file) {
     try {
+      // 403 Error here don't know why but it worked fine yesterday.
       const res = await S3FileUpload.uploadFile(file, config);
       return res.location;
     } catch (e) {
@@ -117,7 +118,7 @@ class AvatarCropper extends PureComponent {
   async uploadAvatar(croppedBlob) {
     const file = await this.convertImages(croppedBlob);
     const avatarUrl = await this.uploadFile(file);
-    console.log(avatarUrl);
+
     this.props.setEditAvatar(false);
     try {
       const user = await Auth.currentSession();

@@ -8,7 +8,7 @@ const CustomCarousel = ({ images }) => {
       {images &&
         images.map((img) => (
           <div>
-            <img src={img} alt="item photos" />
+            <img src={img} alt="item photos" width={400} />
             {/* <p className="legend">{img}</p> */}
           </div>
         ))}

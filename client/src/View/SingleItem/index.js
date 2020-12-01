@@ -8,18 +8,20 @@ import Avatar from "Assets/img/faces/avatar-example.jpg";
 import ImagePlaceholder from "Assets/img/img-placeholder.png";
 import getProfile from "Controller/getProfile";
 import CustomCarousel from "Components/Carousel";
+import { loadStripe } from "@stripe/stripe-js";
 
+const stripePromise = loadStripe(
+  "pk_test_51Ht0mwFHEiDr6rf2IHuPzpEo3j7hDKwDtFLBfOAebHTu7WPyOQh9xis5XOsyWwffHUNgwzzT6gR7CT9HTZutsIjX00dq1LRvzu"
+);
 const useStyle = makeStyles((theme) => ({
   container: {
     marginTop: "15vh",
     margin: "auto",
-    maxWidth: "90vw",
-    width: "90%",
+    maxWidth: "70vw",
+    width: "95%",
   },
   row: {
     display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
   },
   avatarRow: {
     display: "flex",
@@ -29,6 +31,7 @@ const useStyle = makeStyles((theme) => ({
   },
   imageContainer: {
     width: "50%",
+    height: "70vh",
   },
   portrait: {
     width: 400,
@@ -43,7 +46,7 @@ const useStyle = makeStyles((theme) => ({
     maxHeight: "100%",
   },
   itemInfoContainer: {
-    marginLeft: "10vw",
+    marginLeft: "3vw",
     width: "30vw",
   },
   pricetag: {
@@ -79,17 +82,15 @@ const SingleItem = () => {
   const item = location.state;
   const classes = useStyle();
   // tmep code
-  let imgurl;
   let imgurlArr = [];
   let price;
   if (item.image_url) {
-    imgurl = item.image_url;
+    imgurlArr.push(item.image_url);
   } else if (item.cover_image_url) {
-    imgurl = item.cover_image_url;
     imgurlArr.push(item.cover_image_url);
     imgurlArr = imgurlArr.concat(item.detail_image_urls);
   } else {
-    imgurl = ImagePlaceholder;
+    imgurlArr.push(ImagePlaceholder);
   }
   if (item.price) {
     price = item.price;
@@ -107,16 +108,52 @@ const SingleItem = () => {
     };
     getAvatarUrl();
   }, [avatarUrl]);
+
+  /* initialize stripe payment 
+    code from https://stripe.com/docs/payments/accept-a-payment?integration=elements
+  */
+  const handleClick = async (event) => {
+    // Get Stripe.js instance
+    try {
+      const stripe = await stripePromise;
+      console.log(item);
+      // Call your backend to create the Checkout Session
+      const data = {
+        price: item.price || item.original_price,
+        title: item.title,
+      };
+      const response = await fetch(
+        "http://localhost:4000/create-checkout-session",
+        {
+          headers: { "Content-Type": "application/json" },
+          method: "POST",
+          body: JSON.stringify(data),
+        }
+      );
+
+      const session = await response.json();
+
+      // When the customer clicks on the button, redirect them to Checkout.
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+      if (result.error) {
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer
+        // using `result.error.message`.
+        console.log(result.error.message);
+      }
+    } catch {
+      console.log("error: cannot start payment");
+    }
+  };
+
   return (
     <div className={classes.container}>
       <CustomAppBar />
       <div className={classes.row}>
         <div className={classes.imageContainer}>
           <CustomCarousel images={imgurlArr} />
-          {/* <div className={classes.portrait}>
-            <img className={classes.coverImg} src={imgurl} alt="cover"></img>
-          </div> */}
-          {/* render other pics here */}
         </div>
 
         <div className={classes.itemInfoContainer}>
@@ -154,6 +191,7 @@ const SingleItem = () => {
             className={classes.longbtn}
             variant="outlined"
             color="primary"
+            onClick={handleClick}
           >
             Buy!
           </Button>

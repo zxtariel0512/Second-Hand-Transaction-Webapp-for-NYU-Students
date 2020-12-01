@@ -17,6 +17,9 @@ import SendIcon from "@material-ui/icons/Send";
 import MessageContext from "../../Context/MessageContext";
 import Typography from "@material-ui/core/Typography";
 import { AuthContext } from "Context/AuthContext";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 import getChats from "../../Controller/Chat/getChats";
 import getOneChat from "../../Controller/Chat/getOneChat";
@@ -40,6 +43,7 @@ export default function Index(props) {
   const [authStatus, setAuthStatus, checkStatus, token, username] = useContext(
     AuthContext
   );
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   useEffect(async () => {
     socket = io(ENDPOINT);
@@ -84,6 +88,7 @@ export default function Index(props) {
   useEffect(() => {
     socket.off("newMessage");
     socket.off("newChat");
+    socket.off("otherNewChats");
 
     socket.on("newMessage", (msg) => {
       newMessage(msg);
@@ -96,6 +101,15 @@ export default function Index(props) {
       setChats([data.chat, ...chats]);
 
       props.history.push("/chat/" + data.chat._id);
+    });
+
+    socket.on("otherNewChats", (data) => {
+      console.log(data.chat);
+      if (data.chat.participants.includes(username)) {
+        console.log("emit joinNewChat");
+        socket.emit("joinNewChat", data.chat._id);
+        setChats([data.chat, ...chats]);
+      }
     });
   }, [chatId, allMessages, chats]);
 
@@ -181,6 +195,14 @@ export default function Index(props) {
     }
   };
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <CustomAppBar />
@@ -223,7 +245,25 @@ export default function Index(props) {
             <div className={classes.chatBox}>
               {chatId != "direct" ? (
                 <>
-                  <div className={classes.chatBoxHeader}>{currChat.name}</div>
+                  <div className={classes.chatBoxHeader}>
+                    <div>{currChat.name}</div>
+                    <IconButton
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreHorizIcon />
+                    </IconButton>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem>Delete</MenuItem>
+                    </Menu>
+                  </div>
                   <div className={classes.chatBoxMessages}>
                     {allMessages &&
                       allMessages.map((msg) => {

@@ -32,6 +32,7 @@ const style = {
   },
   chatBoxHeader: {
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
     padding: "0 20px",
     height: "60px",

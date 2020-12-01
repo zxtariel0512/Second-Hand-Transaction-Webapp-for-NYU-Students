@@ -22,10 +22,11 @@ router.route("/:id").get(async (req, res) => {
     }
   });
 
-//create new purchased
+//create new purchased and mark the item unavailable
 router.route("/new").post(async (req, res) => {
     try {
-        let aListing = await Listing.findById(req.body.itemId);
+        let aListing = await Listing.findByIdAndUpdate(req.body.itemId,{status:"unavailable"},
+        { new: true });
         const p = {
             itemId:aListing._id,
             stripeCheckoutId:req.body.stripeCheckoutId
@@ -34,7 +35,7 @@ router.route("/new").post(async (req, res) => {
         let newpurchased = await purchased.create(p);
         res.json(newpurchased);
     }catch(error){
-        res.status(500).json({ message: "error: create new purchased" });
+        res.status(500).json({ message: "error: create new purchased and mark the item unavailable" });
     }
 });
 module.exports = router;

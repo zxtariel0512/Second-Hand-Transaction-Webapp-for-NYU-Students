@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import io from "socket.io-client";
+import moment from "moment";
+import axios from "axios";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,9 +16,15 @@ import Input from "@material-ui/core/Input";
 import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
 import MessageContext from "../../Context/MessageContext";
+import Typography from "@material-ui/core/Typography";
+import { AuthContext } from "Context/AuthContext";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 import getChats from "../../Controller/Chat/getChats";
 import getOneChat from "../../Controller/Chat/getOneChat";
+import deleteChat from "../../Controller/Chat/deleteChat";
 
 const useStyles = makeStyles(style);
 
@@ -34,19 +42,16 @@ export default function Index(props) {
   const [chatId, setChatId] = useState("");
   const [currChat, setCurrChat] = useState("");
   const [chats, setChats] = useState([]);
+  const [authStatus, setAuthStatus, checkStatus, token, username] = useContext(
+    AuthContext
+  );
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   useEffect(async () => {
     socket = io(ENDPOINT);
 
     const getAllChats = async () => {
-      const res = await getChats();
-      // show error if request is failed
-      // if (chatId == "direct") {
-      //   console.log(res.data);
-      //   setChatId(res.data[0]._id);
-      //   props.history.push(`/chat/${res.data[0]._id}`);
-      //   return;
-      // }
+      const res = await getChats(token);
       res.success ? setChats(res.data) : setError(res.message);
       socket.emit("joinChats", res.data);
     };
@@ -64,8 +69,8 @@ export default function Index(props) {
 
   useEffect(async () => {
     if (chatId == "direct") {
-      setChatId(chats[0]._id);
-      props.history.push(`/chat/${chats[0]._id}`);
+      //setChatId(chats[0]._id);
+      //props.history.push(`/chat/${chats[0]._id}`);
       return;
     } else if (chatId == "new") {
       const { listingInfo } = props.location;
@@ -85,6 +90,7 @@ export default function Index(props) {
   useEffect(() => {
     socket.off("newMessage");
     socket.off("newChat");
+    socket.off("otherNewChats");
 
     socket.on("newMessage", (msg) => {
       newMessage(msg);
@@ -94,14 +100,23 @@ export default function Index(props) {
       setChatId(data.chat._id);
       setCurrChat(data.chat);
       setAllMessages(data.chat.messages);
-      setChats([...chats, data.chat]);
+      setChats([data.chat, ...chats]);
 
       props.history.push("/chat/" + data.chat._id);
+    });
+
+    socket.on("otherNewChats", (data) => {
+      console.log(data.chat);
+      if (data.chat.participants.includes(username)) {
+        console.log("emit joinNewChat");
+        socket.emit("joinNewChat", data.chat._id);
+        setChats([data.chat, ...chats]);
+      }
     });
   }, [chatId, allMessages, chats]);
 
   const getThisChat = async (id) => {
-    const res = await getOneChat(id);
+    const res = await getOneChat(id, token);
     // show error if request is failed
     res.success ? setCurrChat(res.data) : setError(res.message);
     setAllMessages(res.data.messages);
@@ -120,6 +135,10 @@ export default function Index(props) {
       }
     });
 
+    // this pushes the chat with the new message to the top of the list
+    const chatIndex = newChats.findIndex((chat) => chat._id == msg.chatId);
+    newChats.splice(0, 0, newChats.splice(chatIndex, 1)[0]);
+
     setChats(newChats);
   };
 
@@ -128,9 +147,11 @@ export default function Index(props) {
   };
 
   const scrollToBottom = (smoothScroll) => {
-    messagesEndRef.current.scrollIntoView({
-      behavior: smoothScroll ? "smooth" : "auto",
-    });
+    if (chatId && chatId != "direct") {
+      messagesEndRef.current.scrollIntoView({
+        behavior: smoothScroll ? "smooth" : "auto",
+      });
+    }
   };
 
   useEffect(() => scrollToBottom(false), [allMessages]);
@@ -139,12 +160,12 @@ export default function Index(props) {
     const { listingInfo } = props.location;
     socket.emit("createChat", {
       message: {
-        author: "mrf441",
+        author: username,
         value: newMessageValue,
       },
       chat: {
         name: listingInfo.title,
-        participants: ["mrf441", listingInfo.user_id],
+        participants: [username, listingInfo.user_id],
       },
     });
   };
@@ -158,10 +179,53 @@ export default function Index(props) {
     } else {
       socket.emit("sendMessage", {
         chatId,
-        author: "Matthew Fan",
+        author: username,
         value: sendMessage,
       });
     }
+  };
+
+  const getTime = (time) => {
+    const startOfToday = moment().startOf("day");
+    const startOfWeek = moment().subtract(7, "days").startOf("day");
+    if (moment(time).isAfter(startOfToday)) {
+      return moment(time).format("h:mm a");
+    } else if (moment(time).isAfter(startOfWeek)) {
+      return moment(time).format("ddd");
+    } else {
+      return moment(time).format("MMM D");
+    }
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const leaveChat = async () => {
+    handleClose();
+
+    const deleteThisChat = async () => {
+      const res = await deleteChat(chatId, token);
+      // show error if request is failed
+      res.success ? console.log(res.data) : setError(res.message);
+    };
+    await deleteThisChat();
+
+    setChats(chats.filter((chat) => chat._id.toString() != chatId));
+    setChatId("direct");
+    setAllMessages([]);
+    setCurrChat("");
+    props.history.push("/chat/direct");
+
+    socket.emit("sendMessage", {
+      chatId,
+      author: "admin",
+      value: `${username} has left the chat.`,
+    });
   };
 
   return (
@@ -181,10 +245,21 @@ export default function Index(props) {
                       to={"/chat/" + chat._id}
                       selected={chat._id === chatId}
                     >
-                      {/* <ListItem button component={Link} to="/home"> */}
                       <ListItemText
                         primary={chat.name}
-                        secondary={chat.lastMessage.value}
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              color="textPrimary"
+                            >
+                              {getTime(chat.lastMessage.time) + " - "}
+                            </Typography>
+                            {chat.lastMessage.value}
+                          </React.Fragment>
+                        }
+                        className={classes.overflow}
                       />
                     </ListItem>
                   );
@@ -193,27 +268,55 @@ export default function Index(props) {
             </div>
 
             <div className={classes.chatBox}>
-              <div className={classes.chatBoxHeader}>{currChat.name}</div>
-              <div className={classes.chatBoxMessages}>
-                {allMessages &&
-                  allMessages.map((msg) => {
-                    return <Message msg={msg} />;
-                  })}
-                <div ref={messagesEndRef} />
-              </div>
-              <div className={classes.chatBoxInput}>
-                <form onSubmit={handleSubmit}>
-                  <Input
-                    placeholder="Message..."
-                    value={sendMessage}
-                    onChange={(e) => setSendMessage(e.target.value)}
-                    fullWidth
-                  />
-                  <IconButton aria-label="send" type="submit">
-                    <SendIcon />
-                  </IconButton>
-                </form>
-              </div>
+              {chatId != "direct" ? (
+                <>
+                  <div className={classes.chatBoxHeader}>
+                    <div>{currChat.name}</div>
+                    <IconButton
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreHorizIcon />
+                    </IconButton>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem onClick={leaveChat}>Delete</MenuItem>
+                    </Menu>
+                  </div>
+                  <div className={classes.chatBoxMessages}>
+                    {allMessages &&
+                      allMessages.map((msg) => {
+                        return <Message msg={msg} />;
+                      })}
+                    <div ref={messagesEndRef} />
+                  </div>
+                  <div className={classes.chatBoxInput}>
+                    <form onSubmit={handleSubmit}>
+                      <Input
+                        placeholder="Message..."
+                        value={sendMessage}
+                        onChange={(e) => setSendMessage(e.target.value)}
+                        fullWidth
+                      />
+                      <IconButton aria-label="send" type="submit">
+                        <SendIcon />
+                      </IconButton>
+                    </form>
+                  </div>
+                </>
+              ) : (
+                <div className={classes.chatBoxDirect}>
+                  <h2>Your Chats</h2>
+                  <p>Send messages and ask questions about the product.</p>
+                  <p>Create a new chat through the listing page.</p>
+                </div>
+              )}
             </div>
           </Paper>
         </div>

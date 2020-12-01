@@ -113,9 +113,10 @@ router.route('/review/post/:netid').post(auth, async(req, res) =>{
   // body params: target can use netid
   try{
     let targetUser = await User.findOne({netid: req.params.netid});
-
+    let reviewerUser = await User.findOne({netid: req.params.netid});
+    
     const review = {
-      reviewer:req.body.reviewer,
+      reviewer: reviewerUser._id,
       target: targetUser._id,
       rating: req.body.rating,
       description: req.body.description

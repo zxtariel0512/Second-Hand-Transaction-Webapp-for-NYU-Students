@@ -1,11 +1,15 @@
+import { Auth } from "aws-amplify";
 /**
  * Config and Create Header for Authenticated API
  */
 
-const createHeader = () => {
+const createHeader = async () => {
+  const user = await Auth.currentSession();
+  const token = user.getIdToken().jwtToken;
   return {
-    token: "",
-    userId: "",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
   };
 };
 

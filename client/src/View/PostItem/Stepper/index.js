@@ -7,11 +7,13 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import MessageContext from "../../../Context/MessageContext";
+import PostItemContext from "../store/context";
 
 // Pages
 import BasicInfo from "../BasicInfo";
 import MoreDetails from "../MoreDetails";
 import Review from "../Reviews/index";
+import UploadPostItem from "../Upload/";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +55,7 @@ export default function HorizontalLinearStepper() {
   const steps = getSteps();
 
   const { setMessage } = useContext(MessageContext);
+  const { validation, setValidation } = useContext(PostItemContext);
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -104,13 +107,6 @@ export default function HorizontalLinearStepper() {
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          {
-            /* if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            );
-          } */
-          }
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }
@@ -124,7 +120,7 @@ export default function HorizontalLinearStepper() {
       <Box display="flex" justifyContent="center">
         {activeStep === steps.length ? (
           <div>
-            <div className={classes.instructions}>Item Post Successfully</div>
+            <UploadPostItem />
           </div>
         ) : (
           <div>
@@ -140,25 +136,26 @@ export default function HorizontalLinearStepper() {
               >
                 Back
               </Button>
-              {/* {isStepOptional(activeStep) && (
+              {activeStep === steps.length - 1 ? (
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
-                  onClick={handleSkip}
+                  onClick={handleNext}
+                  className={classes.button}
+                  disabled={!validation}
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleNext}
                   className={classes.button}
                 >
-                  Skip
+                  Next
                 </Button>
-              )} */}
-
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
+              )}
             </div>
           </div>
         )}

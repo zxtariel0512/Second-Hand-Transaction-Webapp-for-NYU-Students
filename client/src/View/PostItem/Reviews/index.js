@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Box, Divider, Container, Chip } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import { getLocalStorage } from "../../../Utils/localstorage";
+import PostItemContext from "../store/context";
 
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ReviewSection() {
   const classes = useStyles();
 
+  // Get data from Local Storage
   const titleData = getLocalStorage("itemTitle");
   const priceData = getLocalStorage("price");
   const descriptionData = getLocalStorage("itemDescription");
@@ -28,6 +30,9 @@ export default function ReviewSection() {
   const coverImgData = JSON.parse(getLocalStorage("savedCoverPhoto"));
   const itemImgData = JSON.parse(getLocalStorage("savedSkillPhoto"));
 
+  const { setValidation } = useContext(PostItemContext);
+
+  // Display Images
   const coverImg = coverImgData
     ? coverImgData.map((e) => <img className={classes.img} src={e.cropped} />)
     : "";
@@ -36,9 +41,27 @@ export default function ReviewSection() {
     ? itemImgData.map((e) => <img className={classes.img} src={e.cropped} />)
     : "";
 
-  //   const images = getLocalStorage("savedSkillPhoto").map((e) => (
-  //     <img className={classes.img} src={e.cropped}></img>
-  //   ));
+  // Validation Helper Function
+  const isValid = () => {
+    return Boolean(
+      titleData &&
+        priceData &&
+        descriptionData &&
+        categoryData &&
+        deliveryMethodData &&
+        coverImgData &&
+        itemImgData
+    );
+  };
+
+  /**
+   * Perform Validation when loaded
+   */
+  useEffect(() => {
+    // Reset Validation
+    setValidation(false);
+    if (isValid()) setValidation(true);
+  }, []);
 
   return (
     <Container maxWidth="sm" style={{ marginBottom: "50px" }}>

@@ -31,6 +31,11 @@ const StyledTableRow = withStyles((theme) => ({
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
+    marginTop: 60,
+  },
+  container: {
+    height: 400,
+    overflow: "scroll",
   },
 });
 
@@ -38,7 +43,7 @@ export default function ListingTable({ listing }) {
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className={classes.container}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>

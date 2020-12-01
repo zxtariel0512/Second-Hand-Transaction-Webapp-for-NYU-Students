@@ -18,7 +18,7 @@ const Home = Loadable("Home");
 const Chat = Loadable("Chat");
 const Profile = Loadable("Profile");
 const PostItem = Loadable("PostItem");
-const Listing = Loadable("Listing");
+const Success = Loadable("Success");
 
 /**
  * PrivateRoute only allows user who signed in to access to route
@@ -61,6 +61,7 @@ export default class Routes extends React.Component {
           <PrivateRoute path="/me" component={Profile} />
           <PrivateRoute path="/post-item" component={PostItem} />
           <Route path="/item/:postId" component={SingleItem} />
+          <Route path="/order/success" component={Success} />
           <Route path="*" component={Landing} />
         </Switch>
       </BrowserRouter>

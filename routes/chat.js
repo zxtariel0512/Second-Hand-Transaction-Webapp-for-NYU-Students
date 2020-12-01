@@ -49,6 +49,24 @@ router.route('/:id').get(auth, async (req, res) => {
     }
 })
 
+// delete user from chat room
+router.route('/:id').delete(auth, async (req, res) => {
+    try {
+        console.log("hi")
+        console.log(req.params.id);
+        let foundUser = await User.findOne({ netid: req.user.username });
+        foundUser.chats = foundUser.chats.filter(chat => chat._id.toString() != req.params.id);
+        await foundUser.save()
+
+        res.json(foundUser.chats);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error deleting user from chat"
+        });
+    }
+})
+
 
 // create a new chat room
 router.route('/').post(async (req, res) => {
@@ -67,5 +85,6 @@ router.route('/').post(async (req, res) => {
         });
     }
 })
+
 
 module.exports = router;

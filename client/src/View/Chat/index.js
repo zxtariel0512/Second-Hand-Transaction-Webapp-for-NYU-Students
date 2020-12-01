@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import io from "socket.io-client";
 import moment from "moment";
+import axios from "axios";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,6 +24,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import getChats from "../../Controller/Chat/getChats";
 import getOneChat from "../../Controller/Chat/getOneChat";
+import deleteChat from "../../Controller/Chat/deleteChat";
 
 const useStyles = makeStyles(style);
 
@@ -203,6 +205,29 @@ export default function Index(props) {
     setAnchorEl(null);
   };
 
+  const leaveChat = async () => {
+    handleClose();
+
+    const deleteThisChat = async () => {
+      const res = await deleteChat(chatId, token);
+      // show error if request is failed
+      res.success ? console.log(res.data) : setError(res.message);
+    };
+    await deleteThisChat();
+
+    setChats(chats.filter((chat) => chat._id.toString() != chatId));
+    setChatId("direct");
+    setAllMessages([]);
+    setCurrChat("");
+    props.history.push("/chat/direct");
+
+    socket.emit("sendMessage", {
+      chatId,
+      author: "admin",
+      value: `${username} has left the chat.`,
+    });
+  };
+
   return (
     <>
       <CustomAppBar />
@@ -261,7 +286,7 @@ export default function Index(props) {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      <MenuItem>Delete</MenuItem>
+                      <MenuItem onClick={leaveChat}>Delete</MenuItem>
                     </Menu>
                   </div>
                   <div className={classes.chatBoxMessages}>

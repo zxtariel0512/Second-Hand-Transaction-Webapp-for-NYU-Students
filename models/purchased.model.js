@@ -9,7 +9,7 @@ const PurchasedSchema = new mongoose.Schema({
     
     itemId:{
         type: mongoose.Schema.Types.ObjectID,
-        ref:'listing',
+        ref:'Listing',
         require: true
     },
     stripeCheckoutId:{

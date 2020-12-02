@@ -5,7 +5,8 @@ let Listing = require("../models/listing");
 //get all purchased
 router.route("/").get(async (req, res) => {
     try{
-        let foundallpurchased = await purchased.find();
+        let foundallpurchased = await purchased.find().
+        populate('itemId');
         res.json(foundallpurchased);
     }catch(error){
         res.status(500).json({ message: "error: get all purchased" });
@@ -15,7 +16,8 @@ router.route("/").get(async (req, res) => {
 //get specific purchased
 router.route("/:id").get(async (req, res) => {
     try {
-      let foundpurchased = await purchased.findById(req.params.id);
+      let foundpurchased = await purchased.findById(req.params.id).
+      populate('itemId');
       res.json(foundpurchased);
     } catch (error) {
       res.status(500).json({ message: "error: get specific purchased" });
@@ -40,4 +42,3 @@ router.route("/new").post(async (req, res) => {
     }
 });
 module.exports = router;
-

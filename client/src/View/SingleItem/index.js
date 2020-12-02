@@ -140,9 +140,11 @@ const SingleItem = () => {
       const data = {
         price: item.price || item.original_price,
         title: item.title,
+        itemId: item._id,
+        buyer: username,
       };
       const response = await fetch(
-        "http://localhost:4000/create-checkout-session",
+        "http://localhost:4000/checkout/create-checkout-session",
         {
           headers: { "Content-Type": "application/json" },
           method: "POST",

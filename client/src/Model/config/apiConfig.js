@@ -16,6 +16,7 @@ const GET_CHATS = createAPI("/chat");
 const GET_ONE_CHAT = (id) => createAPI(`/chat/${id}`);
 const DELETE_CHAT = (id) => createAPI(`/chat/${id}`);
 const UPDATE_USER = (netid) => createAPI(`/user/${netid}`);
+const GET_PURCHASE = (sessionId) => createAPI(`/purchases/${sessionId}`);
 
 // Category
 const GET_CATEGORY_LIST = createAPI("/category/");
@@ -31,4 +32,5 @@ export {
   DELETE_CHAT,
   UPDATE_USER,
   GET_CATEGORY_LIST,
+  GET_PURCHASE,
 };

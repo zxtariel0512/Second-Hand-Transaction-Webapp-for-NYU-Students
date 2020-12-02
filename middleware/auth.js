@@ -38,7 +38,7 @@ module.exports = {
 
       req.user = {
         id: decoded.sub,
-        username: decoded.username
+        username: decoded["cognito:username"]
       }
 
       next();

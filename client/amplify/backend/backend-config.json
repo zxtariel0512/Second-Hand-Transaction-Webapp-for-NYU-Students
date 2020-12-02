@@ -1,1 +1,16 @@
-{}
+{
+  "auth": {
+    "client5b5e6c65": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "storage": {
+    "Images": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}

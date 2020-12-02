@@ -43,7 +43,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => (token ? <Component {...props} /> : "403 Forbidden")}
+      render={(props) =>
+        token ? (
+          <Component {...props} />
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            <h2>403 Forbidden</h2>
+          </div>
+        )
+      }
     />
   );
 };
@@ -61,7 +69,9 @@ export default class Routes extends React.Component {
           <PrivateRoute path="/me" component={Profile} />
           <PrivateRoute path="/post-item" component={PostItem} />
           <Route path="/item/:postId" component={SingleItem} />
-          <Route path="*" component={Landing} />
+          <Route path="*">
+            <h2 style={{ textAlign: "center" }}>404 Not Found</h2>
+          </Route>
         </Switch>
       </BrowserRouter>
     );

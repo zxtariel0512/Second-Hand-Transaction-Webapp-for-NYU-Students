@@ -105,16 +105,20 @@ const SingleItem = () => {
   const [avatarUrl, setAvatarUrl] = useState();
   const [chatId, setChatId] = useState(null);
 
-  useEffect(async () => {
-    const getAllChats = async () => {
-      const res = await getChats(token);
-      return res.data;
+  useEffect(() => {
+    const wrapper = async () => {
+      const getAllChats = async () => {
+        const res = await getChats(token);
+        return res.data;
+      };
+
+      const chats = await getAllChats();
+      console.log(chats);
+      const foundChat = chats.find((chat) => chat.name == item.title);
+      setChatId(foundChat ? foundChat._id : null);
     };
 
-    const chats = await getAllChats();
-    console.log(chats);
-    const foundChat = chats.find((chat) => chat.name == item.title);
-    setChatId(foundChat ? foundChat._id : null);
+    wrapper();
   }, []);
 
   // fetch user avatar
@@ -135,10 +139,16 @@ const SingleItem = () => {
     // Get Stripe.js instance
     try {
       const stripe = await stripePromise;
-      console.log(item);
+
+      const integerPrice = parseInt(
+        parseFloat(
+          (item.price ? item.price : item.original_price).replaceAll(",", "")
+        )
+      );
+      console.log(integerPrice);
       // Call your backend to create the Checkout Session
       const data = {
-        price: item.price || item.original_price,
+        price: integerPrice,
         title: item.title,
       };
       const response = await fetch(

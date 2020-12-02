@@ -31,9 +31,9 @@ const Homepage = () => {
     const getHomepageListing = async () => {
       const res = await getListing();
       // show error if request is failed
-      res.success ? setListings(res.data) : setError(res.message);
+      res.success ? setListings(res.data.docs) : setError(res.message);
       console.log(res);
-      setFilteredListings(res.data);
+      setFilteredListings(res.data.docs);
     };
     getHomepageListing();
   }, []);

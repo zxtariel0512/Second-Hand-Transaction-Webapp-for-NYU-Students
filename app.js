@@ -45,8 +45,9 @@ app.use('/purchased',purchasedRouter)
 const stripe = require('stripe')('sk_test_51Ht0mwFHEiDr6rf2Wa8PyVCaNfDXqKBOWvL5GwlAk3vNnDr8oY9eYCOM46i4WCq4nhhxXMGKQKr89x5U9xL718sN00znAUu7JK');
 
 app.post('/create-checkout-session', async (req, res) => {
-    console.log(req.body.price);
-    console.log(req.body.title);
+    console.log(typeof(req.body.price));
+    
+    
     console.log(req.body);
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -57,7 +58,7 @@ app.post('/create-checkout-session', async (req, res) => {
                     product_data: {
                         name: req.body.title,
                     },
-                    unit_amount: parseInt(req.body.price) * 100+ 1,
+                    unit_amount: req.body.price * 100,
                 },
                 quantity: 1,
             },

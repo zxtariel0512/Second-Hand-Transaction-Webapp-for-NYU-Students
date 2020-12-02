@@ -1,4 +1,8 @@
 const mongoose = require("mongoose");
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+var aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const ListingSchema = new mongoose.Schema({
     user_id: {
@@ -39,5 +43,5 @@ const ListingSchema = new mongoose.Schema({
 
 
 
-
+ListingSchema.plugin(aggregatePaginate);
 module.exports = mongoose.model("Listing", ListingSchema)

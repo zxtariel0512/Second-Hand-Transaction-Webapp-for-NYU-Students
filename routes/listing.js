@@ -2,10 +2,11 @@ const router = require("express").Router();
 let Listing = require("../models/listing");
 let Category = require("../models/category.model");
 
+
 const { auth } = require("../middleware/auth");
 
 // get all listings or perform a fuzzy search
-router.route("/").get(async (req, res) => {
+router.route('/').get(async (req, res) => {
   //if query, fuzzy search
   if (req.query.search) {
     const regex = new RegExp(escapeRegex(req.query.search), "gi");
@@ -28,8 +29,17 @@ router.route("/").get(async (req, res) => {
     //if no query, find all listings
   } else {
     try {
-      let foundListings = await Listing.find();
-      res.json(foundListings);
+      var aggregateQuery = Listing.aggregate();
+      Listing.aggregatePaginate(aggregateQuery, { page: parseInt(req.query.page), limit: parseInt(req.query.limit) }, function(
+        err,
+        result
+      ) {
+        if (err) {
+          console.err(err);
+        } else {
+          res.json(result);
+        }
+      });
     } catch (error) {
       res.status(500).json({ message: "error: get all listings" });
     }

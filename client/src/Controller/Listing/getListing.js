@@ -1,9 +1,9 @@
 import { getListingModel } from "../../Model/Listing/listingModel";
 import ErrorMessage from "../../Context/MessageContext";
 
-const getListing = async () => {
+const getListing = async (pageNum, limit) => {
   try {
-    const res = await getListingModel();
+    const res = await getListingModel(pageNum, limit);
     // Do all the data manipulation here
     return { success: true, data: res.data };
   } catch (e) {

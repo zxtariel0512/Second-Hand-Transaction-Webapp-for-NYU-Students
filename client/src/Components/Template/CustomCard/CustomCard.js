@@ -98,8 +98,8 @@ export default function CustomCard(props) {
           </CardActionArea>
           <CardActions>
             <div className={classes.row}>
-              {props.category_id ? <LocalOfferIcon /> : null}
-              <p className={classes.categoryText}>{props.category_id}</p>
+              {props.category ? <LocalOfferIcon /> : null}
+              <p className={classes.categoryText}>{props.category}</p>
             </div>
             <Typography className={classes.fixed}>${price}</Typography>
           </CardActions>

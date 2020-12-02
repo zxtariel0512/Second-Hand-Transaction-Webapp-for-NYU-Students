@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_CATEGORY_LIST } from "../config/apiConfig";
+import { GET_CATEGORY_BY_ID, GET_CATEGORY_LIST } from "../config/apiConfig";
 
 /**
  * getCategoryList
@@ -10,4 +10,8 @@ function getCategoryListModel(level) {
   return axios.get(GET_CATEGORY_LIST + level);
 }
 
-export { getCategoryListModel };
+function getCategoryByIdModel(id) {
+  return axios.get(GET_CATEGORY_BY_ID(id));
+}
+
+export { getCategoryListModel, getCategoryByIdModel };

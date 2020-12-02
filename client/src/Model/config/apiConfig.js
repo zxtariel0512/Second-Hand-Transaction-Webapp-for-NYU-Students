@@ -4,10 +4,15 @@
  *  If we have the header, just pass in the header
  */
 import Header from "./headerConfig";
-const BASE_URL = "http://localhost:4000";
+// TODO: put node server api url here
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "nodeserver api url"
+    : "http://localhost:4000";
 const createAPI = (endpoint) => `${BASE_URL}${endpoint}`;
 
-const GET_LISTING = createAPI("/listings");
+const GET_LISTING = (pagenum, limit) =>
+  createAPI(`/listings?page=${pagenum}&limit=${limit}`);
 const POST_NEW_LISTING = createAPI("/listings/new");
 const GET_ONE_LISTING = (id) => createAPI(`/listings/${id}`);
 const GET_PROFILE = (netid) => createAPI(`/user/${netid}`);
@@ -19,6 +24,7 @@ const UPDATE_USER = (netid) => createAPI(`/user/${netid}`);
 
 // Category
 const GET_CATEGORY_LIST = createAPI("/category/");
+const GET_CATEGORY_BY_ID = (id) => createAPI(`/category/${id}`);
 
 export {
   GET_LISTING,
@@ -31,4 +37,5 @@ export {
   DELETE_CHAT,
   UPDATE_USER,
   GET_CATEGORY_LIST,
+  GET_CATEGORY_BY_ID,
 };

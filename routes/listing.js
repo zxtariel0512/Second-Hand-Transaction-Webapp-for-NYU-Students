@@ -37,6 +37,7 @@ router.route('/').get(async (req, res) => {
         if (err) {
           console.err(err);
         } else {
+
           res.json(result);
         }
       });
@@ -62,7 +63,7 @@ router.route("/:id").get(async (req, res) => {
 });
 
 // Create a new listing
-router.route("/new").post(auth, async (req, res) => {
+router.route("/new").post(async (req, res) => {
   try {
     console.log(req.body);
     let currCategory = await Category.findOne({ name: req.body.category });
@@ -72,10 +73,10 @@ router.route("/new").post(auth, async (req, res) => {
       status: req.body.status,
       title: req.body.title,
       listingtype: req.body.listingtype,
-      category: currCategory._id,
+      category: req.body.category,
       description: req.body.description,
       cover_image_url: req.body.cover_image_url,
-      detail_image_urls: JSON.parse(req.body.detail_image_urls),
+      detail_image_urls: req.body.detail_image_urls,
       original_price: req.body.original_price,
       current_price: req.body.current_price,
       created_date: req.body.created_date,

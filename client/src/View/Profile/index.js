@@ -32,16 +32,23 @@ const Index = () => {
   const [profile, setProfile] = useState();
   const [listing, setListing] = useState();
   const { setError } = useContext(MessageContext);
+  const [rating, setRating] = useState();
   const [authStatus, setAuthStatus, checkStatus, token] = useContext(
     AuthContext
   );
-  const history = useHistory();
+
   useEffect(() => {
     const getProfileData = async () => {
       const res = await getProfile(localStorage.getItem("netid"));
       // show error if request is failed
       res.success ? setProfile(res.data) : setError(res.message);
-      console.log(profile);
+      // console.log(profile);
+      let total = 0;
+      for (let i = 0; i < res.data.reviews.length; i++) {
+        total += res.data.reviews[i].rating;
+      }
+      console.log(total);
+      setRating(total / res.data?.reviews.length);
     };
     const getUserListingData = async () => {
       const res = await getUserListing(localStorage.getItem("netid"), token);
@@ -53,15 +60,12 @@ const Index = () => {
     getProfileData();
   }, []);
 
-  if (!authStatus) {
-    history.push("/signup");
-  }
   return (
     <div className={classes.root}>
       <CustomAppBar />
       <div className={classes.container}>
         {/* to display user info */}
-        <ProfileCard profile={profile} />
+        <ProfileCard profile={profile} avgRating={rating} />
         {/* to display user listings, reviews of the user */}
         <ProfileContent listing={listing} reviews={profile?.reviews} />
       </div>

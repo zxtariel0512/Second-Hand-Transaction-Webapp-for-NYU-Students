@@ -58,6 +58,8 @@ const useStyles = makeStyles({
     fontSize: 13,
     fontWeight: "bold",
     paddingLeft: "2vh",
+    width: 160,
+    wordWrap: "break-word",
   },
 });
 

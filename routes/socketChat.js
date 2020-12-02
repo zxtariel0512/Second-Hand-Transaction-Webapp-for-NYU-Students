@@ -40,6 +40,10 @@ module.exports = (io) => {
                 message: newMessage,
                 chat: newChat
             })
+
+            socket.broadcast.emit("otherNewChats", {
+                chat: newChat
+            })
         })
 
         socket.on("sendMessage", async (msg) => {

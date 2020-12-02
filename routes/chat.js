@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const moment = require("moment");
 
 const { auth } = require("../middleware/auth");
 
@@ -8,11 +9,10 @@ const User = require("../models/user.model");
 
 
 // get user's chat rooms
-//router.route('/').get(auth, async (req, res) => {
-router.route('/').get(async (req, res) => {
+router.route('/').get(auth, async (req, res) => {
     try {
         //let foundUser = await (await User.findOne({ netid: req.user.username }))
-        let foundUser = await (await User.findOne({ netid: "mrf441" }))
+        let foundUser = await (await User.findOne({ netid: req.user.username }))
             .populate({
                 path: "chats",
                 populate: {
@@ -20,7 +20,13 @@ router.route('/').get(async (req, res) => {
                 }
             }).execPopulate();
 
-        res.json(foundUser.chats);
+        const sortedChats = foundUser.chats.sort((a, b) => {
+            const aDate = new Date(a.lastMessage.time)
+            const bDate = new Date(b.lastMessage.time)
+            return bDate.getTime() - aDate.getTime()
+        })
+
+        res.json(sortedChats);
     } catch(err) {
         console.error(err);
         res.status(500).json({
@@ -30,7 +36,7 @@ router.route('/').get(async (req, res) => {
 })
 
 // get individual chat room
-router.route('/:id').get(async (req, res) => {
+router.route('/:id').get(auth, async (req, res) => {
     try {
         let foundChat = await (await Chat.findById(req.params.id))
             .execPopulate("messages");
@@ -39,6 +45,24 @@ router.route('/:id').get(async (req, res) => {
         console.error(err);
         res.status(500).json({
             message: `Error retrieving chat of id: ${req.params.id}`
+        });
+    }
+})
+
+// delete user from chat room
+router.route('/:id').delete(auth, async (req, res) => {
+    try {
+        console.log("hi")
+        console.log(req.params.id);
+        let foundUser = await User.findOne({ netid: req.user.username });
+        foundUser.chats = foundUser.chats.filter(chat => chat._id.toString() != req.params.id);
+        await foundUser.save()
+
+        res.json(foundUser.chats);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error deleting user from chat"
         });
     }
 })
@@ -61,5 +85,6 @@ router.route('/').post(async (req, res) => {
         });
     }
 })
+
 
 module.exports = router;

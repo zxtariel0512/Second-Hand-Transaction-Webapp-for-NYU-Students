@@ -30,7 +30,8 @@ const requestRouter = require('./routes/request');
 const chatRouter = require('./routes/chat');
 const messageRouter = require('./routes/message');
 const ioRoutes = require('./routes/socketChat')(io)
-const categoryRouter = require('./routes/category')
+const categoryRouter = require('./routes/category');
+const purchasedRouter=require('./routes/purchased'); 
 
 app.use('/user', userRouter);
 app.use('/listings', listingRouter);
@@ -38,7 +39,9 @@ app.use('/requests',requestRouter);
 app.use('/chat', chatRouter);
 app.use('/messages', messageRouter);
 ioRoutes
-app.use('/category', categoryRouter)
+app.use('/category', categoryRouter);
+app.use('/purchased',purchasedRouter)
+
 const stripe = require('stripe')('sk_test_51Ht0mwFHEiDr6rf2Wa8PyVCaNfDXqKBOWvL5GwlAk3vNnDr8oY9eYCOM46i4WCq4nhhxXMGKQKr89x5U9xL718sN00znAUu7JK');
 
 app.post('/create-checkout-session', async (req, res) => {

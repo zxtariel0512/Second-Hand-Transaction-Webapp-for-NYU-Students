@@ -9,6 +9,10 @@ const style = {
     height: "100%",
     boxSizing: "border-box",
   },
+  overflow: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+  },
   chat: {
     height: "100%",
     width: "100%",
@@ -28,6 +32,7 @@ const style = {
   },
   chatBoxHeader: {
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
     padding: "0 20px",
     height: "60px",
@@ -44,6 +49,14 @@ const style = {
       display: "flex",
     },
     borderTop: ".5px solid #e0e0e0",
+  },
+  chatBoxDirect: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    padding: "20px",
   },
 };
 

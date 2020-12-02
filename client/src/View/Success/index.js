@@ -76,8 +76,10 @@ export default function Index(props) {
 
   useEffect(async () => {
     const getPurchaseInfo = async () => {
+      console.log(sessionId);
       const resPurchase = await getPurchase(sessionId);
       const resUser = await getProfile(resPurchase.data.item.user_id);
+      console.log(resPurchase.data.item);
       setItem(resPurchase.data.item);
       setSeller(resUser.data);
     };

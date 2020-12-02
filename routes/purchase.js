@@ -27,7 +27,7 @@ router.route("/").get(async (req, res) => {
 // get specific purchase with stripe session id
 router.route("/:session_id").get(async (req, res) => {
     try {
-      let foundpurchase = await Purchase.findOne({ stripeSessionId: req.params.id}).populate('item');
+      let foundpurchase = await Purchase.findOne({ stripeCheckoutId: req.params.session_id}).populate('item');
       console.log(foundpurchase);
       res.json(foundpurchase);
     } catch (error) {

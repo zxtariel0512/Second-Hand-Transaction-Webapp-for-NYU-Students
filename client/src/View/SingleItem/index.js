@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import CustomAppBar from "Components/CustomAppBar/CustomAppBar";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -7,7 +7,9 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Avatar from "Assets/img/faces/avatar-example.jpg";
 import ImagePlaceholder from "Assets/img/img-placeholder.png";
 import getProfile from "Controller/getProfile";
+import getChats from "Controller/Chat/getChats";
 import CustomCarousel from "Components/Carousel";
+import { AuthContext } from "Context/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(
@@ -81,6 +83,9 @@ const SingleItem = () => {
   const location = useLocation();
   const item = location.state;
   const classes = useStyle();
+  const [authStatus, setAuthStatus, checkStatus, token, username] = useContext(
+    AuthContext
+  );
   // tmep code
   let imgurlArr = [];
   let price;
@@ -98,6 +103,20 @@ const SingleItem = () => {
     price = item.original_price;
   }
   const [avatarUrl, setAvatarUrl] = useState();
+  const [chatId, setChatId] = useState(null);
+
+  useEffect(async () => {
+    const getAllChats = async () => {
+      const res = await getChats(token);
+      return res.data;
+    };
+
+    const chats = await getAllChats();
+    console.log(chats);
+    const foundChat = chats.find((chat) => chat.name == item.title);
+    setChatId(foundChat ? foundChat._id : null);
+  }, []);
+
   // fetch user avatar
   useEffect(() => {
     const getAvatarUrl = async () => {
@@ -109,7 +128,7 @@ const SingleItem = () => {
     getAvatarUrl();
   }, [avatarUrl]);
 
-  /* initialize stripe payment 
+  /* initialize stripe payment
     code from https://stripe.com/docs/payments/accept-a-payment?integration=elements
   */
   const handleClick = async (event) => {
@@ -202,7 +221,7 @@ const SingleItem = () => {
             color="primary"
             component={Link}
             to={{
-              pathname: `/chat/new`,
+              pathname: `/chat/${chatId ? chatId : "new"}`,
               listingInfo: item,
             }}
           >

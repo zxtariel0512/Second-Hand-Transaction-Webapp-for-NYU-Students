@@ -1,9 +1,9 @@
-import { getChatsModel } from "../../Model/Chat/chatModel";
+import { deleteChatModel } from "../../Model/Chat/chatModel";
 import ErrorMessage from "../../Context/MessageContext";
 
-const getChats = async (token) => {
+const deleteChat = async (id, token) => {
   try {
-    const res = await getChatsModel(token);
+    const res = await deleteChatModel(id, token);
     // Do all the data manipulation here
     return { success: true, data: res.data };
   } catch (e) {
@@ -12,4 +12,4 @@ const getChats = async (token) => {
   }
 };
 
-export default getChats;
+export default deleteChat;

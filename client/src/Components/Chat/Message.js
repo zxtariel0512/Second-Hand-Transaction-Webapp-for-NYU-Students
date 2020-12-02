@@ -21,7 +21,13 @@ const useStyles = makeStyles({
   messageContent: {
     border: "1px solid rgba(0, 0, 0, 0.12)",
     borderRadius: "7px",
-    padding: " 12px 15px",
+    padding: "12px 15px",
+  },
+  adminMessage: {
+    height: "30px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
@@ -47,12 +53,18 @@ export default function Message(props) {
 
   return (
     <div className={classes.message}>
-      <div className={classes.messageInfo}>
-        {msg.author}
-        {bull}
-        {time}
-      </div>
-      <div className={classes.messageContent}>{msg.value}</div>
+      {msg.author != "admin" ? (
+        <>
+          <div className={classes.messageInfo}>
+            {msg.author}
+            {bull}
+            {time}
+          </div>
+          <div className={classes.messageContent}>{msg.value}</div>
+        </>
+      ) : (
+        <div className={classes.adminMessage}>{msg.value}</div>
+      )}
     </div>
   );
 }

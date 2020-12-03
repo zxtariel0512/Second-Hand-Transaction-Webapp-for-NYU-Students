@@ -11,6 +11,7 @@ import getChats from "Controller/Chat/getChats";
 import CustomCarousel from "Components/Carousel";
 import { AuthContext } from "Context/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
+import { Auth } from "aws-amplify";
 
 const stripePromise = loadStripe(
   "pk_test_51Ht0mwFHEiDr6rf2IHuPzpEo3j7hDKwDtFLBfOAebHTu7WPyOQh9xis5XOsyWwffHUNgwzzT6gR7CT9HTZutsIjX00dq1LRvzu"
@@ -111,7 +112,7 @@ const SingleItem = () => {
 
       const chats = res.data;
       console.log(chats);
-      const foundChat = chats?.find((chat) => chat.name === item.title);
+      const foundChat = chats.find((chat) => chat.name === item.title);
       setChatId(foundChat ? foundChat._id : null);
     };
 

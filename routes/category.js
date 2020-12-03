@@ -15,14 +15,14 @@ router.route('/').get(async (req, res) => {
 })
 
 // get category by id
-router.route('/:id').get(async (req,res) => {
-    try {
-        let category = await Category.findById(req.params.id);
-        res.json(category);
-    } catch (err) {
-        res.status(500).json({message: "error: find category by id"});
-    }
-})
+// router.route('/:id').get(async (req,res) => {
+//     try {
+//         let category = await Category.findById(req.params.id);
+//         res.json(category);
+//     } catch (err) {
+//         res.status(500).json({message: "error: find category by id"});
+//     }
+// })
 
 // get all specific level's category
 router.route('/:level').get(async(req, res) =>{

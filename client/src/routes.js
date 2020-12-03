@@ -18,7 +18,7 @@ const Home = Loadable("Home");
 const Chat = Loadable("Chat");
 const Profile = Loadable("Profile");
 const PostItem = Loadable("PostItem");
-const Listing = Loadable("Listing");
+const Success = Loadable("Success");
 
 /**
  * PrivateRoute only allows user who signed in to access to route
@@ -72,6 +72,9 @@ export default class Routes extends React.Component {
           <Route path="*">
             <h2 style={{ textAlign: "center" }}>404 Not Found</h2>
           </Route>
+          <Route path="/item/:postId" component={SingleItem} />
+          <Route path="/order/success" component={Success} />
+          <Route path="*" component={Landing} />
         </Switch>
       </BrowserRouter>
     );

@@ -40,7 +40,7 @@ const SearchBar = () => {
     const filtered = filteredListings.filter(
       (itemObj) =>
         itemObj.title.toLowerCase().includes(lowercase) ||
-        itemObj.category_id?.toLowerCase().includes(lowercase)
+        itemObj.category?.toLowerCase().includes(lowercase)
     );
     // console.log("listings", listings);
     setFilteredListings(filtered);

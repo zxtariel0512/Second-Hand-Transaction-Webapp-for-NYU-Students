@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
-
+import Rating from "@material-ui/lab/Rating";
 import {
   Button,
   Typography,
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   contactList: {
     width: "70%",
     margin: "auto",
-    paddingTop: "10vh",
+    paddingTop: "3vh",
     paddingBottom: "10vh",
   },
   contact: {
@@ -126,7 +126,7 @@ const AvatarModal = ({ classes, editAvatar, setEditAvatar, profile }) => {
     </Modal>
   );
 };
-const ProfileCard = ({ profile }) => {
+const ProfileCard = ({ avgRating, profile }) => {
   const classes = useStyles();
   const history = useHistory();
   const [edit, toggleEdit] = useState(false);
@@ -173,6 +173,7 @@ const ProfileCard = ({ profile }) => {
       <Typography variant="h5" style={{ marginTop: 20 }}>
         {profile?.name}
       </Typography>
+      <Rating name="read-only" value={parseInt(avgRating)} readOnly />
       <div className={classes.contactList}>
         {edit ? (
           <form
@@ -235,7 +236,6 @@ const ProfileCard = ({ profile }) => {
           </form>
         ) : (
           <>
-            <Contact img={Diamond} info={profile?.credit} />
             <Contact img={Phone} info={profile?.phone} />
             <Contact img={Email} info={`${profile?.username}@nyu.edu`} />
             {profile?.schoolYear ? (

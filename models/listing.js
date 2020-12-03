@@ -23,9 +23,10 @@ const ListingSchema = new mongoose.Schema({
         required:true
     },
     category:{
-        type: mongoose.Schema.Types.ObjectID,
-        ref:'Category',
-        require: true
+        type: String,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref:'Category',
+        required: true
     },
     description: String,
     cover_image_url: String,

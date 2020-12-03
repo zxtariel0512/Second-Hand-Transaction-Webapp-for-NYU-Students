@@ -15,8 +15,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
 const db = process.env.MONGO_URI;
-console.log(db)
-mongoose.connect(db, {
+mongoose.connect(process.env.HEROKU_MONGO_URI || db, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true

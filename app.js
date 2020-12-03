@@ -31,7 +31,8 @@ const chatRouter = require('./routes/chat');
 const messageRouter = require('./routes/message');
 const ioRoutes = require('./routes/socketChat')(io)
 const categoryRouter = require('./routes/category');
-const purchasedRouter=require('./routes/purchased'); 
+const purchaseRouter = require('./routes/purchase');
+const checkoutRouter = require('./routes/checkout');
 
 app.use('/user', userRouter);
 app.use('/listings', listingRouter);
@@ -40,35 +41,9 @@ app.use('/chat', chatRouter);
 app.use('/messages', messageRouter);
 ioRoutes
 app.use('/category', categoryRouter);
-app.use('/purchased',purchasedRouter)
+app.use('/purchases', purchaseRouter)
+app.use('/checkout', checkoutRouter);
 
-const stripe = require('stripe')('sk_test_51Ht0mwFHEiDr6rf2Wa8PyVCaNfDXqKBOWvL5GwlAk3vNnDr8oY9eYCOM46i4WCq4nhhxXMGKQKr89x5U9xL718sN00znAUu7JK');
-
-app.post('/create-checkout-session', async (req, res) => {
-    console.log(req.body.price);
-    console.log(req.body.title);
-    console.log(req.body);
-    const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: [
-            {
-                price_data: {
-                    currency: 'usd',
-                    product_data: {
-                        name: req.body.title,
-                    },
-                    unit_amount: parseInt(req.body.price) * 100+ 1,
-                },
-                quantity: 1,
-            },
-        ],
-        mode: 'payment',
-        success_url: 'http://localhost:3000/home',
-        cancel_url: 'https://localhost:3000/home',
-    });
-
-    res.json({ id: session.id });
-});
 
 server.listen(4000, () => {
     console.log("secondhand server started");

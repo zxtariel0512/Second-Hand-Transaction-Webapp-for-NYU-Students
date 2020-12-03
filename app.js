@@ -33,11 +33,6 @@ const categoryRouter = require('./routes/category');
 const purchaseRouter = require('./routes/purchase');
 const checkoutRouter = require('./routes/checkout');
 
-app.get("/", (req, res) => {
-    res.json({
-        message: "this works"
-    })
-})
 app.use('/user', userRouter);
 app.use('/listings', listingRouter);
 app.use('/requests',requestRouter);

@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     name: {type: String, required: true},
     credit: {type: Number, required: true},
     valid: {type: Boolean, required: true},
+    address: {type: String},
     reviews: [{type: mongoose.Schema.Types.ObjectID, ref: 'Review'}],
     schoolYear: {type: Number},
     major: {type: String},

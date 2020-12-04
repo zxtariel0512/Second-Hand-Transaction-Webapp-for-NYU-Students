@@ -2,10 +2,11 @@ const router = require("express").Router();
 let Listing = require("../models/listing");
 let Category = require("../models/category.model");
 
+
 const { auth } = require("../middleware/auth");
 
 // get all listings or perform a fuzzy search
-router.route("/").get(async (req, res) => {
+router.route('/').get(async (req, res) => {
   //if query, fuzzy search
   if (req.query.search) {
     const regex = new RegExp(escapeRegex(req.query.search), "gi");
@@ -28,8 +29,18 @@ router.route("/").get(async (req, res) => {
     //if no query, find all listings
   } else {
     try {
-      let foundListings = await Listing.find();
-      res.json(foundListings);
+      var aggregateQuery = Listing.aggregate();
+      Listing.aggregatePaginate(aggregateQuery, { page: parseInt(req.query.page), limit: parseInt(req.query.limit) }, function(
+        err,
+        result
+      ) {
+        if (err) {
+          console.err(err);
+        } else {
+
+          res.json(result);
+        }
+      });
     } catch (error) {
       res.status(500).json({ message: "error: get all listings" });
     }
@@ -52,17 +63,17 @@ router.route("/:id").get(async (req, res) => {
 });
 
 // Create a new listing
-router.route("/new").post(auth, async (req, res) => {
+router.route("/new").post(async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     let currCategory = await Category.findOne({ name: req.body.category });
-    console.log(currCategory);
+    // console.log(currCategory);
     const L = {
       user_id: req.body.user_id,
       status: req.body.status,
       title: req.body.title,
       listingtype: req.body.listingtype,
-      category: currCategory._id,
+      category: req.body.category,
       description: req.body.description,
       cover_image_url: req.body.cover_image_url,
       detail_image_urls: JSON.parse(req.body.detail_image_urls),

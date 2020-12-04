@@ -1,4 +1,8 @@
 const mongoose = require("mongoose");
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+var aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const ListingSchema = new mongoose.Schema({
     user_id: {
@@ -19,9 +23,10 @@ const ListingSchema = new mongoose.Schema({
         required:true
     },
     category:{
-        type: mongoose.Schema.Types.ObjectID,
-        ref:'Category',
-        require: true
+        type: String,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref:'Category',
+        required: true
     },
     description: String,
     cover_image_url: String,
@@ -39,5 +44,5 @@ const ListingSchema = new mongoose.Schema({
 
 
 
-
+ListingSchema.plugin(aggregatePaginate);
 module.exports = mongoose.model("Listing", ListingSchema)

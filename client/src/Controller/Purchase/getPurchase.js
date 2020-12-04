@@ -1,9 +1,9 @@
-import { getListingModel } from "../../Model/Listing/listingModel";
+import { getPurchaseModel } from "../../Model/Purchase/purchaseModel";
 import ErrorMessage from "../../Context/MessageContext";
 
-const getListing = async (pageNum, limit) => {
+const getPurchase = async (sessionId, token) => {
   try {
-    const res = await getListingModel(pageNum, limit);
+    const res = await getPurchaseModel(sessionId, token);
     // Do all the data manipulation here
     return { success: true, data: res.data };
   } catch (e) {
@@ -12,4 +12,4 @@ const getListing = async (pageNum, limit) => {
   }
 };
 
-export default getListing;
+export default getPurchase;

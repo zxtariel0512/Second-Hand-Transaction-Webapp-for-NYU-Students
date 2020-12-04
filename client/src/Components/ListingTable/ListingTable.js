@@ -60,7 +60,7 @@ export default function ListingTable({ listing }) {
               <StyledTableCell component="th" scope="row">
                 {row.title}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.category_id}</StyledTableCell>
+              <StyledTableCell align="right">{row.category}</StyledTableCell>
               <StyledTableCell align="right">{row.payment}</StyledTableCell>
               <StyledTableCell align="right">{row.shipment}</StyledTableCell>
               <StyledTableCell align="right">

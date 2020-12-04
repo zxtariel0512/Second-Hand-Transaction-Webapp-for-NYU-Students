@@ -14,6 +14,8 @@ async function postNewListing(coverPhoto, itemPhotos) {
       created_date: Date.now(),
       expire_date: Date.now() + 86400000 * 60, // Expire in 60 days
       payment: "Credit Card",
+      // TODO: add a field in the form to let user choose whether it's a request or listing
+      listingtype: "sell",
       shipment: window.localStorage.getItem("deliveryMethod"),
     });
     return { success: true, data: res.data };

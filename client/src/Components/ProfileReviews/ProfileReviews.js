@@ -37,11 +37,11 @@ const ProfileReviews = ({ reviews }) => {
           <div className={classes.fixed}>
             {review.reviewer ? (
               <Typography style={{ fontFamily: "Roboto" }}>
-                -{review.reviewer}
+                - {review.reviewer}
               </Typography>
             ) : (
               <Typography style={{ fontFamily: "Roboto" }}>
-                -anonymous
+                - anonymous
               </Typography>
             )}
           </div>

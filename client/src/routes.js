@@ -18,7 +18,7 @@ const Home = Loadable("Home");
 const Chat = Loadable("Chat");
 const Profile = Loadable("Profile");
 const PostItem = Loadable("PostItem");
-const Listing = Loadable("Listing");
+const Success = Loadable("Success");
 
 /**
  * PrivateRoute only allows user who signed in to access to route
@@ -43,7 +43,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => (token ? <Component {...props} /> : "403 Forbidden")}
+      render={(props) =>
+        token ? (
+          <Component {...props} />
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            <h2>403 Forbidden</h2>
+          </div>
+        )
+      }
     />
   );
 };

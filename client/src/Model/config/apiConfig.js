@@ -15,6 +15,7 @@ const GET_USER_LISTING = (netid) => createAPI(`/listings/netid/${netid}`);
 const GET_CHATS = createAPI("/chat");
 const GET_ONE_CHAT = (id) => createAPI(`/chat/${id}`);
 const DELETE_CHAT = (id) => createAPI(`/chat/${id}`);
+const CREATE_CHAT = createAPI("/chat");
 const UPDATE_USER = (netid) => createAPI(`/user/${netid}`);
 
 // Category
@@ -29,6 +30,7 @@ export {
   GET_CHATS,
   GET_ONE_CHAT,
   DELETE_CHAT,
+  CREATE_CHAT,
   UPDATE_USER,
   GET_CATEGORY_LIST,
 };

@@ -42,13 +42,19 @@ export default function Index(props) {
   const [chatId, setChatId] = useState("");
   const [currChat, setCurrChat] = useState("");
   const [chats, setChats] = useState([]);
-  const [authStatus, setAuthStatus, checkStatus, token, username] = useContext(
-    AuthContext
-  );
+  const [
+    authStatus,
+    setAuthStatus,
+    checkStatus,
+    token,
+    setToken,
+    username,
+  ] = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   useEffect(async () => {
     socket = io(ENDPOINT);
+    console.log(token);
 
     const getAllChats = async () => {
       const res = await getChats(token);

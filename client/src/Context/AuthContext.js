@@ -15,6 +15,7 @@ export const AuthProvider = (props) => {
       setToken(user.getIdToken().jwtToken);
       setUsername(user.getIdToken().payload["cognito:username"]);
       setAuthStatus(true);
+      console.log(user.getIdToken().jwtToken);
     } catch {
       setAuthStatus(false);
     }
@@ -26,7 +27,14 @@ export const AuthProvider = (props) => {
 
   return (
     <AuthContext.Provider
-      value={[authStatus, setAuthStatus, checkStatus, token, username]}
+      value={[
+        authStatus,
+        setAuthStatus,
+        checkStatus,
+        token,
+        setToken,
+        username,
+      ]}
     >
       {props.children}
     </AuthContext.Provider>

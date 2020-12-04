@@ -109,13 +109,9 @@ const SingleItem = () => {
   const [chatId, setChatId] = useState(null);
 
   useEffect(() => {
-    console.log(username);
-    console.log(token);
     const wrapper = async () => {
       const res = await getChats(token);
-
       const chats = res.data;
-      console.log(chats);
       const foundChat = chats.find((chat) => chat.name === item.title);
       setChatId(foundChat ? foundChat._id : null);
     };

@@ -54,7 +54,6 @@ export default function Index(props) {
 
   useEffect(async () => {
     socket = io(ENDPOINT);
-    console.log(token);
 
     const getAllChats = async () => {
       const res = await getChats(token);

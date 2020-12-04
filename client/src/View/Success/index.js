@@ -84,12 +84,11 @@ export default function Index(props) {
         },
         message: {
           author: "admin",
-          value: `${buyer} bought your item.`,
+          value: `${buyer} bought this item.`,
         },
       };
 
       const resChat = await createChat(chatDetails);
-      console.log(resChat.data);
     };
 
     const getPurchaseInfo = async () => {

@@ -35,8 +35,13 @@ const style = {
     justifyContent: "space-between",
     alignItems: "center",
     padding: "0 20px",
-    height: "60px",
+    height: "70px",
     borderBottom: ".5px solid #e0e0e0",
+  },
+  chatBoxHeaderParticipant: {
+    marginTop: "5px",
+    color: "rgba(0, 0, 0, 0.54)",
+    fontSize: "12px",
   },
   chatBoxMessages: {
     padding: "20px 20px 0 20px",

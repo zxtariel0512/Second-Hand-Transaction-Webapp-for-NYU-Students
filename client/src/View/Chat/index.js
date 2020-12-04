@@ -228,6 +228,18 @@ export default function Index(props) {
     });
   };
 
+  const getOtherParticpantName = () => {
+    if (chatId == "new") {
+      return props.location.listingInfo.user_id;
+    } else if (currChat.participants) {
+      return currChat.participants.find(
+        (participant) => participant != username
+      );
+    } else {
+      return "";
+    }
+  };
+
   return (
     <>
       <CustomAppBar />
@@ -271,7 +283,12 @@ export default function Index(props) {
               {chatId != "direct" ? (
                 <>
                   <div className={classes.chatBoxHeader}>
-                    <div>{currChat.name}</div>
+                    <div>
+                      <div>{currChat.name}</div>
+                      <div className={classes.chatBoxHeaderParticipant}>
+                        {getOtherParticpantName()}
+                      </div>
+                    </div>
                     <IconButton
                       aria-controls="simple-menu"
                       aria-haspopup="true"
@@ -286,7 +303,7 @@ export default function Index(props) {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      <MenuItem onClick={leaveChat}>Delete</MenuItem>
+                      <MenuItem onClick={leaveChat}>Leave Chat</MenuItem>
                     </Menu>
                   </div>
                   <div className={classes.chatBoxMessages}>

@@ -28,7 +28,10 @@ import deleteChat from "../../Controller/Chat/deleteChat";
 
 const useStyles = makeStyles(style);
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT =
+  process.env.NODE_ENV === "production"
+    ? "https://secondhand-api.herokuapp.com"
+    : "http://localhost:4000";
 let socket;
 
 export default function Index(props) {

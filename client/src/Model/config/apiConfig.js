@@ -7,7 +7,7 @@ import Header from "./headerConfig";
 // TODO: put node server api url here
 const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "nodeserver api url"
+    ? "https://secondhand-api.herokuapp.com"
     : "http://localhost:4000";
 const createAPI = (endpoint) => `${BASE_URL}${endpoint}`;
 
@@ -21,6 +21,7 @@ const GET_CHATS = createAPI("/chat");
 const GET_ONE_CHAT = (id) => createAPI(`/chat/${id}`);
 const DELETE_CHAT = (id) => createAPI(`/chat/${id}`);
 const UPDATE_USER = (netid) => createAPI(`/user/${netid}`);
+const LOGIN_USER = (netid) => createAPI(`/user/login/${netid}`);
 const GET_PURCHASE = (sessionId) => createAPI(`/purchases/${sessionId}`);
 
 // Category
@@ -37,6 +38,7 @@ export {
   GET_ONE_CHAT,
   DELETE_CHAT,
   UPDATE_USER,
+  LOGIN_USER,
   GET_CATEGORY_LIST,
   GET_CATEGORY_BY_ID,
   GET_PURCHASE,

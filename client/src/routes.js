@@ -75,10 +75,6 @@ export default class Routes extends React.Component {
             <h2 style={{ textAlign: "center" }}>404 Not Found</h2>
           </Route>
           {/* <Route path="/item/:postId" component={SingleItem} /> */}
-<<<<<<< HEAD
-=======
-          <Route path="/order/success" component={Success} />
->>>>>>> 5f2736e3fc80a9d02fcac5a3418f3049fc2e9846
           <Route path="*" component={Landing} />
         </Switch>
       </BrowserRouter>

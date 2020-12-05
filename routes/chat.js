@@ -6,7 +6,7 @@ const { auth } = require("../middleware/auth");
 
 const Chat = require("../models/chat");
 const User = require("../models/user.model");
-
+const Message = require("../models/message");
 
 // get user's chat rooms
 router.route('/').get(auth, async (req, res) => {
@@ -69,13 +69,26 @@ router.route('/:id').delete(auth, async (req, res) => {
 
 
 // create a new chat room
-router.route('/').post(async (req, res) => {
+router.route('/').post(auth, async (req, res) => {
     try {
-        let foundUser = await User.findOne({ netid: "mrf441" })
-        let newChat = await Chat.create(req.body);
+        const details = req.body;
+        console.log(details);
+        let newChat = await Chat.create(details.chat);
 
-        foundUser.chats.push(newChat);
-        await foundUser.save();
+        details.chat.participants.forEach(async (participant) => {
+            const foundUser = await User.findOne({ netid: participant })
+            foundUser.chats.push(newChat);
+            await foundUser.save();
+        });
+
+        const newMessage = await Message.create({
+            author: details.message.author,
+            value: details.message.value,
+        });
+
+        newChat.messages.push(newMessage);
+        newChat.lastMessage = newMessage;
+        await newChat.save();
 
         res.json(newChat);
     } catch(err) {

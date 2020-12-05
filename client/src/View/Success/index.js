@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import getPurchase from "Controller/Purchase/getPurchase";
 import getProfile from "Controller/getProfile";
+import createChat from "Controller/Chat/createChat";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
@@ -75,13 +76,30 @@ export default function Index(props) {
   const [seller, setSeller] = useState();
 
   useEffect(async () => {
+    const createNewChat = async (name, buyer, seller) => {
+      const chatDetails = {
+        chat: {
+          name,
+          participants: [buyer, seller],
+        },
+        message: {
+          author: "admin",
+          value: `${buyer} bought this item.`,
+        },
+      };
+
+      const resChat = await createChat(chatDetails);
+    };
+
     const getPurchaseInfo = async () => {
-      console.log(sessionId);
       const resPurchase = await getPurchase(sessionId);
-      const resUser = await getProfile(resPurchase.data.item.user_id);
-      console.log(resPurchase.data.item);
-      setItem(resPurchase.data.item);
+      const purchase = resPurchase.data;
+
+      const resUser = await getProfile(purchase.item.user_id);
+      setItem(purchase.item);
       setSeller(resUser.data);
+
+      createNewChat(purchase.item.title, purchase.buyer, purchase.item.user_id);
     };
 
     await getPurchaseInfo();

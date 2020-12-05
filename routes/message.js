@@ -25,6 +25,7 @@ router.route("/:chatId").post(async (req, res) => {
         let newMessage = await Message.create(req.body);
 
         foundChat.messages.push(newMessage);
+        foundChat.lastMessage = newMessage;
         await foundChat.save();
 
         res.json(newMessage);

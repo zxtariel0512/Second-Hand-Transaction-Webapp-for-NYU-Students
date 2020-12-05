@@ -34,7 +34,6 @@ router.post('/create-checkout-session', async (req, res) => {
     }
 
     let newpurchase = await Purchase.create(p);
-    console.log(newpurchase);
 
     res.json({ id: session.id });
 });

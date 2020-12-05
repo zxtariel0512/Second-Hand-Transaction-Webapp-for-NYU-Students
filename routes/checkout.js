@@ -7,7 +7,7 @@ const Listing = require("../models/listing");
 
 const ENDPOINT =
   process.env.NODE_ENV === "production"
-    ? "dont know yet"
+    ? "http://localhost:3000"
     : "http://localhost:3000";
 
 router.post('/create-checkout-session', async (req, res) => {

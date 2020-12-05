@@ -190,7 +190,7 @@ const SingleItem = () => {
         <div className={classes.imageContainer}>
           <CustomCarousel images={imgurlArr} />
         </div>
-        {username}
+
         <div className={classes.itemInfoContainer}>
           <PoppinsFont variant="h4" style={{ fontWeight: 800 }}>
             {item?.title}

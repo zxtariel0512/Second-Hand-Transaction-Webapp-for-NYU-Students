@@ -5,7 +5,6 @@ const stripe = require('stripe')('sk_test_51Ht0mwFHEiDr6rf2Wa8PyVCaNfDXqKBOWvL5G
 const Purchase = require("../models/purchase.model");
 const Listing = require("../models/listing");
 
-const ENDPOINT = process.env.NODE_ENV ?
 const ENDPOINT =
   process.env.NODE_ENV === "production"
     ? "dont know yet"
@@ -27,8 +26,8 @@ router.post('/create-checkout-session', async (req, res) => {
             },
         ],
         mode: 'payment',
-        success_url: `${BASE_URL}/order/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${BASE_URL}/home`,
+        success_url: `${ENDPOINT}/order/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${ENDPOINT}/home`,
     });
 
     //await Listing.findByIdAndUpdate(req.body.itemId,{status:"unavailable"},{ new: true });

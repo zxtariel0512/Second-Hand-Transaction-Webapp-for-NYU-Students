@@ -13,6 +13,8 @@ import { AuthContext } from "Context/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
 import { Auth } from "aws-amplify";
 
+import checkout from "Controller/Checkout/checkout";
+
 const useStyle = makeStyles((theme) => ({
   container: {
     marginTop: "15vh",
@@ -154,16 +156,17 @@ const SingleItem = () => {
         itemId: item._id,
         buyer: username,
       };
-      const response = await fetch(
-        "http://localhost:4000/checkout/create-checkout-session",
-        {
-          headers: { "Content-Type": "application/json" },
-          method: "POST",
-          body: JSON.stringify(data),
-        }
-      );
+      // const response = await fetch(
+      //   "http://localhost:4000/checkout/create-checkout-session",
+      //   {
+      //     headers: { "Content-Type": "application/json" },
+      //     method: "POST",
+      //     body: JSON.stringify(data),
+      //   }
+      // );
 
-      const session = await response.json();
+      const session = (await checkout(data)).data;
+      console.log(session.id);
 
       // When the customer clicks on the button, redirect them to Checkout.
       const result = await stripe.redirectToCheckout({
@@ -175,7 +178,8 @@ const SingleItem = () => {
         // using `result.error.message`.
         console.log(result.error.message);
       }
-    } catch {
+    } catch (err) {
+      console.log(err);
       console.log("error: cannot start payment");
     }
   };

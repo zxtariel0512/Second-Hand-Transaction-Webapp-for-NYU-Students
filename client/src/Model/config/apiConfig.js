@@ -23,6 +23,7 @@ const DELETE_CHAT = (id) => createAPI(`/chat/${id}`);
 const UPDATE_USER = (netid) => createAPI(`/user/${netid}`);
 const LOGIN_USER = (netid) => createAPI(`/user/login/${netid}`);
 const GET_PURCHASE = (sessionId) => createAPI(`/purchases/${sessionId}`);
+const CHECKOUT = createAPI(`/checkout/create-checkout-session`);
 
 // Category
 const GET_CATEGORY_LIST = createAPI("/category/");
@@ -42,4 +43,5 @@ export {
   GET_CATEGORY_LIST,
   GET_CATEGORY_BY_ID,
   GET_PURCHASE,
+  CHECKOUT,
 };

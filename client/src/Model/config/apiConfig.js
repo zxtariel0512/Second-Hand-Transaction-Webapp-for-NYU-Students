@@ -7,7 +7,7 @@ import Header from "./headerConfig";
 // TODO: put node server api url here
 const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "nodeserver api url"
+    ? "https://secondhand-api.herokuapp.com"
     : "http://localhost:4000";
 const createAPI = (endpoint) => `${BASE_URL}${endpoint}`;
 

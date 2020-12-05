@@ -5,6 +5,11 @@ const stripe = require('stripe')('sk_test_51Ht0mwFHEiDr6rf2Wa8PyVCaNfDXqKBOWvL5G
 const Purchase = require("../models/purchase.model");
 const Listing = require("../models/listing");
 
+const ENDPOINT =
+  process.env.NODE_ENV === "production"
+    ? "https://secondhand-nyu.netlify.app/home"
+    : "http://localhost:3000";
+
 router.post('/create-checkout-session', async (req, res) => {
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -21,8 +26,8 @@ router.post('/create-checkout-session', async (req, res) => {
             },
         ],
         mode: 'payment',
-        success_url: `https://secondhand-nyu.netlify.app/order/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: 'https://secondhand-nyu.netlify.app/home',
+        success_url: `${ENDPOINT}/order/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${ENDPOINT}/home`,
     });
 
     //await Listing.findByIdAndUpdate(req.body.itemId,{status:"unavailable"},{ new: true });

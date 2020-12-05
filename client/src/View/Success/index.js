@@ -96,7 +96,6 @@ export default function Index(props) {
       const purchase = resPurchase.data;
 
       const resUser = await getProfile(purchase.item.user_id);
-      console.log(purchase.item);
       setItem(purchase.item);
       setSeller(resUser.data);
 

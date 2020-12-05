@@ -8,7 +8,7 @@ import {
   Redirect,
   useHistory,
 } from "react-router-dom";
-import SingleItem from "View/SingleItem";
+//import SingleItem from "View/SingleItem";
 import { Auth } from "aws-amplify";
 
 const Landing = Loadable("Landing");
@@ -19,6 +19,7 @@ const Chat = Loadable("Chat");
 const Profile = Loadable("Profile");
 const PostItem = Loadable("PostItem");
 const Success = Loadable("Success");
+const SingleItem = Loadable("SingleItem");
 
 /**
  * PrivateRoute only allows user who signed in to access to route
@@ -74,6 +75,10 @@ export default class Routes extends React.Component {
             <h2 style={{ textAlign: "center" }}>404 Not Found</h2>
           </Route>
           {/* <Route path="/item/:postId" component={SingleItem} /> */}
+<<<<<<< HEAD
+=======
+          <Route path="/order/success" component={Success} />
+>>>>>>> 5f2736e3fc80a9d02fcac5a3418f3049fc2e9846
           <Route path="*" component={Landing} />
         </Switch>
       </BrowserRouter>

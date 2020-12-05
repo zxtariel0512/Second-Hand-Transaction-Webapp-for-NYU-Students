@@ -26,7 +26,14 @@ export const AuthProvider = (props) => {
 
   return (
     <AuthContext.Provider
-      value={[authStatus, setAuthStatus, checkStatus, token, username]}
+      value={[
+        authStatus,
+        setAuthStatus,
+        checkStatus,
+        token,
+        setToken,
+        username,
+      ]}
     >
       {props.children}
     </AuthContext.Provider>

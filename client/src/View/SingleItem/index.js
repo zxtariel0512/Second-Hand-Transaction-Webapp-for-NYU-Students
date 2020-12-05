@@ -13,9 +13,6 @@ import { AuthContext } from "Context/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
 import { Auth } from "aws-amplify";
 
-const stripePromise = loadStripe(
-  "pk_test_51Ht0mwFHEiDr6rf2IHuPzpEo3j7hDKwDtFLBfOAebHTu7WPyOQh9xis5XOsyWwffHUNgwzzT6gR7CT9HTZutsIjX00dq1LRvzu"
-);
 const useStyle = makeStyles((theme) => ({
   container: {
     marginTop: "15vh",
@@ -84,9 +81,14 @@ const SingleItem = () => {
   const location = useLocation();
   const item = location.state;
   const classes = useStyle();
-  const [authStatus, setAuthStatus, checkStatus, token, username] = useContext(
-    AuthContext
-  );
+  const [
+    authStatus,
+    setAuthStatus,
+    checkStatus,
+    token,
+    setToken,
+    username,
+  ] = useContext(AuthContext);
   // tmep code
   let imgurlArr = [];
   let price;
@@ -109,9 +111,7 @@ const SingleItem = () => {
   useEffect(() => {
     const wrapper = async () => {
       const res = await getChats(token);
-
       const chats = res.data;
-      console.log(chats);
       const foundChat = chats.find((chat) => chat.name === item.title);
       setChatId(foundChat ? foundChat._id : null);
     };
@@ -136,6 +136,9 @@ const SingleItem = () => {
   const handleClick = async (event) => {
     // Get Stripe.js instance
     try {
+      const stripePromise = loadStripe(
+        "pk_test_51Ht0mwFHEiDr6rf2IHuPzpEo3j7hDKwDtFLBfOAebHTu7WPyOQh9xis5XOsyWwffHUNgwzzT6gR7CT9HTZutsIjX00dq1LRvzu"
+      );
       const stripe = await stripePromise;
 
       const integerPrice = parseInt(

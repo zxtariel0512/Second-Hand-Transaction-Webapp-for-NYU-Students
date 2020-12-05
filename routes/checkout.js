@@ -7,7 +7,7 @@ const Listing = require("../models/listing");
 
 const ENDPOINT =
   process.env.NODE_ENV === "production"
-    ? "http://localhost:3000"
+    ? "https://secondhand-nyu.netlify.app/home"
     : "http://localhost:3000";
 
 router.post('/create-checkout-session', async (req, res) => {

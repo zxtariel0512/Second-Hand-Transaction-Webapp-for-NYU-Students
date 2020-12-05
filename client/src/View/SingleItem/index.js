@@ -146,7 +146,6 @@ const SingleItem = () => {
           (item.price ? item.price : item.original_price).replaceAll(",", "")
         )
       );
-      console.log(integerPrice);
       // Call your backend to create the Checkout Session
       const data = {
         price: integerPrice,
@@ -187,7 +186,7 @@ const SingleItem = () => {
         <div className={classes.imageContainer}>
           <CustomCarousel images={imgurlArr} />
         </div>
-
+        {username}
         <div className={classes.itemInfoContainer}>
           <PoppinsFont variant="h4" style={{ fontWeight: 800 }}>
             {item?.title}
@@ -224,6 +223,7 @@ const SingleItem = () => {
             variant="outlined"
             color="primary"
             onClick={handleClick}
+            disabled={item?.user_id === username}
           >
             Buy!
           </Button>

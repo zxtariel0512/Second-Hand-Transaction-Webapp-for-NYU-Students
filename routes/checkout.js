@@ -21,8 +21,8 @@ router.post('/create-checkout-session', async (req, res) => {
             },
         ],
         mode: 'payment',
-        success_url: `http://localhost:3000/order/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: 'https://localhost:3000/home',
+        success_url: `https://secondhand-nyu.netlify.app/order/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: 'https://secondhand-nyu.netlify.app/home',
     });
 
     //await Listing.findByIdAndUpdate(req.body.itemId,{status:"unavailable"},{ new: true });

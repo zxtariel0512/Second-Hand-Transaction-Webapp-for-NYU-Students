@@ -24,6 +24,9 @@ const CREATE_CHAT = createAPI("/chat");
 const UPDATE_USER = (netid) => createAPI(`/user/${netid}`);
 const LOGIN_USER = (netid) => createAPI(`/user/login/${netid}`);
 const GET_PURCHASE = (sessionId) => createAPI(`/purchases/${sessionId}`);
+const GET_PURCHASE_BY_SELLER = (netid) =>
+  createAPI(`/purchases/netid/${netid}`);
+
 const CHECKOUT = createAPI(`/checkout/create-checkout-session`);
 
 // Category
@@ -45,5 +48,6 @@ export {
   GET_CATEGORY_LIST,
   GET_CATEGORY_BY_ID,
   GET_PURCHASE,
+  GET_PURCHASE_BY_SELLER,
   CHECKOUT,
 };

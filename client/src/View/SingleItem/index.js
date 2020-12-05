@@ -155,14 +155,6 @@ const SingleItem = () => {
         itemId: item._id,
         buyer: username,
       };
-      // const response = await fetch(
-      //   "http://localhost:4000/checkout/create-checkout-session",
-      //   {
-      //     headers: { "Content-Type": "application/json" },
-      //     method: "POST",
-      //     body: JSON.stringify(data),
-      //   }
-      // );
 
       const session = (await checkout(data)).data;
       console.log(session.id);

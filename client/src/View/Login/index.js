@@ -56,7 +56,9 @@ export default function Index(props) {
   const { register, handleSubmit } = useForm({ mode: "onBlur" });
   /* useState hook to store server error message */
   const [serverErr, setserverErr] = useState("");
-  const [authStatus, setAuthStatus] = useContext(AuthContext);
+  const [authStatus, setAuthStatus, checkStatus, token, setToken] = useContext(
+    AuthContext
+  );
   /* call aws cognito api to authenticate user */
   async function handleOnSubmit(userinput) {
     try {
@@ -72,6 +74,7 @@ export default function Index(props) {
         method: "Put",
       });
       setAuthStatus(true);
+      setToken(userSession.getIdToken().jwtToken);
       // cache netid in local storage to redece redundant api calls
       localStorage.setItem("netid", userinput.netid);
       history.push("/home");

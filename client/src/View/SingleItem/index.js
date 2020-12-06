@@ -11,10 +11,8 @@ import getChats from "Controller/Chat/getChats";
 import CustomCarousel from "Components/Carousel";
 import { AuthContext } from "Context/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
+import { Auth } from "aws-amplify";
 
-const stripePromise = loadStripe(
-  "pk_test_51Ht0mwFHEiDr6rf2IHuPzpEo3j7hDKwDtFLBfOAebHTu7WPyOQh9xis5XOsyWwffHUNgwzzT6gR7CT9HTZutsIjX00dq1LRvzu"
-);
 const useStyle = makeStyles((theme) => ({
   container: {
     marginTop: "15vh",
@@ -83,9 +81,14 @@ const SingleItem = () => {
   const location = useLocation();
   const item = location.state;
   const classes = useStyle();
-  const [authStatus, setAuthStatus, checkStatus, token, username] = useContext(
-    AuthContext
-  );
+  const [
+    authStatus,
+    setAuthStatus,
+    checkStatus,
+    token,
+    setToken,
+    username,
+  ] = useContext(AuthContext);
   // tmep code
   let imgurlArr = [];
   let price;
@@ -105,16 +108,15 @@ const SingleItem = () => {
   const [avatarUrl, setAvatarUrl] = useState();
   const [chatId, setChatId] = useState(null);
 
-  useEffect(async () => {
-    const getAllChats = async () => {
+  useEffect(() => {
+    const wrapper = async () => {
       const res = await getChats(token);
-      return res.data;
+      const chats = res.data;
+      const foundChat = chats.find((chat) => chat.name === item.title);
+      setChatId(foundChat ? foundChat._id : null);
     };
 
-    const chats = await getAllChats();
-    console.log(chats);
-    const foundChat = chats.find((chat) => chat.name == item.title);
-    setChatId(foundChat ? foundChat._id : null);
+    wrapper();
   }, []);
 
   // fetch user avatar
@@ -134,15 +136,26 @@ const SingleItem = () => {
   const handleClick = async (event) => {
     // Get Stripe.js instance
     try {
+      const stripePromise = loadStripe(
+        "pk_test_51Ht0mwFHEiDr6rf2IHuPzpEo3j7hDKwDtFLBfOAebHTu7WPyOQh9xis5XOsyWwffHUNgwzzT6gR7CT9HTZutsIjX00dq1LRvzu"
+      );
       const stripe = await stripePromise;
-      console.log(item);
+
+      const integerPrice = parseInt(
+        parseFloat(
+          (item.price ? item.price : item.original_price).replaceAll(",", "")
+        )
+      );
+      console.log(integerPrice);
       // Call your backend to create the Checkout Session
       const data = {
-        price: item.price || item.original_price,
+        price: integerPrice,
         title: item.title,
+        itemId: item._id,
+        buyer: username,
       };
       const response = await fetch(
-        "http://localhost:4000/create-checkout-session",
+        "http://localhost:4000/checkout/create-checkout-session",
         {
           headers: { "Content-Type": "application/json" },
           method: "POST",

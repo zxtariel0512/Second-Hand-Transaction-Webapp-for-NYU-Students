@@ -60,7 +60,7 @@ router.route('/:netid').delete(auth,async (req, res) => {
 })
 
 // Login individual user by netid
-router.route('/login/:netid').put(auth,async(req, res) =>{
+router.route('/login/:netid').put(auth, async(req, res) =>{
   try {
     let dumUser = await User.findOne({netid: req.params.netid});
     dumUser.valid = true;
@@ -73,7 +73,7 @@ router.route('/login/:netid').put(auth,async(req, res) =>{
 })
 
 // Get all the reviews of a user by netid
-router.route('/review/:netid').get(auth, async(req, res) =>{
+router.route('/review/:netid').get(async(req, res) =>{
   try{
     let targetUser = await User.findOne({netid: req.params.netid});
     await targetUser.populate('reviews').execPopulate();

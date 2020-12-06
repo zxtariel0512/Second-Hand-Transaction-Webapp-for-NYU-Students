@@ -1,9 +1,9 @@
-import { getListingModel } from "../../Model/Listing/listingModel";
+import { createChatModel } from "../../Model/Chat/chatModel";
 import ErrorMessage from "../../Context/MessageContext";
 
-const getListing = async (pageNum, limit) => {
+const createChat = async (data) => {
   try {
-    const res = await getListingModel(pageNum, limit);
+    const res = await createChatModel(data);
     // Do all the data manipulation here
     return { success: true, data: res.data };
   } catch (e) {
@@ -12,4 +12,4 @@ const getListing = async (pageNum, limit) => {
   }
 };
 
-export default getListing;
+export default createChat;

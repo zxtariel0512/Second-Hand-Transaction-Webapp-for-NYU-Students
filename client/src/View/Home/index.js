@@ -22,30 +22,34 @@ const Homepage = () => {
   const classes = useStyles();
   const [listings, setListings] = useState([]);
   const [filteredListings, setFilteredListings] = useState([]);
-
+  const [pageNum, setPageNum] = useState(1);
+  const [totalPage, setTotalPage] = useState();
   /**
    * Get the homepage listing when the page is loaded
    */
-
+  const getHomepageListing = async (pageNumber, limit) => {
+    const res = await getListing({ pageNum: pageNumber, limit: limit });
+    // show error if request is failed
+    res.success ? setListings(res.data.docs) : setError(res.message);
+    console.log(res);
+    setTotalPage(res.data.totalPages);
+    setFilteredListings(res.data.docs);
+  };
   useEffect(() => {
-    const getHomepageListing = async () => {
-      const res = await getListing();
-      // show error if request is failed
-      res.success ? setListings(res.data) : setError(res.message);
-      console.log(res);
-      setFilteredListings(res.data);
-    };
-    getHomepageListing();
-  }, []);
+    // the default page limit is 9
+    getHomepageListing(pageNum, 9);
+  }, [pageNum]);
+
   // set the shared stated (context) here
   const context = {
     listings,
     setListings,
     filteredListings,
     setFilteredListings,
+    pageNum,
+    setPageNum,
+    totalPage,
   };
-
-  const [selectedBtn, setSelectedBtn] = useState();
 
   const handleClick = (e) => {
     const value = e.target.textContent;
@@ -58,7 +62,7 @@ const Homepage = () => {
     const filtered = listings.filter(
       (itemObj) =>
         itemObj.title.toLowerCase().includes(lowercase) ||
-        itemObj.category_id?.toLowerCase().includes(lowercase)
+        itemObj.category?.toLowerCase().includes(lowercase)
     );
     // console.log("listings", listings);
     setFilteredListings(filtered);

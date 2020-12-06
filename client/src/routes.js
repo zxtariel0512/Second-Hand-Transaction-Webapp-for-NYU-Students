@@ -8,7 +8,7 @@ import {
   Redirect,
   useHistory,
 } from "react-router-dom";
-import SingleItem from "View/SingleItem";
+//import SingleItem from "View/SingleItem";
 import { Auth } from "aws-amplify";
 
 const Landing = Loadable("Landing");
@@ -18,7 +18,8 @@ const Home = Loadable("Home");
 const Chat = Loadable("Chat");
 const Profile = Loadable("Profile");
 const PostItem = Loadable("PostItem");
-const Listing = Loadable("Listing");
+const Success = Loadable("Success");
+const SingleItem = Loadable("SingleItem");
 
 /**
  * PrivateRoute only allows user who signed in to access to route
@@ -43,7 +44,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => (token ? <Component {...props} /> : "403 Forbidden")}
+      render={(props) =>
+        token ? (
+          <Component {...props} />
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            <h2>403 Forbidden</h2>
+          </div>
+        )
+      }
     />
   );
 };
@@ -60,7 +69,12 @@ export default class Routes extends React.Component {
           <PrivateRoute path="/chat" component={Chat} />
           <PrivateRoute path="/me" component={Profile} />
           <PrivateRoute path="/post-item" component={PostItem} />
-          <Route path="/item/:postId" component={SingleItem} />
+          <PrivateRoute path="/item/:postId" component={SingleItem} />
+          <Route path="/order/success" component={Success} />
+          <Route path="*">
+            <h2 style={{ textAlign: "center" }}>404 Not Found</h2>
+          </Route>
+          {/* <Route path="/item/:postId" component={SingleItem} /> */}
           <Route path="*" component={Landing} />
         </Switch>
       </BrowserRouter>

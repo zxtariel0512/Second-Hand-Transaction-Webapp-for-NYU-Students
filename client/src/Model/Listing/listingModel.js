@@ -11,8 +11,9 @@ import createHeader from "../config/headerConfig";
 /**
  * GET LIST API
  */
-const getListingModel = () => {
-  return axios.get(GET_LISTING);
+const getListingModel = (config) => {
+  const { pageNum, limit } = config;
+  return axios.get(GET_LISTING(pageNum, limit));
 };
 
 const getOneListingModel = (id) => {

@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 
-const PurchasedSchema = new mongoose.Schema({
-
-    buyernetid:{
+const PurchaseSchema = new mongoose.Schema({
+    buyer: {
         type:String,
         require:true
     },
-    
-    itemId:{
+    item:{
         type: mongoose.Schema.Types.ObjectID,
         ref:'Listing',
         require: true
@@ -20,7 +18,7 @@ const PurchasedSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    
+
 })
 
-module.exports = mongoose.model("Purchased", PurchasedSchema)
+module.exports = mongoose.model("Purchase", PurchaseSchema)

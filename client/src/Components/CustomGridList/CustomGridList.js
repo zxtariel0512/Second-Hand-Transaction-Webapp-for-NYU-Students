@@ -6,12 +6,13 @@ import { Typography } from "@material-ui/core";
 import FunnelIcon from "../../Assets/img/icons/funnel.svg";
 // import { ListItemContext } from '../../../Context/ListItemProvider';
 import HomePageContext from "../../View/Home/store/context";
+import BasicPagination from "Components/Pagination/index";
 const useStyles = makeStyles((theme) => ({
   root: {},
   gridContainer: {
     display: "grid",
     gridTemplateColumns: "350px 350px 350px ",
-    gridTemplateRows: "400px 400px 400px 400px",
+    gridTemplateRows: "400px 400px 400px",
     gridGap: "25px",
   },
   icon: {
@@ -28,14 +29,19 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
   },
-  wordpadding: {},
+  pagefooter: {
+    width: "50%",
+    margin: "auto",
+  },
 }));
 
 export default function CustomGridList() {
   const classes = useStyles();
-  const { filteredListings } = useContext(HomePageContext);
+  const { filteredListings, pageNum, setPageNum, totalPage } = useContext(
+    HomePageContext
+  );
   // set timeout for each card to execute grow animation
-  const timeout = filteredListings.map((x, index) => index * 300);
+  const timeout = filteredListings?.map((x, index) => index * 300);
 
   return (
     <div className={classes.root}>
@@ -54,6 +60,8 @@ export default function CustomGridList() {
             </div>
           ))}
       </div>
+
+      <BasicPagination totalPages={totalPage} setPageNum={setPageNum} />
     </div>
   );
 }

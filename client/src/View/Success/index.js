@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import getPurchase from "Controller/Purchase/getPurchase";
 import getProfile from "Controller/getProfile";
 import createChat from "Controller/Chat/createChat";
+import completePurchase from "Controller/Purchase/completePurchase";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
@@ -97,6 +98,7 @@ export default function Index(props) {
       const resPurchase = await getPurchase(sessionId);
       const purchase = resPurchase.data;
 
+      await completePurchase(purchase._id);
       const resUser = await getProfile(purchase.item.user_id);
       setItem(purchase.item);
       setSeller(resUser.data);

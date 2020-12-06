@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const PurchaseSchema = new mongoose.Schema({
     buyer: {
         type:String,
-        require:true
+        require: true
     },
     item:{
         type: mongoose.Schema.Types.ObjectID,
@@ -18,6 +18,10 @@ const PurchaseSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    completed: {
+        type: Boolean,
+        default: false
+    }
 
 })
 

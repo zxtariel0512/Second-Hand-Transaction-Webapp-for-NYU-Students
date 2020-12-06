@@ -37,11 +37,11 @@ router.route("/:session_id").get(async (req, res) => {
 //create new purchased and marked the item unavailable
 router.route("/new").post(async (req, res) => {
     try {
-        let aListing = await Listing.findByIdAndUpdate(req.body.itemId,{status:"unavailable"},
+        let aListing = await Listing.findByIdAndUpdate(req.body.item,{status:"unavailable"},
         { new: true });
         const p = {
-            buyernetid:req.body.buyernetid,
-            itemId:aListing._id,
+            buyer:req.body.buyer,
+            item:aListing._id,
             stripeCheckoutId:req.body.stripeCheckoutId
         }
 

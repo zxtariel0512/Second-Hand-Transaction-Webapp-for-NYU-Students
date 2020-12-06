@@ -34,6 +34,17 @@ router.route("/:session_id").get(async (req, res) => {
     }
   });
 
+// get all purchases by netid
+router.route("/netid/:netid").get( async (req, res) => {
+    try {
+        let purchases = await Purchase.find({ buyer: req.params.netid }).populate("item");
+        
+        res.json(purchases);
+    } catch (err) {
+        res.status(500).json({ message: "error: get purchased items by id" });
+    }
+})
+
 //create new purchased and marked the item unavailable
 router.route("/new").post(async (req, res) => {
     try {

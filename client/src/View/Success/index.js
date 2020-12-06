@@ -12,6 +12,7 @@ import Phone from "Assets/img/icons/phone.svg";
 import Diamond from "Assets/img/icons/diamond.svg";
 import Email from "Assets/img/icons/email.svg";
 import Graduation from "Assets/img/icons/graduate.svg";
+import Home from "Assets/img/icons/home.svg";
 
 const useStyle = makeStyles({
   container: {
@@ -57,6 +58,7 @@ const useStyle = makeStyles({
   field: {
     display: "flex",
     alignItems: "center",
+    padding: 10,
   },
   icon: {
     paddingRight: "2vh",
@@ -153,18 +155,7 @@ export default function Index(props) {
                     width="20"
                     height="20"
                   />
-                  <div>{seller.email}</div>
-                </div>
-                <div className={classes.field}>
-                  <img
-                    className={classes.icon}
-                    src={Graduation}
-                    width="20"
-                    height="20"
-                  />
-                  <div>
-                    {seller.major} Major, Graduate in {seller.schoolYear}
-                  </div>
+                  <div>{seller.netid + "@nyu.edu"}</div>
                 </div>
               </div>
             </div>

@@ -12,6 +12,9 @@ import Diamond from "Assets/img/icons/diamond.svg";
 import Email from "Assets/img/icons/email.svg";
 import Graduation from "Assets/img/icons/graduate.svg";
 
+import SendEmail from "./sendEmail";
+import { Box, CircularProgress } from "@material-ui/core";
+
 const useStyle = makeStyles({
   container: {
     margin: "30px auto",
@@ -73,96 +76,123 @@ export default function Index(props) {
 
   const [item, setItem] = useState();
   const [seller, setSeller] = useState();
+  const [buyer, setBuyer] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(async () => {
     const getPurchaseInfo = async () => {
-      console.log(sessionId);
+      setLoading(true);
       const resPurchase = await getPurchase(sessionId);
       const resUser = await getProfile(resPurchase.data.item.user_id);
-      console.log(resPurchase.data.item);
+      const resBuyer = await getProfile(window.localStorage.getItem("netid"));
       setItem(resPurchase.data.item);
       setSeller(resUser.data);
+      setBuyer(resBuyer.data);
+      setLoading(false);
     };
 
     await getPurchaseInfo();
   }, []);
 
   return (
-    <div className={classes.container}>
-      {item && seller ? (
-        <>
-          <h3 className={classes.textCenter}>Thank you for your purchase!</h3>
-          <h4 className={classes.textCenter}>Purchase Summary</h4>
-          <Paper elevation={3} className={classes.card}>
-            <div className={classes.purchase}>
-              <div className={classes.purchaseImg}>
-                <img src={item.cover_image_url}></img>
-              </div>
-              <div>
-                <div>{item.title}</div>
-                <div>${item.price || item.original_price}</div>
-              </div>
-            </div>
-          </Paper>
-          <h4 className={classes.textCenter}>Seller Information</h4>
-          <Paper elevation={3} className={classes.card}>
-            <div className={classes.seller}>
-              <img className={classes.avatar} src={seller.avatarUrl}></img>
-              <div className={classes.sellerInfo}>
-                <h4>{seller.name}</h4>
-                <div className={classes.field}>
-                  <img
-                    className={classes.icon}
-                    src={Diamond}
-                    width="20"
-                    height="20"
-                  />
-                  <div>{seller.credit}</div>
-                </div>
-                <div className={classes.field}>
-                  <img
-                    className={classes.icon}
-                    src={Phone}
-                    width="20"
-                    height="20"
-                  />
-                  <div>{seller.phone}</div>
-                </div>
-                <div className={classes.field}>
-                  <img
-                    className={classes.icon}
-                    src={Email}
-                    width="20"
-                    height="20"
-                  />
-                  <div>{seller.email}</div>
-                </div>
-                <div className={classes.field}>
-                  <img
-                    className={classes.icon}
-                    src={Graduation}
-                    width="20"
-                    height="20"
-                  />
+    <>
+      {loading ? (
+        <Box
+          display="flex"
+          height="100vh"
+          width="100vw"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <div className={classes.container}>
+          {item && seller && buyer ? (
+            <>
+              <SendEmail
+                buyerEmail={`${buyer.netid}@nyu.edu`}
+                itemName={item.title}
+                price={item.price || item.original_price}
+                sellerName={seller.name}
+                buyerName={buyer.name}
+              />
+              <h3 className={classes.textCenter}>
+                Thank you for your purchase!
+              </h3>
+              <h4 className={classes.textCenter}>Purchase Summary</h4>
+              <Paper elevation={3} className={classes.card}>
+                <div className={classes.purchase}>
+                  <div className={classes.purchaseImg}>
+                    <img src={item.cover_image_url}></img>
+                  </div>
                   <div>
-                    {seller.major} Major, Graduate in {seller.schoolYear}
+                    <div>{item.title}</div>
+                    <div>${item.price || item.original_price}</div>
                   </div>
                 </div>
+              </Paper>
+              <h4 className={classes.textCenter}>Seller Information</h4>
+              <Paper elevation={3} className={classes.card}>
+                <div className={classes.seller}>
+                  <img className={classes.avatar} src={seller.avatarUrl}></img>
+                  <div className={classes.sellerInfo}>
+                    <h4>{seller.name}</h4>
+                    <div className={classes.field}>
+                      <img
+                        className={classes.icon}
+                        src={Diamond}
+                        width="20"
+                        height="20"
+                      />
+                      <div>{seller.credit}</div>
+                    </div>
+                    <div className={classes.field}>
+                      <img
+                        className={classes.icon}
+                        src={Phone}
+                        width="20"
+                        height="20"
+                      />
+                      <div>{seller.phone}</div>
+                    </div>
+                    <div className={classes.field}>
+                      <img
+                        className={classes.icon}
+                        src={Email}
+                        width="20"
+                        height="20"
+                      />
+                      <div>{seller.email}</div>
+                    </div>
+                    <div className={classes.field}>
+                      <img
+                        className={classes.icon}
+                        src={Graduation}
+                        width="20"
+                        height="20"
+                      />
+                      <div>
+                        {seller.major} Major, Graduate in {seller.schoolYear}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Paper>
+              <div className={classes.goBackBtn}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  component={Link}
+                  to="/home"
+                >
+                  Go back to homepage
+                </Button>
               </div>
-            </div>
-          </Paper>
-          <div className={classes.goBackBtn}>
-            <Button
-              variant="outlined"
-              color="primary"
-              component={Link}
-              to="/home"
-            >
-              Go back to homepage
-            </Button>
-          </div>
-        </>
-      ) : null}
-    </div>
+            </>
+          ) : null}
+        </div>
+      )}
+    </>
   );
 }

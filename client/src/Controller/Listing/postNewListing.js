@@ -6,7 +6,7 @@ async function postNewListing(coverPhoto, itemPhotos) {
       user_id: window.localStorage.getItem("netid"),
       status: "available",
       title: window.localStorage.getItem("itemTitle"),
-      category: window.localStorage.getItem("itemCategory"),
+      category: window.localStorage.getItem("secondCat"),
       description: window.localStorage.getItem("itemDescription"),
       cover_image_url: coverPhoto,
       detail_image_urls: JSON.stringify(itemPhotos),

@@ -80,7 +80,6 @@ export default function Index(props) {
       setToken(userSession.getIdToken().jwtToken);
       // cache netid in local storage to redece redundant api calls
       localStorage.setItem("netid", userinput.netid);
-      console.log("should push here");
       history.push("/home");
     } catch (error) {
       console.log(error);

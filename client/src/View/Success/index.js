@@ -95,6 +95,10 @@ export default function Index(props) {
     };
 
     const getPurchaseInfo = async () => {
+<<<<<<< Updated upstream
+=======
+      setLoading(true);
+>>>>>>> Stashed changes
       const resPurchase = await getPurchase(sessionId);
       const purchase = resPurchase.data;
 
@@ -102,8 +106,18 @@ export default function Index(props) {
       const resUser = await getProfile(purchase.item.user_id);
       setItem(purchase.item);
       setSeller(resUser.data);
+<<<<<<< Updated upstream
 
       createNewChat(purchase.item.title, purchase.buyer, purchase.item.user_id);
+=======
+      setBuyer(resBuyer.data);
+      setLoading(false);
+      createNewChat(
+        resPurchase.data.item.title,
+        resPurchase.data.buyer,
+        resPurchase.data.item.user_id
+      );
+>>>>>>> Stashed changes
     };
 
     await getPurchaseInfo();

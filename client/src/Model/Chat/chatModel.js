@@ -1,5 +1,11 @@
 import axios from "axios";
-import { GET_CHATS, GET_ONE_CHAT, DELETE_CHAT } from "../config/apiConfig";
+import {
+  GET_CHATS,
+  GET_ONE_CHAT,
+  DELETE_CHAT,
+  CREATE_CHAT,
+} from "../config/apiConfig";
+import createHeader from "../config/headerConfig";
 
 const getChatsModel = (token) => {
   let config = {
@@ -25,8 +31,11 @@ const deleteChatModel = (id, token) => {
       Authorization: "Bearer " + token,
     },
   };
-  console.log(DELETE_CHAT(id));
   return axios.delete(DELETE_CHAT(id), config);
 };
 
-export { getChatsModel, getOneChatModel, deleteChatModel };
+const createChatModel = async (data) => {
+  return axios.post(CREATE_CHAT, data, await createHeader());
+};
+
+export { getChatsModel, getOneChatModel, deleteChatModel, createChatModel };

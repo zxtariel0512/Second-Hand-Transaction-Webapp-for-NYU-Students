@@ -15,6 +15,8 @@ import { useHistory } from "react-router";
 import { AuthContext } from "Context/AuthContext";
 import request from "../../Utils/request";
 
+import loginUser from "Controller/User/loginUser";
+
 // styling
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -66,17 +68,19 @@ export default function Index(props) {
       console.log(user);
       setserverErr("");
       const userSession = await Auth.currentSession();
-      const res = await request({
-        headers: {
-          Authorization: `Bearer ${userSession.getIdToken().jwtToken}`,
-        },
-        url: `/user/login/${userinput.netid}`,
-        method: "Put",
-      });
+      // const res = await request({
+      //   headers: {
+      //     Authorization: `Bearer ${userSession.getIdToken().jwtToken}`,
+      //   },
+      //   url: `/user/login/${userinput.netid}`,
+      //   method: "Put",
+      // });
+      await loginUser(userinput.netid);
       setAuthStatus(true);
       setToken(userSession.getIdToken().jwtToken);
       // cache netid in local storage to redece redundant api calls
       localStorage.setItem("netid", userinput.netid);
+      console.log("should push here");
       history.push("/home");
     } catch (error) {
       console.log(error);

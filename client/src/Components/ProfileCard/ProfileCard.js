@@ -25,6 +25,7 @@ import Phone from "Assets/img/icons/phone.svg";
 import Diamond from "Assets/img/icons/diamond.svg";
 import Email from "Assets/img/icons/email.svg";
 import Graduation from "Assets/img/icons/graduate.svg";
+import HomeIcon from "Assets/img/icons/home.svg";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -214,7 +215,17 @@ const ProfileCard = ({ avgRating, profile }) => {
                 required: false,
               })}
             />
-
+            <TextField
+              id="outlined-basic"
+              variant="standard"
+              label="Address"
+              name="address"
+              placeholder={profile?.address}
+              className={classes.input}
+              inputRef={register({
+                required: false,
+              })}
+            />
             <Button
               className={classes.buttons}
               variant="outlined"
@@ -244,6 +255,7 @@ const ProfileCard = ({ avgRating, profile }) => {
                 info={`${profile.major} Major, Graduate in ${profile?.schoolYear}`}
               />
             ) : null}
+            <Contact img={HomeIcon} info={profile?.address} />
             <Button
               variant="outlined"
               color="primary"

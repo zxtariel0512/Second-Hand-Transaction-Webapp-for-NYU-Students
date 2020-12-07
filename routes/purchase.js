@@ -28,21 +28,31 @@ router.route("/").get(async (req, res) => {
 router.route("/:session_id").get(async (req, res) => {
     try {
       let foundpurchase = await Purchase.findOne({ stripeCheckoutId: req.params.session_id}).populate('item');
-      console.log(foundpurchase);
       res.json(foundpurchase);
     } catch (error) {
       res.status(500).json({ message: "error: get specific purchased" });
     }
   });
 
+// get all purchases by netid
+router.route("/netid/:netid").get( async (req, res) => {
+    try {
+        let purchases = await Purchase.find({ buyer: req.params.netid }).populate("item");
+        
+        res.json(purchases);
+    } catch (err) {
+        res.status(500).json({ message: "error: get purchased items by id" });
+    }
+})
+
 //create new purchased and marked the item unavailable
 router.route("/new").post(async (req, res) => {
     try {
-        let aListing = await Listing.findByIdAndUpdate(req.body.itemId,{status:"unavailable"},
+        let aListing = await Listing.findByIdAndUpdate(req.body.item,{status:"unavailable"},
         { new: true });
         const p = {
-            buyernetid:req.body.buyernetid,
-            itemId:aListing._id,
+            buyer:req.body.buyer,
+            item:aListing._id,
             stripeCheckoutId:req.body.stripeCheckoutId
         }
 

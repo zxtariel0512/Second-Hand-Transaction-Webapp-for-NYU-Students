@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import getPurchase from "Controller/Purchase/getPurchase";
 import getProfile from "Controller/getProfile";
+import createChat from "Controller/Chat/createChat";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
@@ -11,6 +12,7 @@ import Phone from "Assets/img/icons/phone.svg";
 import Diamond from "Assets/img/icons/diamond.svg";
 import Email from "Assets/img/icons/email.svg";
 import Graduation from "Assets/img/icons/graduate.svg";
+import Home from "Assets/img/icons/home.svg";
 
 import SendEmail from "./sendEmail";
 import { Box, CircularProgress } from "@material-ui/core";
@@ -59,6 +61,7 @@ const useStyle = makeStyles({
   field: {
     display: "flex",
     alignItems: "center",
+    padding: 10,
   },
   icon: {
     paddingRight: "2vh",
@@ -80,7 +83,23 @@ export default function Index(props) {
   const [loading, setLoading] = useState(false);
 
   useEffect(async () => {
+    const createNewChat = async (name, buyer, seller) => {
+      const chatDetails = {
+        chat: {
+          name,
+          participants: [buyer, seller],
+        },
+        message: {
+          author: "admin",
+          value: `${buyer} bought this item.`,
+        },
+      };
+
+      const resChat = await createChat(chatDetails);
+    };
+
     const getPurchaseInfo = async () => {
+
       setLoading(true);
       const resPurchase = await getPurchase(sessionId);
       const resUser = await getProfile(resPurchase.data.item.user_id);
@@ -89,6 +108,8 @@ export default function Index(props) {
       setSeller(resUser.data);
       setBuyer(resBuyer.data);
       setLoading(false);
+      createNewChat(purchase.item.title, purchase.buyer, purchase.item.user_id);
+
     };
 
     await getPurchaseInfo();

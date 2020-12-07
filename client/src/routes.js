@@ -70,10 +70,6 @@ export default class Routes extends React.Component {
           <PrivateRoute path="/me" component={Profile} />
           <PrivateRoute path="/post-item" component={PostItem} />
           <PrivateRoute path="/item/:postId" component={SingleItem} />
-          {/* <Route path="*">
-            <h2 style={{ textAlign: "center" }}>404 Not Found</h2>
-          </Route> */}
-          {/* <Route path="/item/:postId" component={SingleItem} /> */}
           <Route path="/order/success" component={Success} />
           <Route path="*" component={Landing} />
         </Switch>

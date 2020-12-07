@@ -14,6 +14,7 @@ import ProfileReviews from "Components/ProfileReviews/ProfileReviews";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import HelpIcon from "@material-ui/icons/Help";
 import RateReviewIcon from "@material-ui/icons/RateReview";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -54,13 +55,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProfileContent = ({ reviews, listing, request }) => {
+const ProfileContent = ({ reviews, listing, request, purchasedListing }) => {
   const classes = useStyles();
 
   // state to control whether to render listing or requests
   // const [toggleListing, setToggleListing] = useState("Listings");
   const [value, setValue] = React.useState(0);
-
+  let purchase = [];
+  console.log(purchasedListing);
+  purchasedListing?.map((obj) => {
+    if (obj.item) {
+      purchase.push(obj.item);
+    }
+  });
+  console.log(purchase);
   const Content = () => {
     switch (value) {
       case 0:
@@ -68,7 +76,7 @@ const ProfileContent = ({ reviews, listing, request }) => {
       case 2:
         return <ProfileReviews reviews={reviews} />;
       case 1:
-        return <ListingTable listing={listing} />;
+        return <ListingTable listing={purchase} />;
       default:
         return null;
     }
@@ -91,8 +99,8 @@ const ProfileContent = ({ reviews, listing, request }) => {
           />
           <BottomNavigationAction
             className={classes.toggleBtns}
-            label="Requests"
-            icon={<HelpIcon />}
+            label="Purchased Items"
+            icon={<ShoppingCartIcon />}
           />
           <BottomNavigationAction
             className={classes.toggleBtns}

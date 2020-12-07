@@ -25,7 +25,7 @@ export default function ReviewSection() {
   const titleData = getLocalStorage("itemTitle");
   const priceData = getLocalStorage("price");
   const descriptionData = getLocalStorage("itemDescription");
-  const categoryData = getLocalStorage("itemCategory");
+  const categoryData = getLocalStorage("secondCat");
   const deliveryMethodData = getLocalStorage("deliveryMethod");
   const coverImgData = JSON.parse(getLocalStorage("savedCoverPhoto"));
   const itemImgData = JSON.parse(getLocalStorage("savedSkillPhoto"));

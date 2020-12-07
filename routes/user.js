@@ -62,6 +62,7 @@ router.route('/:netid').delete(auth,async (req, res) => {
 // Login individual user by netid
 router.route('/login/:netid').put(auth, async(req, res) =>{
   try {
+    console.log('hit this endpoint');
     let dumUser = await User.findOne({netid: req.params.netid});
     dumUser.valid = true;
     let validUser = await User.findOneAndUpdate({netid: req.params.netid}, dumUser, {new:true});
@@ -114,7 +115,7 @@ router.route('/review/post/:netid').post(auth, async(req, res) =>{
   try{
     let targetUser = await User.findOne({netid: req.params.netid});
     let reviewerUser = await User.findOne({netid: req.params.netid});
-    
+
     const review = {
       reviewer: reviewerUser._id,
       target: targetUser._id,

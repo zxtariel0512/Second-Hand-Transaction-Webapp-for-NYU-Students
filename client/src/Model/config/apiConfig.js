@@ -26,6 +26,7 @@ const LOGIN_USER = (netid) => createAPI(`/user/login/${netid}`);
 const GET_PURCHASE = (sessionId) => createAPI(`/purchases/${sessionId}`);
 const GET_PURCHASE_BY_SELLER = (netid) =>
   createAPI(`/purchases/netid/${netid}`);
+const COMPLETE_PURCHASE = (id) => createAPI(`/purchases/complete/${id}`);
 
 const CHECKOUT = createAPI(`/checkout/create-checkout-session`);
 
@@ -49,5 +50,6 @@ export {
   GET_CATEGORY_BY_ID,
   GET_PURCHASE,
   GET_PURCHASE_BY_SELLER,
+  COMPLETE_PURCHASE,
   CHECKOUT,
 };

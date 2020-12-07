@@ -52,8 +52,6 @@ router.route('/:id').get(auth, async (req, res) => {
 // delete user from chat room
 router.route('/:id').delete(auth, async (req, res) => {
     try {
-        console.log("hi")
-        console.log(req.params.id);
         let foundUser = await User.findOne({ netid: req.user.username });
         foundUser.chats = foundUser.chats.filter(chat => chat._id.toString() != req.params.id);
         await foundUser.save()
@@ -72,7 +70,6 @@ router.route('/:id').delete(auth, async (req, res) => {
 router.route('/').post(auth, async (req, res) => {
     try {
         const details = req.body;
-        console.log(details);
         let newChat = await Chat.create(details.chat);
 
         details.chat.participants.forEach(async (participant) => {

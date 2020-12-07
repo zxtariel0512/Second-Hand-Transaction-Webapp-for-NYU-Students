@@ -1,7 +1,8 @@
 function clearUploadCache() {
   const cacheKey = [
     "itemTitle",
-    "itemCategory",
+    "firstCat",
+    "secondCat",
     "itemDescription",
     "price",
     "Credit Card",

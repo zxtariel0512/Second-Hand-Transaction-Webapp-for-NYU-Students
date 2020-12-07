@@ -37,6 +37,7 @@ export default function BasicInfo() {
         justifyContent="center"
         alignItems="center"
         paddingY="50px"
+        width="400px"
       >
         <form>
           <CategorySelector

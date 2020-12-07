@@ -117,7 +117,6 @@ const SingleItem = () => {
       const foundChat = chats.find((chat) => chat.name === item.title);
       setChatId(foundChat ? foundChat._id : null);
     };
-
     wrapper();
   }, []);
 

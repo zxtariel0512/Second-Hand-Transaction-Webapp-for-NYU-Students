@@ -137,6 +137,7 @@ export default function Index(props) {
             <>
               <SendEmail
                 buyerEmail={`${buyer.netid}@nyu.edu`}
+                sellerEmail={`${seller.netid}@nyu.edu`}
                 itemName={item.title}
                 price={item.price || item.original_price}
                 sellerName={seller.name}

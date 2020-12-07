@@ -3,6 +3,8 @@ import {
   GET_LISTING,
   GET_ONE_LISTING,
   POST_NEW_LISTING,
+  GET_SEARCH_RESULT,
+  DELETE_LISTING,
 } from "../config/apiConfig";
 import createHeader from "../config/headerConfig";
 
@@ -24,4 +26,22 @@ const postNewListingModel = async (data) => {
   return axios.post(POST_NEW_LISTING, data, await createHeader());
 };
 
-export { getListingModel, getOneListingModel, postNewListingModel };
+const getSearchResultModel = async (query) => {
+  return axios.get(GET_SEARCH_RESULT(query));
+};
+
+const deleteListingModel = async (id, token) => {
+  let config = {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  };
+  return axios.delete(DELETE_LISTING(id), config);
+};
+export {
+  getListingModel,
+  getOneListingModel,
+  postNewListingModel,
+  getSearchResultModel,
+  deleteListingModel,
+};

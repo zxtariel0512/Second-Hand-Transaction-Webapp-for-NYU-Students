@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useLocation, useParams, Link } from "react-router-dom";
+import { useLocation, useParams, Link, useHistory } from "react-router-dom";
 import CustomAppBar from "Components/CustomAppBar/CustomAppBar";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
@@ -14,6 +14,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Auth } from "aws-amplify";
 
 import checkout from "Controller/Checkout/checkout";
+import deleteListing from "Controller/Listing/deleteListing";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -109,7 +110,7 @@ const SingleItem = () => {
   }
   const [avatarUrl, setAvatarUrl] = useState();
   const [chatId, setChatId] = useState(null);
-
+  const history = useHistory();
   useEffect(() => {
     const wrapper = async () => {
       const res = await getChats(token);
@@ -134,43 +135,49 @@ const SingleItem = () => {
   /* initialize stripe payment
     code from https://stripe.com/docs/payments/accept-a-payment?integration=elements
   */
-  const handleClick = async (event) => {
-    // Get Stripe.js instance
-    try {
-      const stripePromise = loadStripe(
-        "pk_test_51Ht0mwFHEiDr6rf2IHuPzpEo3j7hDKwDtFLBfOAebHTu7WPyOQh9xis5XOsyWwffHUNgwzzT6gR7CT9HTZutsIjX00dq1LRvzu"
-      );
-      const stripe = await stripePromise;
+  const handleClick = async (e) => {
+    if (e.target.textContent === "Delete this item") {
+      await deleteListing(item._id, token);
+      history.push("/home");
+    } else {
+      // Get Stripe.js instance
 
-      const integerPrice = parseInt(
-        parseFloat(
-          (item.price ? item.price : item.original_price).replaceAll(",", "")
-        )
-      );
-      // Call your backend to create the Checkout Session
-      const data = {
-        price: integerPrice,
-        title: item.title,
-        itemId: item._id,
-        buyer: username,
-      };
+      try {
+        const stripePromise = loadStripe(
+          "pk_test_51Ht0mwFHEiDr6rf2IHuPzpEo3j7hDKwDtFLBfOAebHTu7WPyOQh9xis5XOsyWwffHUNgwzzT6gR7CT9HTZutsIjX00dq1LRvzu"
+        );
+        const stripe = await stripePromise;
 
-      const session = (await checkout(data)).data;
-      console.log(session.id);
+        const integerPrice = parseInt(
+          parseFloat(
+            (item.price ? item.price : item.original_price).replaceAll(",", "")
+          )
+        );
+        // Call your backend to create the Checkout Session
+        const data = {
+          price: integerPrice,
+          title: item.title,
+          itemId: item._id,
+          buyer: username,
+        };
 
-      // When the customer clicks on the button, redirect them to Checkout.
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-      if (result.error) {
-        // If `redirectToCheckout` fails due to a browser or network
-        // error, display the localized error message to your customer
-        // using `result.error.message`.
-        console.log(result.error.message);
+        const session = (await checkout(data)).data;
+        console.log(session.id);
+
+        // When the customer clicks on the button, redirect them to Checkout.
+        const result = await stripe.redirectToCheckout({
+          sessionId: session.id,
+        });
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer
+          // using `result.error.message`.
+          console.log(result.error.message);
+        }
+      } catch (err) {
+        console.log(err);
+        console.log("error: cannot start payment");
       }
-    } catch (err) {
-      console.log(err);
-      console.log("error: cannot start payment");
     }
   };
 
@@ -213,28 +220,43 @@ const SingleItem = () => {
           <br />
           <br />
           <br />
-          <Button
-            className={classes.longbtn}
-            variant="outlined"
-            color="primary"
-            onClick={handleClick}
-            disabled={item?.user_id === username}
-          >
-            Buy!
-          </Button>
-          <p style={{ textAlign: "center" }}> or have questions? </p>
-          <Button
-            className={classes.longbtn}
-            variant="outlined"
-            color="primary"
-            component={Link}
-            to={{
-              pathname: `/chat/${chatId ? chatId : "new"}`,
-              listingInfo: item,
-            }}
-          >
-            Chat with the seller!
-          </Button>
+
+          {item?.user_id === username ? (
+            <Button
+              className={classes.longbtn}
+              variant="outlined"
+              color="primary"
+              value="delete"
+              onClick={(e) => handleClick(e)}
+            >
+              Delete this item
+            </Button>
+          ) : (
+            <>
+              <Button
+                className={classes.longbtn}
+                variant="outlined"
+                color="primary"
+                value="buy"
+                onClick={(e) => handleClick(e)}
+              >
+                Buy
+              </Button>
+              <p style={{ textAlign: "center" }}> or have questions? </p>
+              <Button
+                className={classes.longbtn}
+                variant="outlined"
+                color="primary"
+                component={Link}
+                to={{
+                  pathname: `/chat/${chatId ? chatId : "new"}`,
+                  listingInfo: item,
+                }}
+              >
+                Chat with the seller!
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </div>

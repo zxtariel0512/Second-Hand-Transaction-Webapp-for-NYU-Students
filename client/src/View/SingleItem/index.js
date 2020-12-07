@@ -111,13 +111,13 @@ const SingleItem = () => {
   const [chatId, setChatId] = useState(null);
 
   useEffect(() => {
-    // const wrapper = async () => {
-    //   const res = await getChats(token);
-    //   const chats = res.data;
-    //   const foundChat = chats.find((chat) => chat.name === item.title);
-    //   setChatId(foundChat ? foundChat._id : null);
-    // };
-    // wrapper();
+    const wrapper = async () => {
+      const res = await getChats(token);
+      const chats = res.data;
+      const foundChat = chats.find((chat) => chat.name === item.title);
+      setChatId(foundChat ? foundChat._id : null);
+    };
+    wrapper();
   }, []);
 
   // fetch user avatar

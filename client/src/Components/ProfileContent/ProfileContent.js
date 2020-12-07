@@ -64,8 +64,11 @@ const ProfileContent = ({ reviews, listing, request, purchasedListing }) => {
   let purchase = [];
   console.log(purchasedListing);
   purchasedListing?.map((obj) => {
-    purchase.push(obj.item);
+    if (obj.item) {
+      purchase.push(obj.item);
+    }
   });
+  console.log(purchase);
   const Content = () => {
     switch (value) {
       case 0:

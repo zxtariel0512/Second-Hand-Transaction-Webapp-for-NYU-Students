@@ -99,7 +99,6 @@ export default function Index(props) {
     };
 
     const getPurchaseInfo = async () => {
-
       setLoading(true);
       const resPurchase = await getPurchase(sessionId);
       const resUser = await getProfile(resPurchase.data.item.user_id);
@@ -108,8 +107,11 @@ export default function Index(props) {
       setSeller(resUser.data);
       setBuyer(resBuyer.data);
       setLoading(false);
-      createNewChat(purchase.item.title, purchase.buyer, purchase.item.user_id);
-
+      createNewChat(
+        resPurchase.data.item.title,
+        resPurchase.data.buyer,
+        resPurchase.data.item.user_id
+      );
     };
 
     await getPurchaseInfo();
@@ -133,6 +135,7 @@ export default function Index(props) {
             <>
               <SendEmail
                 buyerEmail={`${buyer.netid}@nyu.edu`}
+                sellerEmail={`${seller.netid}@nyu.edu`}
                 itemName={item.title}
                 price={item.price || item.original_price}
                 sellerName={seller.name}

@@ -58,13 +58,13 @@ export default function ListingTable({ listing }) {
           {listing?.map((row) => (
             <StyledTableRow key={row.title}>
               <StyledTableCell component="th" scope="row">
-                {row.title}
+                {row?.title}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.category}</StyledTableCell>
-              <StyledTableCell align="right">{row.payment}</StyledTableCell>
-              <StyledTableCell align="right">{row.shipment}</StyledTableCell>
+              <StyledTableCell align="right">{row?.category}</StyledTableCell>
+              <StyledTableCell align="right">{row?.payment}</StyledTableCell>
+              <StyledTableCell align="right">{row?.shipment}</StyledTableCell>
               <StyledTableCell align="right">
-                {row.created_date.slice(0, 10)}
+                {row?.created_date.slice(0, 10)}
               </StyledTableCell>
             </StyledTableRow>
           ))}

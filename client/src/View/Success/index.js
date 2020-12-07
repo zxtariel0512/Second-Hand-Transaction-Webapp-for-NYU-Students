@@ -104,7 +104,7 @@ export default function Index(props) {
       const resPurchase = await getPurchase(sessionId);
       const resUser = await getProfile(resPurchase.data.item.user_id);
       const resBuyer = await getProfile(window.localStorage.getItem("netid"));
-      await completePurchase(purchase._id);
+      await completePurchase(resPurchase.data._id);
       setItem(resPurchase.data.item);
       setSeller(resUser.data);
       setBuyer(resBuyer.data);

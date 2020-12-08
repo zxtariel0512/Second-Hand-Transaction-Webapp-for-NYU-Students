@@ -53,7 +53,7 @@ const Index = () => {
     };
     const getUserListingData = async () => {
       const res = await getUserListing(localStorage.getItem("netid"), token);
-      // show error if request is failed
+      // show error if request is faed
       // console.log(res.data);
       res.success ? setListing(res.data) : setError(res.message);
     };

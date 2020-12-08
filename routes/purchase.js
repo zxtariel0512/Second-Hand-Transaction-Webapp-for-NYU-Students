@@ -38,8 +38,7 @@ router.route("/:session_id").get(async (req, res) => {
 router.route("/netid/:netid").get( async (req, res) => {
     try {
         let purchases = await Purchase.find({ buyer: req.params.netid }).populate("item");
-
-        res.json(purchases);
+        res.json(purchases.filter(purchase => purchase.completed != null && purchase.completed == true));
     } catch (err) {
         res.status(500).json({ message: "error: get purchased items by id" });
     }

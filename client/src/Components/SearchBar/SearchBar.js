@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import HomePageContext from "../../View/Home/store/context";
 import Input from "@material-ui/core/Input";
+import getSearchResult from "Controller/Listing/getSearchResult";
+
 const useStyles = makeStyles({
   customSearch: {
     margin: "55px auto",
@@ -29,21 +31,21 @@ const SearchBar = () => {
     HomePageContext
   );
 
+  const getSearchResultData = async (value) => {
+    const res = await getSearchResult(value);
+    setFilteredListings(res.data);
+  };
+
   const onSearchClick = (e) => {
-    const value = e.target.value;
-    console.log("value", value);
-    if (value === "") {
-      setFilteredListings(listings);
-      return;
+    if (e.key === "Enter") {
+      const value = e.target.value;
+      console.log("value", value);
+      if (value === "") {
+        setFilteredListings(listings);
+        return;
+      }
+      getSearchResultData(value);
     }
-    const lowercase = value.toLowerCase();
-    const filtered = filteredListings.filter(
-      (itemObj) =>
-        itemObj.title.toLowerCase().includes(lowercase) ||
-        itemObj.category?.toLowerCase().includes(lowercase)
-    );
-    // console.log("listings", listings);
-    setFilteredListings(filtered);
   };
   return (
     <div className={classes.customSearch}>
@@ -52,7 +54,7 @@ const SearchBar = () => {
         disableUnderline={true}
         className={classes.customSearchBar}
         placeholder="Type to search items..."
-        onChange={onSearchClick}
+        onKeyDown={onSearchClick}
       />
     </div>
   );

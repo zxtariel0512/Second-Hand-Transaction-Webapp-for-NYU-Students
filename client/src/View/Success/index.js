@@ -189,7 +189,7 @@ export default function Index(props) {
                         width="20"
                         height="20"
                       />
-                      <div>{seller.email}</div>
+                      <div>{seller.netid}@nyu.edu</div>
                     </div>
                     <div className={classes.field}>
                       <img

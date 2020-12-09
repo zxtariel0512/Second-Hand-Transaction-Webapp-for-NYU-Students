@@ -30,7 +30,7 @@ import HomeIcon from "Assets/img/icons/home.svg";
 const useStyles = makeStyles((theme) => ({
   container: {
     width: 300,
-    height: 500,
+    height: 550,
     boxShadow: "0 0 5px #888",
     textAlign: "center",
     position: "relative",

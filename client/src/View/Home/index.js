@@ -65,7 +65,6 @@ const Homepage = () => {
         itemObj.title.toLowerCase().includes(lowercase) ||
         itemObj.category?.toLowerCase().includes(lowercase)
     );
-    // console.log("listings", listings);
     setFilteredListings(filtered);
   };
 

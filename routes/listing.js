@@ -5,7 +5,7 @@ let Category = require("../models/category.model");
 
 const { auth } = require("../middleware/auth");
 
-// get all listings or perform a fuzzy search
+// get all listings with pagination or perform a fuzzy search
 router.route('/').get(async (req, res) => {
   //if query, fuzzy search
   if (req.query.search) {
@@ -29,8 +29,9 @@ router.route('/').get(async (req, res) => {
     //if no query, find all listings
   } else {
     try {
-      var aggregateQuery = Listing.aggregate();
-      Listing.aggregatePaginate(aggregateQuery, { page: parseInt(req.query.page), limit: parseInt(req.query.limit) }, function(
+      // pagination in reverse order
+      var aggregateQuery = Listing.aggregate([{ $match: { status: "available" } }]);
+      Listing.aggregatePaginate(aggregateQuery, { sort: { created_date: "descending"}, page: parseInt(req.query.page), limit: parseInt(req.query.limit) }, function (
         err,
         result
       ) {
@@ -41,6 +42,8 @@ router.route('/').get(async (req, res) => {
           res.json(result);
         }
       });
+     
+      
     } catch (error) {
       res.status(500).json({ message: "error: get all listings" });
     }

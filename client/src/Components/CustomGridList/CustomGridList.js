@@ -41,7 +41,13 @@ export default function CustomGridList() {
     HomePageContext
   );
   // set timeout for each card to execute grow animation
-  const timeout = filteredListings?.map((x, index) => index * 300);
+  let timeout = 0;
+  let listings = filteredListings;
+  if (Array.isArray(filteredListings)) {
+    timeout = filteredListings?.map((x, index) => index * 300);
+  } else {
+    listings = [];
+  }
 
   return (
     <div className={classes.root}>
@@ -53,12 +59,15 @@ export default function CustomGridList() {
         </div>
       </div>
       <div className={classes.gridContainer}>
-        {filteredListings &&
-          filteredListings.map((item, index) => (
+        {listings.length === 0 ? (
+          <h2>No results found. Please try again.</h2>
+        ) : (
+          filteredListings?.map((item, index) => (
             <div>
               <CustomCard {...item} timeout={timeout[index]} />
             </div>
-          ))}
+          ))
+        )}
       </div>
 
       <BasicPagination totalPages={totalPage} setPageNum={setPageNum} />

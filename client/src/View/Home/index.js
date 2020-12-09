@@ -68,7 +68,7 @@ const Homepage = () => {
     // console.log("listings", listings);
     setFilteredListings(filtered);
   };
-  
+
   return (
     <HomePageContext.Provider value={context}>
       <CustomAppBar />

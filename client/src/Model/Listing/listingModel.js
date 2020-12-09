@@ -27,7 +27,6 @@ const postNewListingModel = async (data) => {
   return axios.post(POST_NEW_LISTING, data, await createHeader());
 };
 
-
 const getListingByCategoryModel = (name) => {
   return axios.get(GET_LISTING_BY_CATEGORY(name));
 };
@@ -43,7 +42,6 @@ const deleteListingModel = async (id, token) => {
   };
   return axios.delete(DELETE_LISTING(id), config);
 };
-
 
 export {
   getListingModel,

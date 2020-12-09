@@ -20,6 +20,7 @@ const GET_SEARCH_RESULT = (query) => createAPI(`/listings/?search=${query}`);
 const DELETE_LISTING = (id) => createAPI(`/listings/${id}`);
 // user APIs
 const GET_PROFILE = (netid) => createAPI(`/user/${netid}`);
+const GET_LISTING_BY_CATEGORY = (name) => createAPI(`/category/name/${name}`);
 const GET_USER_LISTING = (netid) => createAPI(`/listings/netid/${netid}`);
 
 // chat APIs
@@ -48,6 +49,7 @@ export {
   DELETE_LISTING,
   GET_PROFILE,
   GET_USER_LISTING,
+  GET_LISTING_BY_CATEGORY,
   GET_CHATS,
   GET_ONE_CHAT,
   DELETE_CHAT,

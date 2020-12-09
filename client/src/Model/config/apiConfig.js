@@ -16,6 +16,7 @@ const GET_LISTING = (pagenum, limit) =>
 const POST_NEW_LISTING = createAPI("/listings/new");
 const GET_ONE_LISTING = (id) => createAPI(`/listings/${id}`);
 const GET_PROFILE = (netid) => createAPI(`/user/${netid}`);
+const GET_LISTING_BY_CATEGORY = (name) => createAPI(`/category/name/${name}`);
 const GET_USER_LISTING = (netid) => createAPI(`/listings/netid/${netid}`);
 const GET_CHATS = createAPI("/chat");
 const GET_ONE_CHAT = (id) => createAPI(`/chat/${id}`);
@@ -40,6 +41,7 @@ export {
   GET_ONE_LISTING,
   GET_PROFILE,
   GET_USER_LISTING,
+  GET_LISTING_BY_CATEGORY,
   GET_CHATS,
   GET_ONE_CHAT,
   DELETE_CHAT,

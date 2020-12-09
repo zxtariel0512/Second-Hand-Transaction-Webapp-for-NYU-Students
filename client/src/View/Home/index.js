@@ -14,6 +14,7 @@ import MessageContext from "../../Context/MessageContext";
 import getListing from "../../Controller/Listing/getListing";
 
 import Logo from "../../Assets/img/Logo.svg";
+import Categories from "./Categories";
 
 const useStyles = makeStyles((theme) => style(theme));
 
@@ -67,6 +68,7 @@ const Homepage = () => {
     // console.log("listings", listings);
     setFilteredListings(filtered);
   };
+  
   return (
     <HomePageContext.Provider value={context}>
       <CustomAppBar />
@@ -75,44 +77,7 @@ const Homepage = () => {
           <img src={Logo} width="150px" height="150px" alt="Logo" />
         </div>
         <SearchBar />
-
-        <div className={classes.categories}>
-          <Button
-            className={classes.category}
-            variant="outlined"
-            onClick={(e) => handleClick(e)}
-          >
-            All
-          </Button>
-          <Button
-            className={classes.category}
-            variant="outlined"
-            onClick={(e) => handleClick(e)}
-          >
-            Book
-          </Button>
-          <Button
-            className={classes.category}
-            variant="outlined"
-            onClick={(e) => handleClick(e)}
-          >
-            Electronics
-          </Button>
-          <Button
-            className={classes.category}
-            variant="outlined"
-            onClick={(e) => handleClick(e)}
-          >
-            Clothes
-          </Button>
-          <Button
-            className={classes.category}
-            variant="outlined"
-            onClick={(e) => handleClick(e)}
-          >
-            Cars
-          </Button>
-        </div>
+        <Categories />
         <CustomGridList />
         <Link to="/post-item">
           <Paper className={classes.circle}>

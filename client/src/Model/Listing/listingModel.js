@@ -3,6 +3,7 @@ import {
   GET_LISTING,
   GET_ONE_LISTING,
   POST_NEW_LISTING,
+  GET_LISTING_BY_CATEGORY,
 } from "../config/apiConfig";
 import createHeader from "../config/headerConfig";
 
@@ -24,4 +25,13 @@ const postNewListingModel = async (data) => {
   return axios.post(POST_NEW_LISTING, data, await createHeader());
 };
 
-export { getListingModel, getOneListingModel, postNewListingModel };
+const getListingByCategoryModel = (name) => {
+  return axios.get(GET_LISTING_BY_CATEGORY(name));
+};
+
+export {
+  getListingModel,
+  getOneListingModel,
+  postNewListingModel,
+  getListingByCategoryModel,
+};

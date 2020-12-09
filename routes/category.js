@@ -38,7 +38,7 @@ router.route('/:level').get(async(req, res) =>{
 // get category by name
 router.route('/name/:name').get(async(req, res) =>{
     try{
-        let foundCategory = await Category.find({name: req.params.name}).
+        let foundCategory = await Category.findOne({name: req.params.name}).
         populate('parent child requests listings');
         res.json(foundCategory);
     }catch(error){

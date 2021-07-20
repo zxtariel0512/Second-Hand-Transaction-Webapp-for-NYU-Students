@@ -15,11 +15,16 @@
 ## Test MongoDB and Routes
 1. Download MongoDB Compass, and enter the uri
 2. Download postman
-### Listing
-1. Enter "http://localhost:4000/listings"
-2. Choose "Get" -> "Send" to see all existing listings
-3. Choose "Post", and then click on "Body" -> "Raw" -> "Json", type in information, "Send"
-### User
-1. Enter "http://localhost:4000/user"
-2. Choose "Get" -> "Send" to see all existing listings
-3. Add "/register" to the url in Step 1. Choose "Post", and then click on "Body" -> "Raw" -> "Json", type in information, "Send"
+
+## Deploy
+### Link
+https://secondhand-nyu.netlify.app
+### Login
+account: yh2399
+
+password: Heyulong123!
+
+## About the project
+A web app that serves as a safer and more convinient platform for NYU students to transact their second-hand items, such as text books, garments, and small furnitures. 
+
+To guarantee safety, users are required to register before starting any transaction, and students' school ID are required during registration. Therefore, all users' behavior and credits are tracked throughout their transaction. To guarantee convinience, categories and tags are set, and chat functionalities are implemented. Users are able to post an item for sale, buy an item, chat with the seller, make payment online, choose the shipping option to be in-person transaction or delivery, check seller's credits by clicking into their profile, etc.
